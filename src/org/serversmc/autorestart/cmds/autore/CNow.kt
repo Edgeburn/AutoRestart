@@ -13,7 +13,7 @@ object CNow: ICommand {
 		TIME = 0
 	}
 	
-	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = null
+	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()
 	override fun getLabel(): String = "NOW"
 	override fun getPermission(): String? = "autorestart.now"
 	override fun getUsage(): String = "/autore now"

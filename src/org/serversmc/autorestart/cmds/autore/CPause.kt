@@ -22,10 +22,7 @@ object CPause: ICommand {
 		}
 	}
 	
-	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? {
-		return null
-	}
-	
+	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()
 	override fun getLabel(): String = "PAUSE"
 	override fun getPermission(): String? = "autorestart.pause"
 	override fun getUsage(): String = "/autore pause"
