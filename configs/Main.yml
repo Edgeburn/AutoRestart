@@ -1,6 +1,9 @@
 ## Main configuration values
 main:
-    ## restart modes availiable 'interval', and 'timestamp'
+    ## Recalculate timer on config reload
+    ## This will recalculate the restart countdown when using '/autore reload'
+    recalculate_onreload: false
+    ## restart modes available 'interval', and 'timestamp'
     restart_mode: 'interval'
     ## restart mode specific settings
     modes:

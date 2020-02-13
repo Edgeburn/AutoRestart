@@ -3,7 +3,7 @@ package org.serversmc.autorestart.utils
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.YamlConfiguration
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.autorestart.data.Popup
+import org.serversmc.autorestart.data.*
 import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
@@ -34,7 +34,8 @@ object Config {
 	fun getDouble(path: String): Double = GLOBAL_CONFIG.getDouble(path)
 	fun getBoolean(path: String): Boolean = GLOBAL_CONFIG.getBoolean(path)
 	fun getIntegerList(path: String): MutableList<Int> = GLOBAL_CONFIG.getIntegerList(path)
-	fun getStringList(path: String): MutableList<String> =ArrayList<String>().apply { GLOBAL_CONFIG.getStringList(path).forEach { add(ChatColor.translateAlternateColorCodes('&', it)) } }
+	fun getStringList(path: String): MutableList<String> = ArrayList<String>().apply { GLOBAL_CONFIG.getStringList(path).forEach { add(ChatColor.translateAlternateColorCodes('&', it)) } }
+	fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampManager.parseStringList(GLOBAL_CONFIG.getStringList(path))
 	
 	private lateinit var configs: ArrayList<ConfigFile>
 	
