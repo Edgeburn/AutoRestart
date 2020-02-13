@@ -1,12 +1,9 @@
 package org.serversmc.autorestart.data
 
-import org.serversmc.autorestart.core.TimerThread
+import org.serversmc.autorestart.core.TimerThread.TIME
 
 object HMS {
-	val H: Int
-		get() = TimerThread.TIME / 3600
-	val M: Int
-		get() = TimerThread.TIME / 60 - H * 60
-	val S: Int
-		get() = TimerThread.TIME - H * 3600 - M * 60
+	val H: Int get() = TIME / 3600
+	val M: Int get() = TIME / 60 - H * 60
+	val S: Int get() = TIME - H * 3600 - M * 60
 }
