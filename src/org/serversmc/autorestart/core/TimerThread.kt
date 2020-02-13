@@ -15,7 +15,7 @@ object TimerThread {
 	
 	var TIME = 50000
 	var PAUSED = false
-	var PAUSED_TIMER = 0
+	private var PAUSED_TIMER = 0
 	var loopId = 0
 	var maxplayersId = 0
 	var shutdownId = 0
@@ -30,7 +30,7 @@ object TimerThread {
 			// Timer end break
 			if (TIME == 0) {
 				Bukkit.getScheduler().cancelTask(loopId)
-				// TODO() Bukkit.getScheduler().callSyncMethod(AutoRestart, maxplayers)
+				Bukkit.getScheduler().callSyncMethod(AutoRestart, maxplayers)
 				return@Runnable
 			}
 			// Check if timer is paused
@@ -49,7 +49,8 @@ object TimerThread {
 			// Seconds Reminder
 			if (Config.getBoolean("reminder.enabled.seconds") && (TIME <= Config.getInt("reminder.seconds"))) broadcastReminderSeconds()
 			// Command Execute
-			if (Config.getBoolean("commands.enabled") && (TIME == Config.getInt("commands.seconds"))) Config.getStringList("commands.list").forEach { Bukkit.dispatchCommand(consoleSender, it) }
+			if (Config.getBoolean("commands.enabled") && (TIME == Config.getInt("commands.seconds")))
+				Config.getStringList("commands.list").forEach { Bukkit.dispatchCommand(consoleSender, it) }
 			// Timer decrement
 			TIME--
 		}, 0L, 20L)
