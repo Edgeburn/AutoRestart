@@ -3,7 +3,13 @@ package org.serversmc.autorestart.data
 import org.serversmc.autorestart.utils.Console.err
 import java.lang.Integer.*
 
-data class TimeStamp(val h: Int, val s: Int)
+data class TimeStamp(val h: Int, val m: Int) {
+	
+	override fun toString(): String {
+		return "$h:$m"
+	}
+	
+}
 
 object TimeStampManager {
 	
