@@ -4,6 +4,7 @@ import org.bukkit.Bukkit
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.utils.Config
 import org.serversmc.autorestart.utils.Console.consoleSender
+import org.serversmc.autorestart.utils.Console.err
 import org.serversmc.autorestart.utils.Messenger.broadcastMaxplayersAlert
 import org.serversmc.autorestart.utils.Messenger.broadcastMaxplayersPreShutdown
 import org.serversmc.autorestart.utils.Messenger.broadcastPauseReminder
@@ -13,14 +14,35 @@ import org.serversmc.autorestart.utils.Messenger.broadcastShutdown
 
 object TimerThread {
 	
-	var TIME = 50000
+	var TIME = 0
 	var PAUSED = false
 	private var PAUSED_TIMER = 0
 	var loopId = 0
 	var maxplayersId = 0
 	var shutdownId = 0
 	
+	fun calculateTimer() {
+		when(Config.getString("main.restart_mode").toUpperCase()) {
+			"INTERVAL" -> {
+				TIME = (Config.getDouble("main.modes.interval") * 360.0).toInt()
+			}
+			"TIMESTAMP" -> {
+				// Initialize variables
+				val timestamps = Config.getTimeStampList("main.modes.timestamp")
+				val differences = ArrayList<Long>()
+				// Convert timestamps to differences in milliseconds
+				timestamps.forEach {
+				
+				}
+			}
+			else -> {
+				err("Restart mode \"${Config.getString("main.restart_mode")}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
+			}
+		}
+	}
+	
 	fun run() {
+		calculateTimer()
 		// Start and store loopId
 		loopId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, Runnable {
 			// Timer end break
