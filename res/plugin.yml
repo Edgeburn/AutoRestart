@@ -1,0 +1,14 @@
+name: AutoRestart
+authors:
+    - ServersMC
+    - DennisLysenko
+version: 4.0.0
+build: 66
+main: org.serversmc.autorestart.core.Main
+api-version: 1.15
+website: http://spigotmc.org/
+email: info@serversmc.org
+commands:
+    autore:
+        description: "AutoRestart Command"
+        usage: "/autore <help>"

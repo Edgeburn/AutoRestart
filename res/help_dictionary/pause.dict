@@ -1,0 +1,1 @@
+This command will pause the AutoRestart countdown timer. This command will temporarily suspend the plugin, but keep it enabled. This feature was a request back in beta, so let it be! If you forgot that you paused the server, AutoRestart would remind you every ten minutes (by default) that the timer is suspended. Try it out!
