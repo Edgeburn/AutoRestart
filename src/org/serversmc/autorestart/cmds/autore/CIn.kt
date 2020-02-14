@@ -1,15 +1,14 @@
 package org.serversmc.autorestart.cmds.autore
 
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
+import org.bukkit.command.*
+import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.TIME
-import org.serversmc.autorestart.enums.RED
-import org.serversmc.autorestart.interfaces.ICommand
+import org.serversmc.autorestart.enums.*
+import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.Messenger.broadcastChange
-import java.lang.Integer.parseInt
+import java.lang.Integer.*
 
 object CIn : ICommand {
-	
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		// Check if arguments are empty
@@ -102,7 +101,7 @@ object CIn : ICommand {
 			return if (last.contains(":")) {
 				val suffix = last.split(":")[1].toLowerCase()
 				if (last.split(":").size == 2) {
-					if (suffix.isEmpty()) arrayOf(last + params.joinToString("/")).toMutableList()
+					if (suffix.isEmpty()) tabReturn(params, last)
 					else when {
 						usedParams.contains(suffix) and usedParams.isNotEmpty() -> arrayOf(tabNotValid).toMutableList()
 						arrayOf("h", "m", "s").contains(suffix) -> arrayOf(last).toMutableList()
@@ -112,10 +111,17 @@ object CIn : ICommand {
 				else arrayOf(tabNotValid).toMutableList()
 			}
 			else if (num == null) arrayOf(tabNotValid).toMutableList()
-			else arrayOf(last + params.joinToString("/", ":")).toMutableList()
+			else tabReturn(params, "$last:")
 		}
 		return if (params.isEmpty()) arrayOf(tabNotValid).toMutableList()
-		else arrayOf(params.joinToString("/", "#:")).toMutableList()
+		else tabReturn(params, "#:")
+	}
+	
+	private fun tabReturn(list: MutableList<String>, suffix: String): MutableList<String> {
+		list.forEachIndexed { i, s ->
+			list[i] = suffix + s
+		}
+		return list
 	}
 	
 	override fun getLabel(): String = "IN"
