@@ -1,11 +1,10 @@
 package org.serversmc.autorestart.events
 
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerJoinEvent
-import org.serversmc.autorestart.enums.RED
-import org.serversmc.autorestart.utils.UpdateChecker.LATEST_VERSION
-import org.serversmc.autorestart.utils.UpdateChecker.UPDATE_FOUND
+import org.bukkit.event.*
+import org.bukkit.event.player.*
+import org.serversmc.autorestart.core.UpdateChecker.LATEST_VERSION
+import org.serversmc.autorestart.core.UpdateChecker.UPDATE_FOUND
+import org.serversmc.autorestart.enums.*
 
 object EventPlayerJoin : Listener {
 	

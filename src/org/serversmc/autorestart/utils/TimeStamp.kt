@@ -1,11 +1,9 @@
-package org.serversmc.autorestart.data
+package org.serversmc.autorestart.utils
 
 import org.serversmc.autorestart.utils.Console.err
 import java.lang.Integer.*
 import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.MutableList
-import kotlin.collections.forEach
 
 
 data class TimeStamp(val h: Int, val m: Int) {

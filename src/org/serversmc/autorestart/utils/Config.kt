@@ -1,14 +1,24 @@
 package org.serversmc.autorestart.utils
 
-import org.bukkit.ChatColor
-import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.*
+import org.bukkit.configuration.*
+import org.bukkit.configuration.file.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.autorestart.data.*
-import java.io.File
-import java.io.InputStream
-import java.io.InputStreamReader
+import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
+
+data class Popup(val section: ConfigurationSection) {
+	val title = ConfigTitle(section.getConfigurationSection("title")!!)
+	val subtitle = ConfigTitle(section.getConfigurationSection("subtitle")!!)
+}
+
+data class ConfigTitle(val section: ConfigurationSection) {
+	val text = ChatColor.translateAlternateColorCodes('&', section.getString("text")!!)
+	val fadeIn = section.getInt("fadein")
+	val stay = section.getInt("stay")
+	val fadeOut = section.getInt("fadeout")
+}
 
 object Config {
 	

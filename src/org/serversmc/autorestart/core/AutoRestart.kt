@@ -1,19 +1,21 @@
 package org.serversmc.autorestart.core
 
-import org.bstats.bukkit.Metrics
-import org.bukkit.Bukkit
-import org.bukkit.plugin.java.JavaPlugin
-import org.serversmc.autorestart.cmds.CAutoRestart
+import org.bstats.bukkit.*
+import org.bukkit.*
+import org.bukkit.configuration.file.*
+import org.bukkit.plugin.java.*
+import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.core.TimerThread.loopId
 import org.serversmc.autorestart.core.TimerThread.maxplayersId
 import org.serversmc.autorestart.core.TimerThread.shutdownId
-import org.serversmc.autorestart.events.EventPlayerJoin
-import org.serversmc.autorestart.utils.Config
+import org.serversmc.autorestart.core.UpdateChecker.UPDATE_FOUND
+import org.serversmc.autorestart.events.*
+import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console.catchError
 import org.serversmc.autorestart.utils.Console.info
 import org.serversmc.autorestart.utils.Console.warn
-import org.serversmc.autorestart.utils.UpdateChecker
-import org.serversmc.autorestart.utils.UpdateChecker.UPDATE_FOUND
+import java.io.*
+import java.net.*
 
 class Main : JavaPlugin() {
 	
@@ -64,4 +66,34 @@ class Main : JavaPlugin() {
 		arrayOf(loopId, shutdownId, maxplayersId).forEach { if (it != 0) Bukkit.getScheduler().cancelTask(it) }
 		info("Done")
 	}
+}
+
+object UpdateChecker {
+	
+	private var LATEST_BUILD: Int? = null
+	var LATEST_VERSION: String? = null
+	var UPDATE_FOUND: Boolean? = null
+	
+	private val url = URL("https://gitlab.com/dennislysenko/AutoRestart-v3/raw/master/plugin.yml")
+	private val pluginYml = InputStreamReader(Main.AutoRestart.getResource("plugin.yml") as InputStream)
+	private val yaml = YamlConfiguration.loadConfiguration(pluginYml)
+	
+	fun checkUpdate() {
+		try {
+			// Fetch latest version string
+			YamlConfiguration().apply {
+				load(InputStreamReader(url.openStream()))
+				LATEST_BUILD = getInt("build")
+				LATEST_VERSION = getString("version")?.trim() ?: "null"
+			}
+			// Check if latest build was fetched
+			if (LATEST_BUILD == null) return
+			// Check if version is up to date
+			val currentBuild = yaml.getInt("build", -1)
+			if (currentBuild == -1) return
+			UPDATE_FOUND = LATEST_BUILD!! > currentBuild
+		} catch (e: Exception) {
+		}
+	}
+	
 }

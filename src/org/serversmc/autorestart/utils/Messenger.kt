@@ -1,41 +1,45 @@
 package org.serversmc.autorestart.utils
 
-import org.bukkit.Bukkit
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
-import org.serversmc.autorestart.data.ConfigTitle
-import org.serversmc.autorestart.data.HMS
-import org.serversmc.autorestart.data.Popup
+import org.bukkit.*
+import org.bukkit.command.*
+import org.bukkit.entity.*
+import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.utils.Console.catchError
 import org.serversmc.autorestart.utils.Console.consoleSendMessage
 
+object HMS {
+	val H: Int get() = TimerThread.TIME / 3600
+	val M: Int get() = TimerThread.TIME / 60 - H * 60
+	val S: Int get() = TimerThread.TIME - H * 3600 - M * 60
+}
+
+private interface Format {
+	fun regex(): String
+	fun replace(): String
+}
+
 object Messenger {
-	
-	private interface Format {
-		fun regex(): String
-		fun replace(): String
-	}
-	
+
 	private val fH = object : Format {
 		override fun regex(): String = "%h"
 		override fun replace(): String = HMS.H.toString()
 	}
-	
+
 	private val fM = object : Format {
 		override fun regex(): String = "%m"
 		override fun replace(): String = HMS.M.toString()
 	}
-	
+
 	private val fS = object : Format {
 		override fun regex(): String = "%s"
 		override fun replace(): String = HMS.S.toString()
 	}
-	
+
 	private val fA = object : Format {
 		override fun regex(): String = "%a"
 		override fun replace(): String = Config.getString("max_players.amount")
 	}
-	
+
 	private val fD = object : Format {
 		override fun regex(): String = "%d"
 		override fun replace(): String = Config.getString("max_players.delay")
