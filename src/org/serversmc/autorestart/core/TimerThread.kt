@@ -74,7 +74,7 @@ object TimerThread {
 			// Timer end break
 			if (TIME == 0) {
 				Bukkit.getScheduler().cancelTask(loopId)
-				// TODO() Bukkit.getScheduler().callSyncMethod(AutoRestart, maxplayers)
+				Bukkit.getScheduler().callSyncMethod(AutoRestart, maxplayers)
 				return@Runnable
 			}
 			// Check if timer is paused
