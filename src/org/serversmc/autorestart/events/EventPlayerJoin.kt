@@ -19,7 +19,7 @@ object EventPlayerJoin : Listener {
 		// Check if player has permissions
 		var found = false
 		arrayOf(
-			"autorestart.start",
+			"autorestart.resume",
 			"autorestart.stop",
 			"autorestart.reload",
 			"autorestart.now",
