@@ -1,14 +1,3 @@
-## IDEAS ##
-
-add a timeout function for MaxPlayers
-add a command to check if timeout is enabled
-change all delays to be customizable to any denomination EX: 2h 5m
-    pseudo code:
-    split config by spaces, and search for h m s in split array
-    have a total second variable storing the sum of the 3 types
-show a reminder that server is in timeout mode
-
-## CHANGELOG ##
 4.0.0
 - Redesigned plugin to Kotlin instead of Java
 - Simplified config accessing
