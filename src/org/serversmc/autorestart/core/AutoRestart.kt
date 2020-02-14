@@ -74,7 +74,7 @@ object UpdateChecker {
 	var LATEST_VERSION: String? = null
 	var UPDATE_FOUND: Boolean? = null
 	
-	private val url = URL("https://gitlab.com/dennislysenko/AutoRestart-v3/raw/master/plugin.yml")
+	private val url = URL("https://gitlab.com/dennislysenko/AutoRestart-v4/raw/master/plugin.yml")
 	private val pluginYml = InputStreamReader(Main.AutoRestart.getResource("plugin.yml") as InputStream)
 	private val yaml = YamlConfiguration.loadConfiguration(pluginYml)
 	
