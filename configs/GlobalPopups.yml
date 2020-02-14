@@ -1,4 +1,4 @@
-## To understand ticks. 1 second is relevent to 20 ticks! So a second and a half (1.5s) is 30 ticks!
+## To understand ticks. 1 second is relevant to 20 ticks! So a second and a half (1.5s) is 30 ticks!
 ## Fadein, stay, fadeout are the 3 arguments. You can edit how long it takes to fadein, fadeout etc.
 ## You can also put the fade numbers to 0, and then the popup's will be instant!
 ## Get creative!

@@ -29,8 +29,8 @@ object TimeManager {
 		// Convert timestamps to differences in milliseconds
 		timestamps.forEach {
 			// Check if timestamp is valid
-			if (it.h < 0 || it.h > 23) Console.err("$it hour mark is out of range: 0 - 23")
-			if (it.m < 0 || it.m > 59) Console.err("$it minute mark is out of range: 0 - 59")
+			if (it.h < 0 || it.h > 23) err("$it hour mark is out of range: 0 - 23")
+			if (it.m < 0 || it.m > 59) err("$it minute mark is out of range: 0 - 59")
 			// Add converted time to differences list
 			differences.add(it.getTimeInMillis() - Calendar.getInstance().timeInMillis)
 		}

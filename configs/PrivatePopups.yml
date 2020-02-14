@@ -63,7 +63,7 @@ private_popups:
                 fadeout: 20
         pause_reminder: ## There are no tags for this section
             title:
-                text: '&cDont forget that'
+                text: "&cDon't forget that"
                 fadein: 20
                 stay: 40
                 fadeout: 20

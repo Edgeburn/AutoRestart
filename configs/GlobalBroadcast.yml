@@ -1,5 +1,5 @@
 ## Global Broadcast and Private Messages adds flexibility on what you want your players to see!
-## You have the option of having the player who executed the event to see a message while other dont, or
+## You have the option of having the player who executed the event to see a message while other don't, or
 ## have the player who executed the event see a global message but not a private message
 ## you can have the server see a global message while the player who executed the command will see
 ## his own message.
@@ -7,7 +7,7 @@
 ## The reason why you can enable or disable broadcasts and popups, is to give you the flexibility to
 ## choose whether you want your players to see a broadcast or a popup of the event. Or both! If you have
 ## both popups and broadcasts disabled, broadcasts are automatically enabled. If broadcasts, private messages,
-## and popups are all disabled, then it will aswell be automatically enabled in broadcasts. If broadcasts and
+## and popups are all disabled, then it will as well be automatically enabled in broadcasts. If broadcasts and
 ## private messages are disabled, but popups are enabled, console will get a private message for logs. Since
 ## command line cant receive popups.
     

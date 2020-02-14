@@ -1,3 +1,5 @@
+@file:Suppress("SpellCheckingInspection", "SpellCheckingInspection")
+
 package org.serversmc.autorestart.utils
 
 import org.bukkit.*
