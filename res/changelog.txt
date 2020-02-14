@@ -10,7 +10,7 @@ show a reminder that server is in timeout mode
 
 ## CHANGELOG ##
 4.0.0
-- Redesigned plugin with Kotlin
+- Redesigned plugin to Kotlin instead of Java
 - Simplified config accessing
 - Changed update checker to look for build number, not version number
 - Corrected shutdown sequence
