@@ -2,7 +2,7 @@ name: AutoRestart
 authors:
     - ServersMC
     - DennisLysenko
-version: 4.0.0
+version: 4.0.1
 build: 66
 main: org.serversmc.autorestart.core.Main
 api-version: 1.15
