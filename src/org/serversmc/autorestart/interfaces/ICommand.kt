@@ -31,7 +31,13 @@ interface ICommand : CommandExecutor, TabCompleter, Listener {
 		return null
 	}
 	
-	fun hasPermission(sender: CommandSender): Boolean = if (getPermission() == null) true else (sender is ConsoleCommandSender) or (sender.hasPermission(getPermission()!!))
+	fun hasPermission(sender: CommandSender): Boolean {
+		if (sender.isOp) return true
+		if (getPermission() == null) return true
+		else if (sender.hasPermission(getPermission()!!)) return true
+		return false
+	}
+	
 	fun execute(sender: CommandSender, args: MutableList<out String>)
 	fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>?
 	fun getLabel(): String
