@@ -1,16 +1,15 @@
 package org.serversmc.autorestart.interfaces
 
 import org.bukkit.command.*
-import org.bukkit.entity.Player
-import org.bukkit.event.Listener
-import org.serversmc.autorestart.enums.ITALIC
-import org.serversmc.autorestart.enums.RED
+import org.bukkit.entity.*
+import org.bukkit.event.*
+import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.utils.Console.catchError
 
 interface ICommand : CommandExecutor, TabCompleter, Listener {
 	
-	val tabNotValid: String get() = "${ITALIC}not valid"
-	val tabIgnored: String get() = "${ITALIC}ignored"
+	val tabNotValid: String get() = "not valid"
+	val tabIgnored: String get() = "ignored"
 	
 	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 		if (hasPermission(sender)) {
