@@ -1,19 +1,19 @@
 package org.serversmc.autorestart.core
 
-import org.bukkit.Bukkit
+import org.bukkit.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.autorestart.utils.Config
+import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console.consoleSender
 import org.serversmc.autorestart.utils.Console.err
-import org.serversmc.autorestart.utils.Console.warn
 import org.serversmc.autorestart.utils.Messenger.broadcastMaxplayersAlert
 import org.serversmc.autorestart.utils.Messenger.broadcastMaxplayersPreShutdown
 import org.serversmc.autorestart.utils.Messenger.broadcastPauseReminder
 import org.serversmc.autorestart.utils.Messenger.broadcastReminderMinutes
 import org.serversmc.autorestart.utils.Messenger.broadcastReminderSeconds
 import org.serversmc.autorestart.utils.Messenger.broadcastShutdown
-import java.util.*
-import kotlin.collections.ArrayList
+import org.serversmc.autorestart.utils.TimeManager.calculateInterval
+import org.serversmc.autorestart.utils.TimeManager.calculateTimestamp
+
 
 object TimerThread {
 	
@@ -26,34 +26,13 @@ object TimerThread {
 	
 	fun calculateTimer() {
 		when(Config.getString("main.restart_mode").toUpperCase()) {
-			"INTERVAL" -> return
-			"TIMESTAMP" -> {
-				// Initialize variables
-				val timestamps = Config.getTimeStampList("main.modes.timestamp")
-				val differences = ArrayList<Long>()
-				// Convert timestamps to differences in milliseconds
-				timestamps.forEach {
-					// Check if timestamp is valid
-					if (it.h < 0 || it.h > 23) err("$it hour mark is out of range: 0 - 23")
-					if (it.m < 0 || it.m > 59) err("$it minute mark is out of range: 0 - 59")
-					// Add converted time to differences list
-					differences.add(it.getTimeInMillis() - Calendar.getInstance().timeInMillis)
-				}
-				// Check if list is empty
-				if (differences.isEmpty()) {
-					warn("There are no accepted timestamps available! Please check config to ensure that you have followed the correct format.")
-					return
-				}
-				// Get smallest difference
-				val time = differences.min()!!
-				// Convert milliseconds to time
-				TIME = time.toInt() / 1000
+			"INTERVAL" -> calculateInterval()
+			"TIMESTAMP" -> calculateTimestamp()
+			else -> {
+				err("Restart mode \"${Config.getString("main.restart_mode")}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
+				calculateInterval()
 			}
-			else -> err("Restart mode \"${Config.getString("main.restart_mode")}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
 		}
-		
-		// Default restart mode
-		TIME = (Config.getDouble("main.modes.interval") * 360.0).toInt()
 	}
 	
 	fun run() {
@@ -63,7 +42,7 @@ object TimerThread {
 			// Timer end break
 			if (TIME == 0) {
 				Bukkit.getScheduler().cancelTask(loopId)
-				Bukkit.getScheduler().callSyncMethod(AutoRestart, maxplayers)
+				// TODO() Bukkit.getScheduler().callSyncMethod(AutoRestart, maxplayers)
 				return@Runnable
 			}
 			// Check if timer is paused
