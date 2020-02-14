@@ -23,6 +23,7 @@ show a reminder that server is in timeout mode
 - Updated MaxPlayers config
 - Fixed pause feature ("It wasn't pausing, only displaying the pause reminder and telling your its paused")
 - Renamed "/autore start" to "/autore resume"
+- Added tab complete feature
 
 3.3.3
 - Updated api-version to 1.13
