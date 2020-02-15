@@ -19,12 +19,12 @@ import kotlin.collections.ArrayList
 object TimeManager {
 
 	fun calculateInterval() {
-		TimerThread.TIME = (Config.getDouble("main.modes.interval") * 3600.0).toInt()
+		TimerThread.TIME = (ConfigManager.getDouble("main.modes.interval") * 3600.0).toInt()
 	}
 
 	fun calculateTimestamp() {
 		// Initialize variables
-		val timestamps = Config.getTimeStampList("main.modes.timestamp")
+		val timestamps = ConfigManager.getTimeStampList("main.modes.timestamp")
 		val differences = ArrayList<Long>()
 		// Convert timestamps to differences in milliseconds
 		timestamps.forEach {
@@ -57,11 +57,11 @@ object TimerThread {
 	var shutdownId = 0
 	
 	fun calculateTimer() {
-		when(Config.getString("main.restart_mode").toUpperCase()) {
+		when(ConfigManager.getString("main.restart_mode").toUpperCase()) {
 			"INTERVAL" -> calculateInterval()
 			"TIMESTAMP" -> calculateTimestamp()
 			else -> {
-				err("Restart mode \"${Config.getString("main.restart_mode")}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
+				err("Restart mode \"${ConfigManager.getString("main.restart_mode")}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
 				calculateInterval()
 			}
 		}
@@ -81,7 +81,7 @@ object TimerThread {
 			if (PAUSED) {
 				PAUSED_TIMER++
 				// Check if paused reminder is ready
-				if (PAUSED_TIMER == Config.getInt("reminder.paused_reminder") * 60) {
+				if (PAUSED_TIMER == ConfigManager.getInt("reminder.paused_reminder") * 60) {
 					broadcastPauseReminder()
 					PAUSED_TIMER = 0
 				}
@@ -89,12 +89,12 @@ object TimerThread {
 			}
 			PAUSED_TIMER = 0
 			// Minutes Reminder
-			if (Config.getBoolean("reminder.enabled.minutes")) Config.getIntegerList("reminder.minutes").forEach { if (TIME == it * 60) broadcastReminderMinutes() }
+			if (ConfigManager.getBoolean("reminder.enabled.minutes")) ConfigManager.getIntegerList("reminder.minutes").forEach { if (TIME == it * 60) broadcastReminderMinutes() }
 			// Seconds Reminder
-			if (Config.getBoolean("reminder.enabled.seconds") && (TIME <= Config.getInt("reminder.seconds"))) broadcastReminderSeconds()
+			if (ConfigManager.getBoolean("reminder.enabled.seconds") && (TIME <= ConfigManager.getInt("reminder.seconds"))) broadcastReminderSeconds()
 			// Command Execute
-			if (Config.getBoolean("commands.enabled") && (TIME == Config.getInt("commands.seconds")))
-				Config.getStringList("commands.list").forEach { Bukkit.dispatchCommand(consoleSender, it) }
+			if (ConfigManager.getBoolean("commands.enabled") && (TIME == ConfigManager.getInt("commands.seconds")))
+				ConfigManager.getStringListColor("commands.list").forEach { Bukkit.dispatchCommand(consoleSender, it) }
 			// Timer decrement
 			TIME--
 		}, 0L, 20L)
@@ -102,14 +102,14 @@ object TimerThread {
 	
 	private var maxplayers = fun() {
 		// Check if max_players is enabled
-		if (Config.getBoolean("max_players")) {
+		if (ConfigManager.getBoolean("max_players")) {
 			// Check if player count is over configured amount
-			if (Bukkit.getOnlinePlayers().size > Config.getInt("max_players.amount")) {
+			if (Bukkit.getOnlinePlayers().size > ConfigManager.getInt("max_players.amount")) {
 				// Broadcast alert
 				broadcastMaxplayersAlert()
 				maxplayersId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, {
 					// Start Shutdown wait
-					if (Bukkit.getOnlinePlayers().size <= Config.getInt("max_players.amount")) {
+					if (Bukkit.getOnlinePlayers().size <= ConfigManager.getInt("max_players.amount")) {
 						return@scheduleSyncRepeatingTask
 					}
 					// Broadcast pre shutdown message
@@ -126,7 +126,7 @@ object TimerThread {
 		// Player kick / restart message
 		Bukkit.getScheduler().callSyncMethod(AutoRestart) {
 			Bukkit.getOnlinePlayers().forEach { player ->
-				player.kickPlayer(Config.getString("main.kick_message"))
+				player.kickPlayer(ConfigManager.getString("main.kick_message"))
 			}
 		}
 		TIME = 5

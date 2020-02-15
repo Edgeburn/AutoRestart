@@ -1,5 +1,6 @@
 package org.serversmc.autorestart.utils
 
+import net.minecraft.server.v1_15_R1.Items.*
 import org.bukkit.*
 import org.bukkit.command.*
 import org.bukkit.entity.*
@@ -37,12 +38,12 @@ object Messenger {
 
 	private val fA = object : Format {
 		override fun regex(): String = "%a"
-		override fun replace(): String = ConfigManager.getString("max_players.amount")
+		override fun replace(): String = Config.MaxPlayers_Amount.toString()
 	}
 
 	private val fD = object : Format {
 		override fun regex(): String = "%d"
-		override fun replace(): String = ConfigManager.getString("max_players.delay")
+		override fun replace(): String = Config.MaxPlayers_Delay.toString()
 	}
 	
 	private fun format(s: String, vars: Array<Format>): String {
@@ -51,14 +52,14 @@ object Messenger {
 		return output
 	}
 	
-	private fun getPrefix(): String = ConfigManager.getString("main.prefix")
+	private fun getPrefix(): String = Config.Main_Prefix
 	private fun broadcastMessage(msg: String) = Bukkit.broadcastMessage(getPrefix() + msg)
 	private fun broadcastMessage(msg: String, perm: String) = Bukkit.broadcast(getPrefix() + msg, perm)
 	
 	private fun sendTitle(player: Player, popup: Popup, format: Array<Format>) {
 		TitleAPI.sendTitle(player, 0, 0, 0, "", "")
-		val title: ConfigTitle = popup.title
-		val subtitle: ConfigTitle = popup.subtitle
+		val title = popup.title
+		val subtitle = popup.subtitle
 		try {
 			TitleAPI.sendTitle(player, title.fadeIn, title.stay, title.fadeOut, format(title.text, format), null)
 			TitleAPI.sendTitle(player, subtitle.fadeIn, subtitle.stay, subtitle.fadeOut, null, format(subtitle.text, format))
@@ -67,100 +68,102 @@ object Messenger {
 		}
 	}
 	
-	private fun sortWhoGetsWhatChat(globalBroadcast: Boolean, privateMessage: Boolean, playerSender: Player?, globalMsgLines: List<String>, privateMsgLines: List<String>) {
+	private fun sortWhoGetsWhatChat(playerSender: Player?, globalMsg: Message, privateMsg: Message) {
 		// Check if global broadcast is enabled
-		if (globalBroadcast) {
+		if (globalMsg.enabled) {
 			// Everyone but console and/or sender gets global message
 			for (player in Bukkit.getOnlinePlayers()) {
-				if (player == playerSender && privateMessage) {
+				if (player == playerSender && privateMsg.enabled) {
 					continue
 				}
-				globalMsgLines.forEach { player.sendMessage(getPrefix() + it) }
+				globalMsg.lines.forEach { player.sendMessage(getPrefix() + it) }
 			}
 		}
 		// Check if player broadcast is enabled
-		if (privateMessage) {
+		if (privateMsg.enabled) {
 			// Check if player triggered event
 			if (playerSender != null) {
 				// send private message to player
-				privateMsgLines.forEach { playerSender.sendMessage(it) }
+				privateMsg.lines.forEach { playerSender.sendMessage(it) }
 			}
 		}
 		// Check if console is sender and set console message list
 		val consoleList: List<String> = if (playerSender == null) {
-			privateMsgLines
+			privateMsg.lines
 		} else {
-			globalMsgLines
+			globalMsg.lines
 		}
 		// Send Message to console
 		consoleList.forEach { consoleSendMessage(it) }
 	}
 	
-	private fun sortWhoGetsWhatPopUp(globalPopup: Boolean, privatePopup: Boolean, playerSender: Player?, globalPopupConfig: Popup, privatePopupConfig: Popup, format: Array<Format>) {
+	private fun sortWhoGetsWhatPopUp(playerSender: Player?, globalPopup: Popup, privatePopup: Popup, format: Array<Format>) {
 		// Check if global pop up is enabled
-		if (globalPopup) {
+		if (globalPopup.enabled) {
 			// Everyone but sender gets global message
 			for (player in Bukkit.getOnlinePlayers()) {
-				if ((player == playerSender) && privatePopup) {
+				if ((player == playerSender) && privatePopup.enabled) {
 					continue
 				}
-				sendTitle(player, globalPopupConfig, format)
+				sendTitle(player, globalPopup, format)
 			}
 		}
 		// Check if player pop up is enabled
-		if (privatePopup) {
+		if (privatePopup.enabled) {
 			// Check if player triggered event
 			if (playerSender != null) {
 				// send private pop up to player
-				sendTitle(playerSender, privatePopupConfig, format)
+				sendTitle(playerSender, privatePopup, format)
 			}
 		}
 	}
 	
 	fun broadcastReminderMinutes() {
-		val msgLines = ConfigManager.getStringListColor("global_broadcast.messages.minutes")
+		val msg = Config.GlobalBroadcast_Minutes
+		val popup = Config.GlobalPopups_Minutes
 		// Check if pop ups are enabled
-		if (ConfigManager.getBoolean("global_popups.enabled.minutes")) {
+		if (popup.enabled) {
 			// send pop ups
 			Bukkit.getOnlinePlayers().forEach {
 				try {
-					sendTitle(it, ConfigManager.getPopup("global_popups.messages.minutes"), arrayOf(fM))
+					sendTitle(it, popup, arrayOf(fM))
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastReminderMinutes():SendPopUps")
 				}
 			}
-			if (!ConfigManager.getBoolean("global_broadcast.enabled.minutes")) {
+			if (!msg.enabled) {
 				// Send to console only
-				msgLines.forEach { consoleSendMessage(format(it, arrayOf(fM))) }
+				msg.lines.forEach { consoleSendMessage(format(it, arrayOf(fM))) }
 				// Disable for players
 				return
 			}
 		}
 		// Send to everyone
-		msgLines.forEach { broadcastMessage(format(it, arrayOf(fM))) }
+		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fM))) }
 	}
 	
 	fun broadcastReminderSeconds() {
-		val msgLines = ConfigManager.getStringListColor("global_broadcast.messages.seconds")
+		val msg = Config.GlobalBroadcast_Seconds
+		val popup = Config.GlobalPopups_Seconds
 		// Check if pop ups are enabled
-		if (ConfigManager.getBoolean("global_popups.enabled.seconds")) {
+		if (popup.enabled) {
 			// send pop ups
 			Bukkit.getOnlinePlayers().forEach { player: Player  ->
 				try {
-					sendTitle(player, ConfigManager.getPopup("global_popups.messages.seconds"), arrayOf(fS))
+					sendTitle(player, popup, arrayOf(fS))
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastReminderSeconds():SendPopUps")
 				}
 			}
-			if (!ConfigManager.getBoolean("global_broadcast.enabled.seconds")) {
+			if (!msg.enabled) {
 				// Send to console only
-				msgLines.forEach { consoleSendMessage(format(it, arrayOf(fS))) }
+				msg.lines.forEach { consoleSendMessage(format(it, arrayOf(fS))) }
 				// Disable for players
 				return
 			}
 		}
 		// Send to everyone
-		msgLines.forEach { broadcastMessage(format(it, arrayOf(fS))) }
+		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fS))) }
 	}
 	
 	fun broadcastStatusResume(sender: CommandSender?) {
@@ -173,15 +176,13 @@ object Messenger {
 		var globalBroadcast = ConfigManager.getBoolean("global_broadcast.enabled.status.resume")
 		val privateMessage = ConfigManager.getBoolean("private_messages.enabled.status.resume")
 		val globalPopup = ConfigManager.getBoolean("global_popups.enabled.status.resume")
-		val privatePopup = ConfigManager.getBoolean("PRIVATE_POPUPS.ENABLED.STATUS.resume")
+		val privatePopup = ConfigManager.getBoolean("private_popups.enabled.status.resume")
 		// check if global and player pop ups are off
 		if (!globalPopup && !privatePopup) {
 			if (!privateMessage) globalBroadcast = true
 		} else {
 			try {
 				sortWhoGetsWhatPopUp(
-					globalPopup,
-					privatePopup,
 					playerSender,
 					ConfigManager.getPopup("global_popups.messages.status.resume"),
 					ConfigManager.getPopup("private_popups.messages.status.resume"),
@@ -195,6 +196,7 @@ object Messenger {
 		sortWhoGetsWhatChat(globalBroadcast, privateMessage, playerSender, globalMsgLines, privateMsgLines)
 	}
 	
+	// TODO FIX ERRORS
 	fun broadcastStatusPause(sender: CommandSender?) {
 		// Check if player executed command
 		val playerSender: Player? = if (sender is Player) sender else null
@@ -212,7 +214,9 @@ object Messenger {
 		} else {
 			try {
 				sortWhoGetsWhatPopUp(
-					globalPopup, privatePopup, playerSender, ConfigManager.getPopup("global_popups.messages.status.pause"), ConfigManager.getPopup("private_popups.messages.status.pause"),
+					playerSender,
+					ConfigManager.getPopup("global_popups.messages.status.pause"),
+					ConfigManager.getPopup("private_popups.messages.status.pause"),
 					arrayOf()
 				)
 			} catch (e: Exception) {
@@ -220,9 +224,10 @@ object Messenger {
 			}
 		}
 		// Sorts who gets global broadcast and who gets player message depending on config setup
-		sortWhoGetsWhatChat(globalBroadcast, privateMessage, playerSender, globalMsgLines, privateMsgLines)
+		sortWhoGetsWhatChat(playerSender, globalMsgLines, privateMsgLines)
 	}
 	
+	// TODO FIX ERRORS
 	fun broadcastChange(sender: CommandSender?) {
 		// Check if player executed command
 		val playerSender: Player? = if (sender is Player) sender else null
@@ -240,8 +245,6 @@ object Messenger {
 		} else {
 			try {
 				sortWhoGetsWhatPopUp(
-					globalPopup,
-					privatePopup,
 					playerSender,
 					ConfigManager.getPopup("global_popups.messages.change"),
 					ConfigManager.getPopup("private_popups.messages.change"),
@@ -254,143 +257,128 @@ object Messenger {
 		// Format message lines, before processing in sortWhoGetsWhatChat()
 		for (i in globalMsgLines.indices) globalMsgLines[i] = format(globalMsgLines[i], arrayOf(fH, fM, fS))
 		for (i in privateMsgLines.indices) privateMsgLines[i] = format(privateMsgLines[i], arrayOf(fH, fM, fS))
-		sortWhoGetsWhatChat(globalBroadcast, privateMessage, playerSender, globalMsgLines, privateMsgLines)
+		sortWhoGetsWhatChat(playerSender, globalMsgLines, privateMsgLines)
 	}
 	
 	fun broadcastMaxplayersAlert() {
 		// Placeholder setups and message fetch
-		val msgLines = ConfigManager.getStringListColor("global_broadcast.messages.max_players.alert")
+		val msg = Config.GlobalBroadcast_MaxPlayers_Alert
+		val popup = Config.GlobalPopups_MaxPlayers_Alert
 		// Check if pop ups are enabled
-		if (ConfigManager.getBoolean("global_popups.enabled.max_players.alert")) {
+		if (popup.enabled) {
 			// send pop ups
 			for (player in Bukkit.getOnlinePlayers()) {
 				try {
-					sendTitle(
-						player!!,
-						ConfigManager.getPopup("global_popups.messages.max_players.alert"),
-						arrayOf(fA)
-					)
+					sendTitle(player!!, popup, arrayOf(fA))
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastMaxplayersAlert():SendPopUps")
 				}
 			}
-			if (!ConfigManager.getBoolean("global_broadcast.enabled.max_players.alert")) {
+			if (!msg.enabled) {
 				// Send to console only
-				msgLines.forEach { consoleSendMessage(format(it, arrayOf(fA))) }
+				msg.lines.forEach { consoleSendMessage(format(it, arrayOf(fA))) }
 				// Disable for players
 				return
 			}
 		}
 		// Send to everyone
-		msgLines.forEach { broadcastMessage(format(it, arrayOf(fA))) }
+		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fA))) }
 	}
 	
 	fun broadcastMaxplayersPreShutdown() {
 		// Message fetch
-		val msgLines = ConfigManager.getStringListColor("global_broadcast.messages.max_players.pre_shutdown")
+		val msg = Config.GlobalBroadcast_MaxPlayers_PreShutdown
+		val popup = Config.GlobalPopups_MaxPlayers_PreShutdown
 		// Check if pop ups are enabled
-		if (ConfigManager.getBoolean("global_popups.enabled.max_players.pre_shutdown")) {
+		if (popup.enabled) {
 			// send pop ups
 			for (player in Bukkit.getOnlinePlayers()) {
 				try {
-					sendTitle(
-						player!!,
-						ConfigManager.getPopup("global_popups.messages.max_players.pre_shutdown"),
-						arrayOf(fD)
-					)
+					sendTitle(player!!, popup, arrayOf(fD))
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastMaxplayersPreShutdown():SendPopUps")
 				}
 			}
-			if (!ConfigManager.getBoolean("global_broadcast.enabled.max_players.pre_shutdown")) {
+			if (!msg.enabled) {
 				// Send to console only
-				msgLines.forEach { consoleSendMessage(format(it, arrayOf(fD))) }
+				msg.lines.forEach { consoleSendMessage(format(it, arrayOf(fD))) }
 				// Disable for players
 				return
 			}
 		}
 		// Send to everyone
-		msgLines.forEach { broadcastMessage(format(it, arrayOf(fD))) }
+		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fD))) }
 	}
 	
 	fun broadcastPauseReminder() {
 		// Message fetch
-		val msgLines = ConfigManager.getStringListColor("private_messages.messages.pause_reminder")
+		val msg = Config.PrivateMessages_PauseReminder
+		val popup = Config.PrivatePopups_PauseReminder
 		// Send to console only
-		msgLines.forEach { consoleSendMessage(it) }
+		msg.lines.forEach { consoleSendMessage(it) }
 		// Check if pop ups are enabled
-		if (ConfigManager.getBoolean("private_popups.enabled.pause_reminder")) {
+		if (popup.enabled) {
 			// send pop ups
 			for (player in Bukkit.getOnlinePlayers()) {
 				try {
-					sendTitle(
-						player!!,
-						ConfigManager.getPopup("private_popups.messages.pause_reminder"),
-						arrayOf()
-					)
+					sendTitle(player!!, popup, arrayOf())
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastPauseReminder():SendPopUps")
 				}
 			}
 			// Disable for players
-			if (!ConfigManager.getBoolean("private_messages.enabled.pause_reminder")) return
+			if (!msg.enabled) return
 		}
 		// Send to everyone
-		msgLines.forEach { broadcastMessage(it, "autorestart.start") }
+		msg.lines.forEach { broadcastMessage(it, "autorestart.start") }
 	}
 	
 	fun broadcastShutdown() {
 		// Message fetch
-		val msgLines = ConfigManager.getStringListColor("global_broadcast.messages.shutdown")
+		val msg = Config.GlobalBroadcast_Shutdown
+		val popup = Config.GlobalPopups_ShutDown
 		// Check if pop ups are enabled
-		if (ConfigManager.getBoolean("global_popups.enabled.shutdown")) {
+		if (popup.enabled) {
 			// send pop ups
 			for (player in Bukkit.getOnlinePlayers()) {
 				try {
-					sendTitle(
-						player!!,
-						ConfigManager.getPopup("global_popups.messages.shutdown"),
-						arrayOf()
-					)
+					sendTitle(player!!, popup, arrayOf())
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastShutdown():SendPopUps")
 				}
 			}
-			if (!ConfigManager.getBoolean("global_broadcast.enabled.shutdown")) {
+			if (!msg.enabled) {
 				// Send to console only
-				msgLines.forEach { consoleSendMessage(it) }
+				msg.lines.forEach { consoleSendMessage(it) }
 				// Disable for players
 				return
 			}
 		}
 		// Send to everyone
-		msgLines.forEach { broadcastMessage(it) }
+		msg.lines.forEach { broadcastMessage(it) }
 	}
 	
 	fun messageSenderTime(sender: CommandSender) {
 		// Message fetch
-		val msgLines = ConfigManager.getStringListColor("private_messages.messages.time")
+		val msg = Config.PrivateMessages_Time
+		val popup = Config.PrivatePopups_Time
 		// Checks if sender is a player
 		if (sender is Player) {
 			// Cast sender as player
 			val player: Player = sender
 			// Check if pop ups are enabled
-			if (ConfigManager.getBoolean("private_popups.enabled.time")) {
+			if (popup.enabled) {
 				// send pop ups
 				try {
-					sendTitle(
-						player,
-						ConfigManager.getPopup("private_popups.messages.time"),
-						arrayOf(fH, fM, fS)
-					)
+					sendTitle(player, popup, arrayOf(fH, fM, fS))
 				} catch (e: Exception) {
 					catchError(e, "Messenger.messageSenderTime():SendPopUps")
 				}
 				// Disables message
-				if (!ConfigManager.getBoolean("private_messages.enabled.time")) return
+				if (!msg.enabled) return
 			}
 		}
 		// Private message lines
-		msgLines.forEach { sender.sendMessage(format(it, arrayOf(fH, fM, fS))) }
+		msg.lines.forEach { sender.sendMessage(format(it, arrayOf(fH, fM, fS))) }
 	}
 }
