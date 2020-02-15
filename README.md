@@ -1,5 +1,9 @@
+[[_TOC_]]
+
 # AutoRestart
 Restart your server automatically today, and clear some of your RAM for a faster, smoother Minecraft experience. This integration is seamless and works with Spigot. Please follow the instructions to ensure a proper setup!
+
+---
 ### Instructions
 
 ##### Check if spigot.yml is configured
@@ -27,3 +31,6 @@ Log into your server, and type `/autore time` to display the time the server wil
 `AutoRestart`'s core timing and messaging system should be compatible with all _Spigot_ version's, but the `Title-API` provided by `AutoRestart` changes version to version.
 
 If you did not receive any errors, then your done! Change the config and make the plugin yours! If any errors are displayed, please **CONTACT ME** so I may address it immediately so other players wont receive the same issue!
+
+---
+### Features
