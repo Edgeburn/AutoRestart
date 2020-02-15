@@ -29,6 +29,7 @@ global_broadcast:
         ## %s - seconds
         message:
             - 'Server is restarting in %s Seconds!'
+    ## Show the broadcast when typed /autore resume or /autore pause
     status:
         ## Show the broadcast when typed /autore resume
         resume:
