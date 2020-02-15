@@ -1,35 +1,40 @@
 ## These are private messages sent to the player when the event is triggered. If the same task is enabled in
 ##  "global_broadcast", this player will not see the global message, but his own.
 ##  Private messages include the prefix in "main.prefix" config.
+
+## Messages have multi line support!
 private_messages:
-    ## Enable or Disable the chat message
-    enabled:
-        ## Show the message when type /autore time
-        time: true
-        ## Show the message when typed /autore resume or /autore pause
-        status:
-            resume: true
-            pause: true
-        ## Show the broadcast when the server time has been changed!
-        change: true
-        ## "/autore pause" reminder
-        pause_reminder: true
-    ## Messages have multi line support!
-    messages:
+    ## Show the message when type /autore time
+    time:
+        enabled: true
         ## %h - hours, %m - minutes, %s - seconds
-        time:
+        message:
             - '&cServer restarting in &f%h&cH &f%m&cM &f%s&cS!'
-        ## There are no tags for this section. [Duplicated in Global_Messages]
-        status:
-            resume:
+    ## Show the message when typed /autore resume or /autore pause
+    status:
+        ## Show the message when typed /autore resume
+        resume:
+            enabled: true
+            ## There are no tags for this section.
+            message:
                 - '&cYou have resumed AutoRestart timer!'
-            pause:
+        ## There are no tags for this section.
+        pause:
+            enabled: true
+            ## There are no tags for this section.
+            message:
                 - '&cYou have paused AutoRestart timer'
+    ## Show the broadcast when the server time has been changed!
+    change:
+        enabled: true
         ## %h - hours, %m - minutes, %s - seconds [Duplicated in Global_Messages]
-        change:
+        message:
             - '&cServer now is restarting in &f%h&cH &f%m&cM &f%s&cS!'
-        ## "/autore pause" reminder
-        pause_reminder:
+    ## "/autore pause" reminder
+    pause_reminder:
+        enabled: true
+        ## There are no tags for this section.
+        message:
             - "&cDon't forget that the server countdown is still paused!"
 ## DO NOT TOUCH!!
 version: 1
