@@ -102,14 +102,14 @@ object TimerThread {
 	
 	private var maxplayers = fun() {
 		// Check if max_players is enabled
-		if (ConfigManager.getBoolean("max_players")) {
+		if (Config.MaxPlayers_Enabled) {
 			// Check if player count is over configured amount
-			if (Bukkit.getOnlinePlayers().size > ConfigManager.getInt("max_players.amount")) {
+			if (Bukkit.getOnlinePlayers().size > Config.MaxPlayers_Amount) {
 				// Broadcast alert
 				broadcastMaxplayersAlert()
 				maxplayersId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, {
 					// Start Shutdown wait
-					if (Bukkit.getOnlinePlayers().size <= ConfigManager.getInt("max_players.amount")) {
+					if (Bukkit.getOnlinePlayers().size <= Config.MaxPlayers_Amount) {
 						return@scheduleSyncRepeatingTask
 					}
 					// Broadcast pre shutdown message
@@ -126,7 +126,7 @@ object TimerThread {
 		// Player kick / restart message
 		Bukkit.getScheduler().callSyncMethod(AutoRestart) {
 			Bukkit.getOnlinePlayers().forEach { player ->
-				player.kickPlayer(ConfigManager.getString("main.kick_message"))
+				player.kickPlayer(Config.Main_KickMessage)
 			}
 		}
 		TIME = 5
