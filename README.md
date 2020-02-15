@@ -96,3 +96,428 @@ If you did not receive any errors, then your done! Change the config and make th
  
  ---
  ### Config Files
+ <details>
+ <summary><code>Commands.yml</code></summary>
+ 
+ ```yaml
+## This section will allow you to execute commands before the server restarts
+commands:
+    ## Enable or disable this feature
+    enabled: false
+    ## The seconds before restart to execute list
+    seconds: 5
+    ## the amount of seconds before restart to execute commands
+    list:
+        - 'say This is a test command'
+        - 'say I think it works?'
+## DO NOT TOUCH!!
+version: 1
+ ```
+ 
+ </details>
+ <details>
+ <summary><code>GlobalBroadcasts.yml</code></summary>
+ 
+ ```yaml
+## Global Broadcast and Private Messages adds flexibility on what you want your players to see!
+## You have the option of having the player who executed the event to see a message while other don't, or
+## have the player who executed the event see a global message but not a private message
+## you can have the server see a global message while the player who executed the command will see
+## his own message.
+
+## The reason why you can enable or disable broadcasts and popups, is to give you the flexibility to
+## choose whether you want your players to see a broadcast or a popup of the event. Or both! If you have
+## both popups and broadcasts disabled, broadcasts are automatically enabled. If broadcasts, private messages,
+## and popups are all disabled, then it will as well be automatically enabled in broadcasts. If broadcasts and
+## private messages are disabled, but popups are enabled, console will get a private message for logs. Since
+## command line cant receive popups.
+    
+## These are global broadcasts the everyone sees. If the same task is enabled in "private_message"
+##  the player who initiated the event will not see the broadcast, but will see his own broadcast.
+##  Global broadcasts include the prefix in "main.prefix" config.
+global_broadcast:
+    ## Enable or Disable the broadcast
+    enabled:
+        ## Show the broadcast on the minute reminders!
+        minutes: true
+        ## Show the broadcast on the last seconds of a server restart!
+        seconds: true
+        ## Show the broadcast when typed /autore resume or /autore pause
+        status:
+            resume: true
+            pause: true
+        ## Show the broadcast when the server time has been changed!
+        change: true
+        ## Show the Maxplayers broadcast
+        max_players:
+            ## The message broadcasted when too many players are online on restart!
+            alert: true
+            ## This message appears when the amount of players requirement is met!
+            pre_shutdown: true
+        ## Global shutdown message
+        shutdown: true
+    ## The configuration for broadcast messages
+    ## Messages have multi line support!
+    messages:
+        ## %m - minutes
+        minutes:
+            - 'Server Will Restart In %m Minutes!'
+        ## %s - seconds
+        seconds:
+            - 'Server is restarting in %s Seconds!'
+        ## There are no tags for this section.
+        status:
+            resume:
+                - '&cAutoRestart timer has resumed!'
+            pause:
+                - '&cAutoRestart timer has been paused'
+        ## %h - hours, %m - minutes, %s - seconds.
+        change:
+            - '&cServer now is restarting in &f%h&cH &f%m&cM &f%s&cS!'
+        ## Maxplayers broadcast settings
+        max_players:
+            ## The message broadcasted when too many players are online on restart!
+            ## %a - amount
+            alert:
+                - '&bToo many players online for restart. Max &f%a&b amount of players allowed for a restart. Waiting for people to leave!'
+            ## This message appears when the amount of players requirement is met!
+            ## %d - delay
+            pre_shutdown:
+                - '&aServer now restarting in &f%d&a seconds!'
+        ## Client restart message in game chat
+        shutdown: 
+            - '&cServer Restarting!'
+## DO NOT TOUCH!!
+version: 1
+ ```
+ 
+ </details>
+ <details>
+ <summary><code>GlobalPopups.yml</code></summary>
+ 
+ ```yaml
+## To understand ticks. 1 second is relevant to 20 ticks! So a second and a half (1.5s) is 30 ticks!
+## Fadein, stay, fadeout are the 3 arguments. You can edit how long it takes to fadein, fadeout etc.
+## You can also put the fade numbers to 0, and then the popup's will be instant!
+## Get creative!
+## Global Popups duplicate rules are applied just like global Messages, same situation with private popups
+## and private messages.
+global_popups:
+    ## Enable or Disable the Popups!
+    enabled:
+        ## Show the pop ups on the minute reminders!
+        minutes: true
+        ## Show the pop ups on the last seconds of a server restart!
+        seconds: true
+        ## Show the pop ups when type /autore time
+        status:
+            resume: true
+            pause: true
+        ## Show the pop ups when the server time has been changed!
+        change: true
+        ## Show the Maxplayers pop ups
+        max_players:
+            ## The pop up broadcasts when too many players are online on restart!
+            alert: true
+            ## This pop up appears when the amount of players requirement is met!
+            pre_shutdown: true
+        ## Shows the popup before restart
+        shutdown: true
+    ## This section is for the customization of the popup messages!
+    messages:
+        minutes: ## %m - minutes
+            title:
+                text: '&cServer Restarting In'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+            subtitle:
+                text: '&f%m &cMinutes!'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+        seconds: ## %s - seconds
+            title:
+                text: '&cServer Restarting In'
+                fadein: 5
+                stay: 20
+                fadeout: 5
+            subtitle:
+                text: '&f%s &cSeconds!'
+                fadein: 5
+                stay: 10
+                fadeout: 5
+        status: ## There are no tags for this section
+            resume:
+                title:
+                    text: '&cAutoRestart has started!'
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+                subtitle:
+                    text: ''
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+            pause:
+                title:
+                    text: '&cAutoRestart has been paused!'
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+                subtitle:
+                    text: ''
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+        change: ## %h - hours, %m - minutes, %s - seconds
+            title:
+                text: '&cServer Restarting In'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+            subtitle:
+                text: '&f%h&cH &f%m&cM &f%s&cS!'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+        max_players:
+            alert: ## %a - amount
+                title:
+                    text: '&bToo many players online for restart.'
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+                subtitle:
+                    text: 'Max &f%a&b amount of players allowed for a restart.'
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+            pre_shutdown: ## %d - delay
+                title:
+                    text: '&aServer now restarting in &f%d&a seconds!'
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+                subtitle:
+                    text: ''
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+        shutdown:
+            title:
+                text: '&cServer is now'
+                fadein: 20
+                stay: 80
+                fadeout: 20
+            subtitle:
+                text: '&cRestarting!'
+                fadein: 20
+                stay: 80
+                fadeout: 20
+## DO NOT TOUCH!!
+version: 1
+ ```
+ 
+ </details>
+ <details>
+ <summary><code>Main.yml</code></summary>
+ 
+ ```yaml
+## Main configuration values
+main:
+    ## Recalculate timer on config reload
+    ## This will recalculate the restart countdown when using '/autore reload'
+    recalculate_onreload: false
+    ## restart modes available 'interval', and 'timestamp'
+    restart_mode: 'interval'
+    ## restart mode specific settings
+    modes:
+        ## Interval in Hours (DECIMALS ALLOWED)
+        interval: 3.0
+        ## Set the timestamp in 24 hour time format HH:MM
+        ## Multiple timestamps allowed
+        timestamp:
+            - '0:00'
+            - '6:00'
+            - '12:00'
+            - '18:00'
+    ## Server wide prefix for all chat broadcasts
+    prefix: '&f[&7AutoRestart&f] &e'
+    ## Client restart message in game chat
+    kick_message: '&cServer Restarting! We will be back up any minute!'
+## DO NOT TOUCH!!
+version: 3
+ ```
+ 
+ </details>
+ <details>
+ <summary><code>MaxPlayers.yml</code></summary>
+ 
+ ```yaml
+## This will stop your server from shutting down if you have more than X amount of players configured in "amount".
+max_players:
+    ## Enable or Disable this feature
+    enabled: false
+    ## The max amount of players allowed for a restart. If you set this to 10, and your server has 11 people online
+    ## your server will not shutdown until the amount of players is less than of equal to the amount set.
+    amount: 10
+    ## The delay for the server to restart once player count as been met. In seconds!
+    delay: 10
+## DO NOT TOUCH!!
+version: 3
+ ```
+ 
+ </details>
+ <details>
+ <summary><code>PrivateMessages.yml</code></summary>
+ 
+ ```yaml
+## These are private messages sent to the player when the event is triggered. If the same task is enabled in
+##  "global_broadcast", this player will not see the global message, but his own.
+##  Private messages include the prefix in "main.prefix" config.
+private_messages:
+    ## Enable or Disable the chat message
+    enabled:
+        ## Show the message when type /autore time
+        time: true
+        ## Show the message when typed /autore resume or /autore pause
+        status:
+            resume: true
+            pause: true
+        ## Show the broadcast when the server time has been changed!
+        change: true
+        ## "/autore pause" reminder
+        pause_reminder: true
+    ## Messages have multi line support!
+    messages:
+        ## %h - hours, %m - minutes, %s - seconds
+        time:
+            - '&cServer restarting in &f%h&cH &f%m&cM &f%s&cS!'
+        ## There are no tags for this section. [Duplicated in Global_Messages]
+        status:
+            resume:
+                - '&cYou have resumed AutoRestart timer!'
+            pause:
+                - '&cYou have paused AutoRestart timer'
+        ## %h - hours, %m - minutes, %s - seconds [Duplicated in Global_Messages]
+        change:
+            - '&cServer now is restarting in &f%h&cH &f%m&cM &f%s&cS!'
+        ## "/autore pause" reminder
+        pause_reminder:
+            - "&cDon't forget that the server countdown is still paused!"
+## DO NOT TOUCH!!
+version: 1
+ ```
+ 
+ </details>
+ <details>
+ <summary><code>PrivatePopups.yml</code></summary>
+ 
+ ```yaml
+## Private popups
+private_popups:
+    ## Enable or Disable the Popups!
+    enabled:
+        ## Show the pop ups when type /autore time
+        time: true
+        ## Show the pop ups when typed /autore resume or /autore pause
+        ## [Duplicated in Global_Messages]
+        status:
+            resume: true
+            pause: true
+        ## Show the pop ups when the server time has been changed!
+        ## [Duplicated in Global_Messages]
+        change: true
+        ## "/autore pause" reminder
+        pause_reminder: true
+    ## This section is for the customization of the popup messages!
+    messages:
+        time: ## %h - hours, %m - minutes, %s - seconds
+            title:
+                text: '&cServer Restarting In'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+            subtitle:
+                text: '&f%h&cH &f%m&cM &f%s&cS!'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+        status: ## There are no tags for this section
+            resume:
+                title:
+                    text: '&cYou started AutoRestart back up!'
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+                subtitle:
+                    text: ''
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+            pause:
+                title:
+                    text: '&cYou have paused AutoRestart!'
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+                subtitle:
+                    text: ''
+                    fadein: 20
+                    stay: 40
+                    fadeout: 20
+        change: ## %h - hours, %m - minutes, %s - seconds
+            title:
+                text: '&cYou Changed Restart Time to'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+            subtitle:
+                text: '&f%h&cH &f%m&cM &f%s&cS!'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+        pause_reminder: ## There are no tags for this section
+            title:
+                text: "&cDon't forget that"
+                fadein: 20
+                stay: 40
+                fadeout: 20
+            subtitle:
+                text: '&cAutoRestart timer is still paused!'
+                fadein: 20
+                stay: 40
+                fadeout: 20
+## DO NOT TOUCH!!
+version: 1
+ ```
+ 
+ </details>
+ <details>
+ <summary><code>Reminder.yml</code></summary>
+ 
+ ```yaml
+## Reminders will popup in the specified times to let players know when is the next restart
+reminder:
+    ## Enables or Disables restart reminder
+    enabled:
+        minutes: true
+        seconds: true
+    ## minutes before restart
+    minutes:
+        - 15
+        - 10
+        - 5
+        - 1
+    ## AutoRestart will countdown the seconds to restart starting at the entered value
+    seconds: 5
+    ## This will remind you that the server timer is paused! This message will be sent to
+    ## people with autorestart.start permission!
+    ## This is set in minutes!
+    pause_reminder: 10
+## DO NOT TOUCH!!
+version: 1
+ ```
+ 
+ </details>
