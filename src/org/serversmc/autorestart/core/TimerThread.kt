@@ -19,12 +19,12 @@ import kotlin.collections.ArrayList
 object TimeManager {
 
 	fun calculateInterval() {
-		TimerThread.TIME = (ConfigManager.getDouble("main.modes.interval") * 3600.0).toInt()
+		TimerThread.TIME = (Config.Main_Modes_Interval * 3600.0).toInt()
 	}
 
 	fun calculateTimestamp() {
 		// Initialize variables
-		val timestamps = ConfigManager.getTimeStampList("main.modes.timestamp")
+		val timestamps = Config.Main_Modes_Timestamp
 		val differences = ArrayList<Long>()
 		// Convert timestamps to differences in milliseconds
 		timestamps.forEach {
@@ -57,11 +57,11 @@ object TimerThread {
 	var shutdownId = 0
 	
 	fun calculateTimer() {
-		when(ConfigManager.getString("main.restart_mode").toUpperCase()) {
+		when(Config.Main_RestartMode.toUpperCase()) {
 			"INTERVAL" -> calculateInterval()
 			"TIMESTAMP" -> calculateTimestamp()
 			else -> {
-				err("Restart mode \"${ConfigManager.getString("main.restart_mode")}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
+				err("Restart mode \"${Config.Main_RestartMode}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
 				calculateInterval()
 			}
 		}
@@ -81,7 +81,7 @@ object TimerThread {
 			if (PAUSED) {
 				PAUSED_TIMER++
 				// Check if paused reminder is ready
-				if (PAUSED_TIMER == ConfigManager.getInt("reminder.paused_reminder") * 60) {
+				if (PAUSED_TIMER == Config.Reminder_PauseReminder * 60) {
 					broadcastPauseReminder()
 					PAUSED_TIMER = Config.Reminder_PauseReminder
 				}
@@ -89,12 +89,12 @@ object TimerThread {
 			}
 			PAUSED_TIMER = 0
 			// Minutes Reminder
-			if (ConfigManager.getBoolean("reminder.enabled.minutes")) ConfigManager.getIntegerList("reminder.minutes").forEach { if (TIME == it * 60) broadcastReminderMinutes() }
+			if (Config.Reminder_Enabled_Minutes) Config.Reminder_Minutes.forEach { if (TIME == it * 60) broadcastReminderMinutes() }
 			// Seconds Reminder
-			if (ConfigManager.getBoolean("reminder.enabled.seconds") && (TIME <= ConfigManager.getInt("reminder.seconds"))) broadcastReminderSeconds()
+			if (Config.Reminder_Enabled_Seconds && (TIME <= Config.Reminder_Seconds)) broadcastReminderSeconds()
 			// Command Execute
-			if (ConfigManager.getBoolean("commands.enabled") && (TIME == ConfigManager.getInt("commands.seconds")))
-				ConfigManager.getStringListColor("commands.list").forEach { Bukkit.dispatchCommand(consoleSender, it) }
+			if (Config.Commands_Enabled && (TIME == Config.Commands_Seconds))
+				Config.Commands_List.forEach { Bukkit.dispatchCommand(consoleSender, it) }
 			// Timer decrement
 			TIME--
 		}, 0L, 20L)
