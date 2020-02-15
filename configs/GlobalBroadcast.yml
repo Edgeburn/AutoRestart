@@ -14,57 +14,55 @@
 ## These are global broadcasts the everyone sees. If the same task is enabled in "private_message"
 ##  the player who initiated the event will not see the broadcast, but will see his own broadcast.
 ##  Global broadcasts include the prefix in "main.prefix" config.
+
+## Messages have multi line support!
 global_broadcast:
-    ## Enable or Disable the broadcast
-    enabled:
-        ## Show the broadcast on the minute reminders!
-        minutes: true
-        ## Show the broadcast on the last seconds of a server restart!
-        seconds: true
-        ## Show the broadcast when typed /autore resume or /autore pause
-        status:
-            resume: true
-            pause: true
-        ## Show the broadcast when the server time has been changed!
-        change: true
-        ## Show the Maxplayers broadcast
-        max_players:
-            ## The message broadcasted when too many players are online on restart!
-            alert: true
-            ## This message appears when the amount of players requirement is met!
-            pre_shutdown: true
-        ## Global shutdown message
-        shutdown: true
-    ## The configuration for broadcast messages
-    ## Messages have multi line support!
-    messages:
+    ## Show the broadcast on the minute reminders!
+    minutes:
+        enabled: true
         ## %m - minutes
-        minutes:
+        message:
             - 'Server Will Restart In %m Minutes!'
+    ## Show the broadcast on the last seconds of a server restart!
+    seconds:
+        enabled: true
         ## %s - seconds
-        seconds:
+        message:
             - 'Server is restarting in %s Seconds!'
-        ## There are no tags for this section.
-        status:
-            resume:
+    status:
+        ## Show the broadcast when typed /autore resume
+        resume:
+            enabled: true
+            ## There are no tags for this section.
+            message:
                 - '&cAutoRestart timer has resumed!'
-            pause:
+        ## Show the broadcast when typed /autore pause
+        pause:
+            enabled: true
+            ## There are no tags for this section.
+            message:
                 - '&cAutoRestart timer has been paused'
-        ## %h - hours, %m - minutes, %s - seconds.
-        change:
+    ## Show the broadcast when the server time has been changed!
+    change:
+        enabled: true
+        message:
             - '&cServer now is restarting in &f%h&cH &f%m&cM &f%s&cS!'
-        ## Maxplayers broadcast settings
-        max_players:
-            ## The message broadcasted when too many players are online on restart!
-            ## %a - amount
-            alert:
+    ## Show the Maxplayers broadcast
+    max_players:
+        ## The message broadcasted when too many players are online on restart!
+        alert:
+            enabled: true
+            message:
                 - '&bToo many players online for restart. Max &f%a&b amount of players allowed for a restart. Waiting for people to leave!'
-            ## This message appears when the amount of players requirement is met!
-            ## %d - delay
-            pre_shutdown:
+        ## This message appears when the amount of players requirement is met!
+        pre_shutdown:
+            enabled: true
+            message:
                 - '&aServer now restarting in &f%d&a seconds!'
-        ## Client restart message in game chat
-        shutdown: 
+    ## Global shutdown message
+    shutdown:
+        enabled: true
+        message:
             - '&cServer Restarting!'
 ## DO NOT TOUCH!!
 version: 1
