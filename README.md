@@ -521,3 +521,13 @@ version: 1
  ```
  
  </details>
+ 
+ ---
+ ### To Do List
+ ```text
+* Add more features (Need feedback from reviews for ideas!)
+* Make it where the server restarts on crash!
+* Play a sound when an alert pops up
+* Add BungeeCord support
+* Add a boss bar for server countdown
+```
