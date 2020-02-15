@@ -45,9 +45,9 @@ object Config {
 	
 	val Reminder_Enabled_Minutes get() = getBoolean("reminder.enabled.minutes")
 	val Reminder_Enabled_Seconds get() = getBoolean("reminder.enabled.seconds")
-	val Remidner_Minutes get() = getIntegerList("reminder.minutes")
+	val Reminder_Minutes get() = getIntegerList("reminder.minutes")
 	val Reminder_Seconds get() = getInt("reminder.seconds")
-	val Reminder_PauseMessage get() = getInt("reminder.pause_reminder")
+	val Reminder_PauseReminder get() = getInt("reminder.pause_reminder")
 	
 	val GlobalBroadcast_Minutes get() = getMessage("global_broadcast.minutes")
 	val GlobalBroadcast_Seconds get() = getMessage("global_broadcast.seconds")
