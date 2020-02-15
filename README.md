@@ -2,7 +2,7 @@
 Restart your server automatically today, and clear some of your RAM for a faster, smoother Minecraft experience. This integration is seamless and works with Spigot. Please follow the instructions to ensure a proper setup!
 ### Instructions
 
-##### Check if `spigot.yml` is configured
+###### Check if `spigot.yml` is configured
 Before we install `AutoRestart-v4.jar` into your plugins folder, we need to configure `spigot.yml`. To check if you need to configure `spigot.yml`, type `/restart` in the console and see if the server restarts without installing `AutoRestart-v4.jar`. 
 
 _AutoRestart_ uses spigots native restart method to restart your server, and since most panels and frameworks are compatible with this function. Why make a new one?
