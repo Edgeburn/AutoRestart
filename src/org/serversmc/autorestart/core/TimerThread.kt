@@ -83,7 +83,7 @@ object TimerThread {
 				// Check if paused reminder is ready
 				if (PAUSED_TIMER == ConfigManager.getInt("reminder.paused_reminder") * 60) {
 					broadcastPauseReminder()
-					PAUSED_TIMER = 0
+					PAUSED_TIMER = Config.Reminder_PauseReminder
 				}
 				return@Runnable
 			}
