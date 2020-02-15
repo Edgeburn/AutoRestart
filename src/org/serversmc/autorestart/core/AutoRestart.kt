@@ -33,7 +33,7 @@ class Main : JavaPlugin() {
 			// Setup plugin folder is does not exist
 			dataFolder.mkdirs()
 			// Configuration Files
-			ConfigManager.initializeConfig()
+			Config.initializeConfig()
 			// Event Register
 			Bukkit.getPluginManager().apply {
 				registerEvents(EventPlayerJoin, AutoRestart)
