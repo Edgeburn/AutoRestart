@@ -80,7 +80,7 @@ object Config {
 	val PrivatePopups_PauseReminder get() = getPopup("private_popups.pause_reminder")
 	
 	val Commands_Enabled get() = getBoolean("commands.enabled")
-	val Commands_Seconds get() = getBoolean("commands.seconds")
+	val Commands_Seconds get() = getInt("commands.seconds")
 	val Commands_List get() = getStringList("commands.list")
 	
 	val MaxPlayers_Enabled get() = getBoolean("max_players.enabled")
