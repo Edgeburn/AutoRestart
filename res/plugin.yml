@@ -1,12 +1,18 @@
 name: AutoRestart
+description: "Automatically restarts your server with customizable messages, and seamless integrations"
+
+version: 4.1.0
+build: 69
+main: org.serversmc.autorestart.core.Main
+softdepend:
+    - PlaceholderAPI
+
 authors:
     - ServersMC
     - DennisLysenko
-version: 4.0.1
-build: 68
-main: org.serversmc.autorestart.core.Main
 website: http://spigotmc.org/
 email: info@serversmc.org
+
 commands:
     autore:
         description: "AutoRestart Command"
