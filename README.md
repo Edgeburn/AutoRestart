@@ -66,9 +66,8 @@ If you did not receive any errors, then your done! Change the config and make th
  ---
  ### Photos
  _Photos from_ `v2.8.1`
- ![alt text](https://proxy.spigotmc.org/3a23489f858738d26dda340964a2f13443be4324?url=http%3A%2F%2Fi.imgur.com%2FYaGitRX.jpg)
- 
- ![alt text](https://proxy.spigotmc.org/e99b9b87ab262ce6066eb4333c1a8413e5df8042?url=http%3A%2F%2Fi.imgur.com%2FqxP8AN6.jpg)
+ ![image1](https://proxy.spigotmc.org/3a23489f858738d26dda340964a2f13443be4324?url=http%3A%2F%2Fi.imgur.com%2FYaGitRX.jpg)
+ ![image2](https://proxy.spigotmc.org/e99b9b87ab262ce6066eb4333c1a8413e5df8042?url=http%3A%2F%2Fi.imgur.com%2FqxP8AN6.jpg)
  
  ---
  ### Commands
@@ -531,3 +530,7 @@ version: 1
 * Add BungeeCord support
 * Add a boss bar for server countdown
 ```
+
+---
+### Plugin Metrics
+![bStats](https://bstats.org/signatures/bukkit/AutoRestart.svg)
