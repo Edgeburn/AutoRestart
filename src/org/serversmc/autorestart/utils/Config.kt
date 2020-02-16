@@ -178,7 +178,7 @@ object Config {
 				yaml.load(file)
 				subConfig.version = yaml.getInt("version")
 				// Prompt update message
-				Console.warn("Config file has been backed up to ${rename.name}!")
+				warn("Config file has been backed up to ${rename.name}!")
 			}
 		}
 		combineSubConfigs()
