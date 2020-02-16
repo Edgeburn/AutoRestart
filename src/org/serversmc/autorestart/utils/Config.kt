@@ -3,7 +3,6 @@
 package org.serversmc.autorestart.utils
 
 import org.bukkit.*
-import org.bukkit.configuration.*
 import org.bukkit.configuration.file.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.utils.Console.warn
@@ -14,32 +13,57 @@ import kotlin.collections.ArrayList
 
 data class ConfigSection(val message: Message, val popup: Popup)
 
-data class Popup(val section: ConfigurationSection) {
+data class Popup(val section: String) {
 	
-	val enabled = section.getBoolean("enabled")
-	val title = Timings(section.getConfigurationSection("title")!!)
-	val subtitle = Timings(section.getConfigurationSection("subtitle")!!)
+	val enabled = getBoolean("$section.enabled")
+	val title = Timings("$section.title")
+	val subtitle = Timings("$section.subtitle")
 	
-	data class Timings(val section: ConfigurationSection) {
+	data class Timings(val section: String) {
+		private var timing = getString("$section.timing")
 		init {
-			warn(section.defaultSection!!.getString("timing")!!)
+			if (timing.split(":").size != 3) {
+				timing = GLOBAL_CONFIG.defaults!!.getString("$section.timing")!!
+				warn("Invalid timing format at $section.timing. Please review: $timing")
+			}
+			else {
+				timing.split(":").forEach {
+					try {
+						parseInt(it)
+					} catch (e: Exception) {
+						error("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
+					}
+				}
+			}
 		}
-		val text = ChatColor.translateAlternateColorCodes('&', section.getString("text")!!)
-		val fadeIn = parseInt(section.getString("timing")!!.split(":")[0])
-		val stay = parseInt(section.getString("timing")!!.split(":")[1])
-		val fadeOut = parseInt(section.getString("timing")!!.split(":")[2])
+		val text = ChatColor.translateAlternateColorCodes('&', getString("$section.text"))
+		val fadeIn = parseInt(timing.split(":")[0])
+		val stay = parseInt(timing.split(":")[1])
+		val fadeOut = parseInt(timing.split(":")[2])
 	}
 	
 }
 
-data class Message(val section: ConfigurationSection) {
-	val enabled = section.getBoolean("enabled")
+data class Message(val section: String) {
+	val enabled = getBoolean("$section.enabled")
 	val lines: MutableList<String> = ArrayList<String>().apply {
-		section.getStringList("message").forEach {
+		getStringList("$section.message").forEach {
 			add(ChatColor.translateAlternateColorCodes('&', it))
 		}
 	}
 }
+
+private val GLOBAL_CONFIG = YamlConfiguration()
+
+private fun getString(path: String): String = ChatColor.translateAlternateColorCodes('&', GLOBAL_CONFIG.getString(path).toString())
+private fun getInt(path: String): Int = GLOBAL_CONFIG.getInt(path)
+private fun getDouble(path: String): Double = GLOBAL_CONFIG.getDouble(path)
+private fun getBoolean(path: String): Boolean = GLOBAL_CONFIG.getBoolean(path)
+private fun getIntegerList(path: String): MutableList<Int> = GLOBAL_CONFIG.getIntegerList(path)
+private fun getStringList(path: String): MutableList<String> = GLOBAL_CONFIG.getStringList(path)
+private fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampManager.parseStringList(GLOBAL_CONFIG.getStringList(path))
+private fun getGlobal(name: String): ConfigSection = ConfigSection(Message("global_broadcast.$name"), Popup("global_popups.$name"))
+private fun getPrivate(name: String): ConfigSection = ConfigSection(Message("private_messages.$name"), Popup("private_popups.$name"))
 
 object Config {
 	
@@ -79,8 +103,6 @@ object Config {
 	val MaxPlayers_Amount get() = getInt("max_players.amount")
 	val MaxPlayers_Delay get() = getInt("max_players.delay")
 	
-	private val GLOBAL_CONFIG = YamlConfiguration()
-	
 	private val FILE_MAIN = File(AutoRestart.dataFolder, "Main.yml")
 	private val FILE_REMINDER = File(AutoRestart.dataFolder, "Reminder.yml")
 	private val FILE_GLOBAL_BROADCAST = File(AutoRestart.dataFolder, "GlobalBroadcast.yml")
@@ -89,22 +111,6 @@ object Config {
 	private val FILE_PRIVATE_POPUPS = File(AutoRestart.dataFolder, "PrivatePopups.yml")
 	private val FILE_COMMANDS = File(AutoRestart.dataFolder, "Commands.yml")
 	private val FILE_MAXPLAYERS = File(AutoRestart.dataFolder, "MaxPlayers.yml")
-	
-	private fun getString(path: String): String = ChatColor.translateAlternateColorCodes('&', GLOBAL_CONFIG.getString(path).toString())
-	private fun getInt(path: String): Int = GLOBAL_CONFIG.getInt(path)
-	private fun getDouble(path: String): Double = GLOBAL_CONFIG.getDouble(path)
-	private fun getBoolean(path: String): Boolean = GLOBAL_CONFIG.getBoolean(path)
-	private fun getIntegerList(path: String): MutableList<Int> = GLOBAL_CONFIG.getIntegerList(path)
-	private fun getStringList(path: String): MutableList<String> = GLOBAL_CONFIG.getStringList(path)
-	private fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampManager.parseStringList(GLOBAL_CONFIG.getStringList(path))
-	private fun getGlobal(name: String): ConfigSection = ConfigSection(
-		Message(GLOBAL_CONFIG.getConfigurationSection("global_broadcast.$name")!!),
-		Popup(GLOBAL_CONFIG.getConfigurationSection("global_popups.$name")!!)
-	)
-	private fun getPrivate(name: String): ConfigSection = ConfigSection(
-		Message(GLOBAL_CONFIG.getConfigurationSection("private_messages.$name")!!),
-		Popup(GLOBAL_CONFIG.getConfigurationSection("private_popups.$name")!!)
-	)
 	
 	private lateinit var configs: ArrayList<ConfigFile>
 	
@@ -156,7 +162,7 @@ object Config {
 			yaml.load(file)
 			val inputStream = AutoRestart.getResource(file.name) as InputStream
 			val defaultConfig = YamlConfiguration.loadConfiguration(InputStreamReader(inputStream))
-			GLOBAL_CONFIG.setDefaults(defaultConfig)
+			GLOBAL_CONFIG.addDefaults(defaultConfig)
 			subConfig.version = yaml.getInt("version")
 			/** yaml.getInt() to get local version
 			 * CONFIG.getInt() to get default version

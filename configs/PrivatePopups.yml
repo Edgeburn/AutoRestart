@@ -5,45 +5,45 @@ private_popups:
         enabled: true
         title:
             text: '&cServer Restarting In'
-            timing: 20:40:20
+            timing: '20:40:20'
         subtitle:
             text: '&f%h&cH &f%m&cM &f%s&cS!'
-            timing: 20:40:20
+            timing: '20:40:20'
         ## Show the pop ups when typed /autore resume or /autore pause
     status: ## There are no tags for this section
         resume:
             enabled: true
             title:
                 text: '&cYou started AutoRestart back up!'
-                timing: 20:40:20
+                timing: '20:40:20'
             subtitle:
                 text: ''
-                timing: 20:40:20
+                timing: '20:40:20'
         pause:
             enabled: true
             title:
                 text: '&cYou have paused AutoRestart!'
-                timing: 20:40:20
+                timing: '20:40:20'
             subtitle:
                 text: ''
-                timing: 20:40:20
+                timing: '20:40:20'
     ## Show the pop ups when the server time has been changed!
     change: ## %h - hours, %m - minutes, %s - seconds
         enabled: true
         title:
             text: '&cYou Changed Restart Time to'
-            timing: 20:40:20
+            timing: '20:40:20'
         subtitle:
             text: '&f%h&cH &f%m&cM &f%s&cS!'
-            timing: 20:40:20
+            timing: '20:40:20'
     ## "/autore pause" reminder
     pause_reminder: ## There are no tags for this section
         enabled: true
         title:
             text: "&cDon't forget that"
-            timing: 20:40:20
+            timing: '20:40:20'
         subtitle:
             text: '&cAutoRestart timer is still paused!'
-            timing: 20:40:20
+            timing: '20:40:20'
 ## DO NOT TOUCH!!
 version: 2
