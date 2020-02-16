@@ -7,12 +7,6 @@ import org.serversmc.autorestart.core.TimeManager.calculateTimestamp
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console.consoleSender
 import org.serversmc.autorestart.utils.Console.err
-import org.serversmc.autorestart.utils.Messenger.broadcastMaxplayersAlert
-import org.serversmc.autorestart.utils.Messenger.broadcastMaxplayersPreShutdown
-import org.serversmc.autorestart.utils.Messenger.broadcastPauseReminder
-import org.serversmc.autorestart.utils.Messenger.broadcastReminderMinutes
-import org.serversmc.autorestart.utils.Messenger.broadcastReminderSeconds
-import org.serversmc.autorestart.utils.Messenger.broadcastShutdown
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -82,16 +76,19 @@ object TimerThread {
 				PAUSED_TIMER++
 				// Check if paused reminder is ready
 				if (PAUSED_TIMER == Config.Reminder_PauseReminder * 60) {
-					broadcastPauseReminder()
+					Bukkit.getOnlinePlayers().forEach {
+						if (!it.hasPermission("autorestart.resume")) return@forEach
+						Messenger.message(it, Messenger.Private.PAUSE_REMINDER)
+					}
 					PAUSED_TIMER = Config.Reminder_PauseReminder
 				}
 				return@Runnable
 			}
 			PAUSED_TIMER = 0
 			// Minutes Reminder
-			if (Config.Reminder_Enabled_Minutes) Config.Reminder_Minutes.forEach { if (TIME == it * 60) broadcastReminderMinutes() }
+			if (Config.Reminder_Enabled_Minutes) Config.Reminder_Minutes.forEach { if (TIME == it * 60) Messenger.broadcast(Messenger.Broadcast.MINUTES) }
 			// Seconds Reminder
-			if (Config.Reminder_Enabled_Seconds && (TIME <= Config.Reminder_Seconds)) broadcastReminderSeconds()
+			if (Config.Reminder_Enabled_Seconds && (TIME <= Config.Reminder_Seconds)) Messenger.broadcast(Messenger.Broadcast.SECONDS)
 			// Command Execute
 			if (Config.Commands_Enabled && (TIME == Config.Commands_Seconds))
 				Config.Commands_List.forEach { Bukkit.dispatchCommand(consoleSender, it) }
@@ -106,14 +103,14 @@ object TimerThread {
 			// Check if player count is over configured amount
 			if (Bukkit.getOnlinePlayers().size > Config.MaxPlayers_Amount) {
 				// Broadcast alert
-				broadcastMaxplayersAlert()
+				Messenger.broadcast(Messenger.Broadcast.MAXPLAYERS_ALERT)
 				maxplayersId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, {
 					// Start Shutdown wait
 					if (Bukkit.getOnlinePlayers().size <= Config.MaxPlayers_Amount) {
 						return@scheduleSyncRepeatingTask
 					}
 					// Broadcast pre shutdown message
-					broadcastMaxplayersPreShutdown()
+					Messenger.broadcast(Messenger.Broadcast.MAXPLAYERS_PRESHUTDOWN)
 					Bukkit.getScheduler().cancelTask(maxplayersId)
 				}, 0L, 1L)
 			}
@@ -122,7 +119,7 @@ object TimerThread {
 	}
 	
 	private var shutdown = fun() {
-		broadcastShutdown()
+		Messenger.broadcast(Messenger.Broadcast.SHUTDOWN)
 		// Player kick / restart message
 		Bukkit.getScheduler().callSyncMethod(AutoRestart) {
 			Bukkit.getOnlinePlayers().forEach { player ->

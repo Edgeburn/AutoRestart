@@ -60,7 +60,6 @@ object Messenger {
 	private fun getPrefix(): String = Config.Main_Prefix
 	private fun broadcastMessage(msg: String) = Bukkit.broadcastMessage(getPrefix() + msg)
 	private fun broadcastMessageExclude(msg: String, player: Player) = Bukkit.getOnlinePlayers().forEach { if (it != player) it.sendMessage(msg) }
-	private fun broadcastMessage(msg: String, perm: String) = Bukkit.broadcast(getPrefix() + msg, perm)
 	
 	private fun sendTitle(player: Player, popup: Popup, format: Array<Format>) {
 		TitleAPI.sendTitle(player, 0, 0, 0, "", "")
@@ -79,8 +78,11 @@ object Messenger {
 		SECONDS(Config.GlobalBroadcast_Seconds, Config.GlobalPopups_Seconds, arrayOf(fS)),
 		MAXPLAYERS_ALERT(Config.GlobalBroadcast_MaxPlayers_Alert, Config.GlobalPopups_MaxPlayers_Alert, arrayOf(fA)),
 		MAXPLAYERS_PRESHUTDOWN(Config.GlobalBroadcast_MaxPlayers_PreShutdown, Config.GlobalPopups_MaxPlayers_PreShutdown, arrayOf(fD)),
-		PAUSE_REMINDER(Config.PrivateMessages_PauseReminder, Config.PrivatePopups_PauseReminder, arrayOf()),
 		SHUTDOWN(Config.GlobalBroadcast_Shutdown, Config.GlobalPopups_ShutDown, arrayOf()),
+	}
+	
+	enum class Private(val msg: Message, val popup: Popup, val format: Array<Format>) {
+		PAUSE_REMINDER(Config.PrivateMessages_PauseReminder, Config.PrivatePopups_PauseReminder, arrayOf()),
 		TIME(Config.PrivateMessages_Time, Config.PrivatePopups_Time, arrayOf(fH, fM, fS))
 	}
 	
@@ -104,14 +106,32 @@ object Messenger {
 				return
 			}
 		}
-		// Check if broadcast is PAUSE_REMINDER
-		if (broadcast == Broadcast.PAUSE_REMINDER) {
-			msg.lines.forEach { broadcastMessage(format(it, broadcast.format), "autorestart.start") }
-			// Cancel global broadcast
-			return
-		}
 		// Send to everyone
 		msg.lines.forEach { broadcastMessage(format(it, broadcast.format)) }
+	}
+	
+	fun message(sender: CommandSender, private: Private) {
+		// Message fetch
+		val msg = private.msg
+		val popup = private.popup
+		// Checks if sender is a player
+		if (sender is Player) {
+			// Cast sender as player
+			val player: Player = sender
+			// Check if pop ups are enabled
+			if (popup.enabled) {
+				// send pop ups
+				try {
+					sendTitle(player, popup, private.format)
+				} catch (e: Exception) {
+					catchError(e, "Messenger.messageSenderTime():SendPopUps")
+				}
+				// Disables message
+				if (!msg.enabled) return
+			}
+		}
+		// Private message lines
+		msg.lines.forEach { sender.sendMessage(format(it, private.format)) }
 	}
 	
 	fun broadcastStatus(sender: CommandSender, status: Status) {
