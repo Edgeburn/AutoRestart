@@ -83,4 +83,4 @@ global_popups:
             text: '&cRestarting!'
             timing: 20:80:20
 ## DO NOT TOUCH!!
-version: 1
+version: 2

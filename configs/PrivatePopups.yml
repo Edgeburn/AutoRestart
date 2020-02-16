@@ -46,4 +46,4 @@ private_popups:
             text: '&cAutoRestart timer is still paused!'
             timing: 20:40:20
 ## DO NOT TOUCH!!
-version: 1
+version: 2

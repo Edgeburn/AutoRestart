@@ -21,4 +21,4 @@ main:
     ## Client restart message in game chat
     kick_message: '&cServer Restarting! We will be back up any minute!'
 ## DO NOT TOUCH!!
-version: 3
+version: 4

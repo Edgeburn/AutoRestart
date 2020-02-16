@@ -66,4 +66,4 @@ global_broadcast:
         message:
             - '&cServer Restarting!'
 ## DO NOT TOUCH!!
-version: 1
+version: 2
