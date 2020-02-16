@@ -23,8 +23,6 @@ class Main : JavaPlugin() {
 		lateinit var AutoRestart: Main
 	}
 	
-	val version = description.version
-	
 	override fun onEnable() {
 		// Start metrics
 		Metrics(this, 2345)

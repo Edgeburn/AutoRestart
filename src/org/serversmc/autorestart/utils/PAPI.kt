@@ -7,7 +7,7 @@ import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 
 object PAPI : PlaceholderExpansion() {
 	
-	override fun getVersion(): String = AutoRestart.version
+	override fun getVersion(): String = AutoRestart.description.version
 	override fun getAuthor(): String = AutoRestart.description.authors.joinToString(", ")
 	override fun getIdentifier(): String = "autorestart"
 	override fun persist(): Boolean = true

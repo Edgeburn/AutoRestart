@@ -23,7 +23,7 @@ object CAutoRestart : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		// Global command header
-		sender.sendMessage("${RED}AutoRestart ${GRAY}- v${AutoRestart.version}")
+		sender.sendMessage("${RED}AutoRestart ${GRAY}- v${AutoRestart.description.version}")
 		// Check if argument length requirement meet
 		if (args.isNotEmpty()) {
 			// Sub command iteration
