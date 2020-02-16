@@ -6,7 +6,9 @@ import org.bukkit.*
 import org.bukkit.configuration.*
 import org.bukkit.configuration.file.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
+import org.serversmc.autorestart.utils.Console.warn
 import java.io.*
+import java.lang.Integer.*
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -19,10 +21,13 @@ data class Popup(val section: ConfigurationSection) {
 	val subtitle = Timings(section.getConfigurationSection("subtitle")!!)
 	
 	data class Timings(val section: ConfigurationSection) {
+		init {
+			warn(section.defaultSection!!.getString("timing")!!)
+		}
 		val text = ChatColor.translateAlternateColorCodes('&', section.getString("text")!!)
-		val fadeIn = section.getInt("fadein")
-		val stay = section.getInt("stay")
-		val fadeOut = section.getInt("fadeout")
+		val fadeIn = parseInt(section.getString("timing")!!.split(":")[0])
+		val stay = parseInt(section.getString("timing")!!.split(":")[1])
+		val fadeOut = parseInt(section.getString("timing")!!.split(":")[2])
 	}
 	
 }
@@ -85,11 +90,6 @@ object Config {
 	private val FILE_COMMANDS = File(AutoRestart.dataFolder, "Commands.yml")
 	private val FILE_MAXPLAYERS = File(AutoRestart.dataFolder, "MaxPlayers.yml")
 	
-	private data class ConfigFile(var file: File) {
-		var yamlConfiguration = YamlConfiguration.loadConfiguration(file)
-		var version = 0
-	}
-	
 	private fun getString(path: String): String = ChatColor.translateAlternateColorCodes('&', GLOBAL_CONFIG.getString(path).toString())
 	private fun getInt(path: String): Int = GLOBAL_CONFIG.getInt(path)
 	private fun getDouble(path: String): Double = GLOBAL_CONFIG.getDouble(path)
@@ -107,6 +107,11 @@ object Config {
 	)
 	
 	private lateinit var configs: ArrayList<ConfigFile>
+	
+	private data class ConfigFile(var file: File) {
+		var yamlConfiguration = YamlConfiguration.loadConfiguration(file)
+		var version = 0
+	}
 	
 	private fun initializeConfigList() {
 		configs = ArrayList<ConfigFile>().apply {
