@@ -67,15 +67,15 @@ If you did not receive any errors, then your done! Change the config and make th
 ### Placeholder Support
 Placeholder Name | Value | Example
 :--- | :--- | :---
-`autorestart_time_formatted1` | `H`h `M`m `S`s | `5h 23m 41s`<br>
-`autorestart_time_formatted2` | `H` hours `M` minutes `S` seconds | `5 hours 23 minutes 41 seconds`
-`autorestart_time_formatted3` | `H`:`M` | `5:23`
-`autorestart_time_formatted4` | `H`:`M`:`S` | `5:23:41`
-`autorestart_time_hour` | `H` | `5`
-`autorestart_time_minute` | `M` | `23`
-`autorestart_time_seconds` | `S` | `41`
-`autorestart_time_raw_minute` | `M` | `323`
-`autorestart_time_seconds` | `S` | `19421`
+autorestart_time_formatted1 | `H`h `M`m `S`s | 5h 23m 41s
+autorestart_time_formatted2 | `H` hours `M` minutes `S` seconds | 5 hours 23 minutes 41 seconds
+autorestart_time_formatted3 | `H`:`M` | 5:23
+autorestart_time_formatted4 | `H`:`M`:`S` | 5:23:41
+autorestart_time_hour | `H` | 5
+autorestart_time_minute | `M` | 23
+autorestart_time_seconds | `S` | 41
+autorestart_time_raw_minute | `M` | 323
+autorestart_time_seconds | `S` | 19421
 
 ---
 ### Photos
