@@ -4,7 +4,8 @@
 - Merged enabled and messages into one, as well as merged config files for less clutter
 - Fixed pause reminder spamming reminder
 - Cleaned up code
-TODO - Removed force broadcast if broadcast and popup is enabled (for people who need a cleaner chat)
+- Removed force broadcast if broadcast and popup is enabled (for people who need a cleaner chat)
+- Fixed bug where you get kicked for "Using Illegal Characters" on tab complete in `/autore help <command>`
 
 4.0.1
 - Added Backwards compatibility
