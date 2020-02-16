@@ -13,7 +13,11 @@ interface ICommand : CommandExecutor, TabCompleter, Listener {
 	
 	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
 		if (hasPermission(sender)) {
-			execute(sender, args.toMutableList())
+			try {
+				execute(sender, args.toMutableList())
+			} catch (e: Exception) {
+				catchError(e, "ICommand.onCommand(CommandSender, Command, String, Array<out String>): Boolean")
+			}
 		}
 		else {
 			sender.sendMessage("${RED}You don't have permission to use this command!")
