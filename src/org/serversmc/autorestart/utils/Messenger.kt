@@ -133,7 +133,11 @@ object Messenger {
 		if (globalPopup.enabled) {
 			// Check if private popups are enabled
 			if (privatePopup.enabled && sender is Player) {
-				sendTitle(sender, privatePopup, arrayOf())
+				try {
+					sendTitle(sender, privatePopup, arrayOf())
+				} catch (e: Exception) {
+					catchError(e, "Messenger:broadcastStatus(CommandSender, Status)")
+				}
 				Bukkit.getOnlinePlayers().forEach { if (it != sender) sendTitle(it, globalPopup, arrayOf()) }
 			}
 			else {
