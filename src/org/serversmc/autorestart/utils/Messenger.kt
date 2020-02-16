@@ -1,6 +1,5 @@
 package org.serversmc.autorestart.utils
 
-import net.minecraft.server.v1_15_R1.Items.*
 import org.bukkit.*
 import org.bukkit.command.*
 import org.bukkit.entity.*
@@ -14,12 +13,18 @@ object HMS {
 	val S get() = TimerThread.TIME - H * 3600 - M * 60
 }
 
-private interface Format {
-	fun regex(): String
-	fun replace(): String
-}
-
 object Messenger {
+	
+	interface Format {
+		fun regex(): String
+		fun replace(): String
+	}
+	
+	enum class Status(val globalMsg: Message, val privateMsg: Message, val globalPopup: Popup, val privatePopup: Popup, val format: Array<Format>) {
+		RESUME(Config.GlobalBroadcast_Status_Resume, Config.PrivateMessages_Status_Resume, Config.GlobalPopups_Status_Resume, Config.PrivatePopups_Status_Resume, arrayOf()),
+		PAUSE(Config.GlobalBroadcast_Status_Pause, Config.PrivateMessages_Status_Pause, Config.GlobalPopups_Status_Pause, Config.PrivatePopups_Status_Pause, arrayOf()),
+		CHANGE(Config.GlobalBroadcast_Change, Config.PrivateMessages_Change, Config.GlobalPopups_Change, Config.PrivatePopups_Change, arrayOf(fH, fM, fS))
+	}
 
 	private val fH = object : Format {
 		override fun regex(): String = "%h"
@@ -54,6 +59,7 @@ object Messenger {
 	
 	private fun getPrefix(): String = Config.Main_Prefix
 	private fun broadcastMessage(msg: String) = Bukkit.broadcastMessage(getPrefix() + msg)
+	private fun broadcastMessageExclude(msg: String, player: Player) = Bukkit.getOnlinePlayers().forEach { if (it != player) it.sendMessage(msg) }
 	private fun broadcastMessage(msg: String, perm: String) = Bukkit.broadcast(getPrefix() + msg, perm)
 	
 	private fun sendTitle(player: Player, popup: Popup, format: Array<Format>) {
@@ -65,56 +71,6 @@ object Messenger {
 			TitleAPI.sendTitle(player, subtitle.fadeIn, subtitle.stay, subtitle.fadeOut, null, format(subtitle.text, format))
 		} catch (e: Exception) {
 			catchError(e, "Messenger.sendTitle():formatter")
-		}
-	}
-	
-	private fun sortWhoGetsWhatChat(playerSender: Player?, globalMsg: Message, privateMsg: Message) {
-		// Check if global broadcast is enabled
-		if (globalMsg.enabled) {
-			// Everyone but console and/or sender gets global message
-			for (player in Bukkit.getOnlinePlayers()) {
-				if (player == playerSender && privateMsg.enabled) {
-					continue
-				}
-				globalMsg.lines.forEach { player.sendMessage(getPrefix() + it) }
-			}
-		}
-		// Check if player broadcast is enabled
-		if (privateMsg.enabled) {
-			// Check if player triggered event
-			if (playerSender != null) {
-				// send private message to player
-				privateMsg.lines.forEach { playerSender.sendMessage(it) }
-			}
-		}
-		// Check if console is sender and set console message list
-		val consoleList: List<String> = if (playerSender == null) {
-			privateMsg.lines
-		} else {
-			globalMsg.lines
-		}
-		// Send Message to console
-		consoleList.forEach { consoleSendMessage(it) }
-	}
-	
-	private fun sortWhoGetsWhatPopUp(playerSender: Player?, globalPopup: Popup, privatePopup: Popup, format: Array<Format>) {
-		// Check if global pop up is enabled
-		if (globalPopup.enabled) {
-			// Everyone but sender gets global message
-			for (player in Bukkit.getOnlinePlayers()) {
-				if ((player == playerSender) && privatePopup.enabled) {
-					continue
-				}
-				sendTitle(player, globalPopup, format)
-			}
-		}
-		// Check if player pop up is enabled
-		if (privatePopup.enabled) {
-			// Check if player triggered event
-			if (playerSender != null) {
-				// send private pop up to player
-				sendTitle(playerSender, privatePopup, format)
-			}
 		}
 	}
 	
@@ -148,9 +104,9 @@ object Messenger {
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
-			Bukkit.getOnlinePlayers().forEach { player: Player  ->
+			Bukkit.getOnlinePlayers().forEach {
 				try {
-					sendTitle(player, popup, arrayOf(fS))
+					sendTitle(it, popup, arrayOf(fS))
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastReminderSeconds():SendPopUps")
 				}
@@ -166,98 +122,35 @@ object Messenger {
 		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fS))) }
 	}
 	
-	fun broadcastStatusResume(sender: CommandSender?) {
-		// Check if player executed command
-		val playerSender: Player? = if (sender is Player) sender else null
+	fun broadcastStatus(sender: CommandSender, status: Status) {
 		// Placeholder setups and message fetch
-		val globalMsgLines = ConfigManager.getStringListColor("global_broadcast.messages.status.resume")
-		val privateMsgLines = ConfigManager.getStringListColor("private_messages.messages.status.resume")
+		val globalMsg = status.globalMsg
+		val privateMsg = status.privateMsg
 		// Boolean shortcuts
-		var globalBroadcast = ConfigManager.getBoolean("global_broadcast.enabled.status.resume")
-		val privateMessage = ConfigManager.getBoolean("private_messages.enabled.status.resume")
-		val globalPopup = ConfigManager.getBoolean("global_popups.enabled.status.resume")
-		val privatePopup = ConfigManager.getBoolean("private_popups.enabled.status.resume")
-		// check if global and player pop ups are off
-		if (!globalPopup && !privatePopup) {
-			if (!privateMessage) globalBroadcast = true
-		} else {
-			try {
-				sortWhoGetsWhatPopUp(
-					playerSender,
-					ConfigManager.getPopup("global_popups.messages.status.resume"),
-					ConfigManager.getPopup("private_popups.messages.status.resume"),
-					arrayOf()
-				)
-			} catch (e: Exception) {
-				catchError(e, "Messenger.broadcastStatusResume():SortWhoGetsWhatPopUp")
+		val globalPopup = status.globalPopup
+		val privatePopup = status.privatePopup
+		// Check if global popups are enabled
+		if (globalPopup.enabled) {
+			// Check if private popups are enabled
+			if (privatePopup.enabled && sender is Player) {
+				sendTitle(sender, privatePopup, arrayOf())
+				Bukkit.getOnlinePlayers().forEach { if (it != sender) sendTitle(it, globalPopup, arrayOf()) }
+			}
+			else {
+				Bukkit.getOnlinePlayers().forEach { sendTitle(it, globalPopup, status.format) }
 			}
 		}
-		// Sorts who gets global broadcast and who gets player message depending on config setup
-		sortWhoGetsWhatChat(globalBroadcast, privateMessage, playerSender, globalMsgLines, privateMsgLines)
-	}
-	
-	// TODO FIX ERRORS
-	fun broadcastStatusPause(sender: CommandSender?) {
-		// Check if player executed command
-		val playerSender: Player? = if (sender is Player) sender else null
-		// Placeholder setups and message fetch
-		val globalMsgLines = ConfigManager.getStringListColor("global_broadcast.messages.status.pause")
-		val privateMsgLines = ConfigManager.getStringListColor("private_messages.messages.status.pause")
-		// Boolean shortcuts
-		var globalBroadcast = ConfigManager.getBoolean("global_broadcast.enabled.status.pause")
-		val privateMessage = ConfigManager.getBoolean("private_messages.enabled.status.pause")
-		val globalPopup = ConfigManager.getBoolean("global_popups.enabled.status.pause")
-		val privatePopup = ConfigManager.getBoolean("private_popups.enabled.status.pause")
-		// check if global and player pop ups are off
-		if (!globalPopup && !privatePopup) {
-			if (!privateMessage) globalBroadcast = true
-		} else {
-			try {
-				sortWhoGetsWhatPopUp(
-					playerSender,
-					ConfigManager.getPopup("global_popups.messages.status.pause"),
-					ConfigManager.getPopup("private_popups.messages.status.pause"),
-					arrayOf()
-				)
-			} catch (e: Exception) {
-				catchError(e, "Messenger.broadcastStatusPause():SortWhoGetsWhatPopUp")
+		// Check if global messages are enabled
+		if (globalMsg.enabled) {
+			// Check if private messages are enabled
+			if (privateMsg.enabled) {
+				privateMsg.lines.forEach { sender.sendMessage(it) }
+				globalMsg.lines.forEach { broadcastMessageExclude(it, sender as Player) }
+			}
+			else {
+				globalMsg.lines.forEach { broadcastMessage(it) }
 			}
 		}
-		// Sorts who gets global broadcast and who gets player message depending on config setup
-		sortWhoGetsWhatChat(playerSender, globalMsgLines, privateMsgLines)
-	}
-	
-	// TODO FIX ERRORS
-	fun broadcastChange(sender: CommandSender?) {
-		// Check if player executed command
-		val playerSender: Player? = if (sender is Player) sender else null
-		// Message fetch
-		val globalMsgLines = ConfigManager.getStringListColor("global_broadcast.messages.change")
-		val privateMsgLines = ConfigManager.getStringListColor("private_messages.messages.change")
-		// Boolean shortcuts
-		var globalBroadcast = ConfigManager.getBoolean("global_broadcast.enabled.change")
-		val privateMessage = ConfigManager.getBoolean("private_messages.enabled.change")
-		val globalPopup = ConfigManager.getBoolean("global_popups.enabled.change")
-		val privatePopup = ConfigManager.getBoolean("private_popups.enabled.change")
-		// check if global and player pop ups are off
-		if (!globalPopup && !privatePopup) {
-			if (!privateMessage) globalBroadcast = true
-		} else {
-			try {
-				sortWhoGetsWhatPopUp(
-					playerSender,
-					ConfigManager.getPopup("global_popups.messages.change"),
-					ConfigManager.getPopup("private_popups.messages.change"),
-					arrayOf(fH, fM, fS)
-				)
-			} catch (e: Exception) {
-				catchError(e, "Messenger.broadcastChange():SortWhoGetsWhatPopUp")
-			}
-		}
-		// Format message lines, before processing in sortWhoGetsWhatChat()
-		for (i in globalMsgLines.indices) globalMsgLines[i] = format(globalMsgLines[i], arrayOf(fH, fM, fS))
-		for (i in privateMsgLines.indices) privateMsgLines[i] = format(privateMsgLines[i], arrayOf(fH, fM, fS))
-		sortWhoGetsWhatChat(playerSender, globalMsgLines, privateMsgLines)
 	}
 	
 	fun broadcastMaxplayersAlert() {
@@ -267,9 +160,9 @@ object Messenger {
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
-			for (player in Bukkit.getOnlinePlayers()) {
+			Bukkit.getOnlinePlayers().forEach {
 				try {
-					sendTitle(player!!, popup, arrayOf(fA))
+					sendTitle(it, popup, arrayOf(fA))
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastMaxplayersAlert():SendPopUps")
 				}
@@ -292,9 +185,9 @@ object Messenger {
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
-			for (player in Bukkit.getOnlinePlayers()) {
+			Bukkit.getOnlinePlayers().forEach {
 				try {
-					sendTitle(player!!, popup, arrayOf(fD))
+					sendTitle(it, popup, arrayOf(fD))
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastMaxplayersPreShutdown():SendPopUps")
 				}
@@ -319,9 +212,9 @@ object Messenger {
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
-			for (player in Bukkit.getOnlinePlayers()) {
+			Bukkit.getOnlinePlayers().forEach {
 				try {
-					sendTitle(player!!, popup, arrayOf())
+					sendTitle(it, popup, arrayOf())
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastPauseReminder():SendPopUps")
 				}
@@ -340,9 +233,9 @@ object Messenger {
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
-			for (player in Bukkit.getOnlinePlayers()) {
+			Bukkit.getOnlinePlayers().forEach {
 				try {
-					sendTitle(player!!, popup, arrayOf())
+					sendTitle(it, popup, arrayOf())
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastShutdown():SendPopUps")
 				}
