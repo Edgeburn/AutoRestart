@@ -90,8 +90,7 @@ object TimerThread {
 			// Seconds Reminder
 			if (Config.Reminder_Enabled_Seconds && (TIME <= Config.Reminder_Seconds)) Messenger.broadcast(Messenger.Global.SECONDS)
 			// Command Execute
-			if (Config.Commands_Enabled && (TIME == Config.Commands_Seconds))
-				Config.Commands_List.forEach { Bukkit.dispatchCommand(consoleSender, it) }
+			if (Config.Commands_Enabled && (TIME == Config.Commands_Seconds)) Config.Commands_List.forEach { Bukkit.dispatchCommand(consoleSender, it) }
 			// Timer decrement
 			TIME--
 		}, 0L, 20L)
