@@ -74,52 +74,44 @@ object Messenger {
 		}
 	}
 	
-	fun broadcastReminderMinutes() {
-		val msg = Config.GlobalBroadcast_Minutes
-		val popup = Config.GlobalPopups_Minutes
-		// Check if pop ups are enabled
-		if (popup.enabled) {
-			// send pop ups
-			Bukkit.getOnlinePlayers().forEach {
-				try {
-					sendTitle(it, popup, arrayOf(fM))
-				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastReminderMinutes():SendPopUps")
-				}
-			}
-			if (!msg.enabled) {
-				// Send to console only
-				msg.lines.forEach { consoleSendMessage(format(it, arrayOf(fM))) }
-				// Disable for players
-				return
-			}
-		}
-		// Send to everyone
-		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fM))) }
+	enum class Broadcast(val msg: Message, val popup: Popup, val format: Array<Format>) {
+		MINUTES(Config.GlobalBroadcast_Minutes, Config.GlobalPopups_Minutes, arrayOf(fM)),
+		SECONDS(Config.GlobalBroadcast_Seconds, Config.GlobalPopups_Seconds, arrayOf(fS)),
+		MAXPLAYERS_ALERT(Config.GlobalBroadcast_MaxPlayers_Alert, Config.GlobalPopups_MaxPlayers_Alert, arrayOf(fA)),
+		MAXPLAYERS_PRESHUTDOWN(Config.GlobalBroadcast_MaxPlayers_PreShutdown, Config.GlobalPopups_MaxPlayers_PreShutdown, arrayOf(fD)),
+		PAUSE_REMINDER(Config.PrivateMessages_PauseReminder, Config.PrivatePopups_PauseReminder, arrayOf()),
+		SHUTDOWN(Config.GlobalBroadcast_Shutdown, Config.GlobalPopups_ShutDown, arrayOf()),
+		TIME(Config.PrivateMessages_Time, Config.PrivatePopups_Time, arrayOf(fH, fM, fS))
 	}
 	
-	fun broadcastReminderSeconds() {
-		val msg = Config.GlobalBroadcast_Seconds
-		val popup = Config.GlobalPopups_Seconds
+	fun broadcast(broadcast: Broadcast) {
+		val msg = broadcast.msg
+		val popup = broadcast.popup
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
 			Bukkit.getOnlinePlayers().forEach {
 				try {
-					sendTitle(it, popup, arrayOf(fS))
+					sendTitle(it, popup, broadcast.format)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastReminderSeconds():SendPopUps")
+					catchError(e, "Messenger.broadcast(Broadcast):sendTitle(Player, Popup, Array<Format>)")
 				}
 			}
 			if (!msg.enabled) {
 				// Send to console only
-				msg.lines.forEach { consoleSendMessage(format(it, arrayOf(fS))) }
+				msg.lines.forEach { consoleSendMessage(format(it, broadcast.format)) }
 				// Disable for players
 				return
 			}
 		}
+		// Check if broadcast is PAUSE_REMINDER
+		if (broadcast == Broadcast.PAUSE_REMINDER) {
+			msg.lines.forEach { broadcastMessage(format(it, broadcast.format), "autorestart.start") }
+			// Cancel global broadcast
+			return
+		}
 		// Send to everyone
-		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fS))) }
+		msg.lines.forEach { broadcastMessage(format(it, broadcast.format)) }
 	}
 	
 	fun broadcastStatus(sender: CommandSender, status: Status) {
@@ -136,7 +128,7 @@ object Messenger {
 				try {
 					sendTitle(sender, privatePopup, arrayOf())
 				} catch (e: Exception) {
-					catchError(e, "Messenger:broadcastStatus(CommandSender, Status)")
+					catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>)")
 				}
 				Bukkit.getOnlinePlayers().forEach { if (it != sender) sendTitle(it, globalPopup, arrayOf()) }
 			}
@@ -157,125 +149,4 @@ object Messenger {
 		}
 	}
 	
-	fun broadcastMaxplayersAlert() {
-		// Placeholder setups and message fetch
-		val msg = Config.GlobalBroadcast_MaxPlayers_Alert
-		val popup = Config.GlobalPopups_MaxPlayers_Alert
-		// Check if pop ups are enabled
-		if (popup.enabled) {
-			// send pop ups
-			Bukkit.getOnlinePlayers().forEach {
-				try {
-					sendTitle(it, popup, arrayOf(fA))
-				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastMaxplayersAlert():SendPopUps")
-				}
-			}
-			if (!msg.enabled) {
-				// Send to console only
-				msg.lines.forEach { consoleSendMessage(format(it, arrayOf(fA))) }
-				// Disable for players
-				return
-			}
-		}
-		// Send to everyone
-		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fA))) }
-	}
-	
-	fun broadcastMaxplayersPreShutdown() {
-		// Message fetch
-		val msg = Config.GlobalBroadcast_MaxPlayers_PreShutdown
-		val popup = Config.GlobalPopups_MaxPlayers_PreShutdown
-		// Check if pop ups are enabled
-		if (popup.enabled) {
-			// send pop ups
-			Bukkit.getOnlinePlayers().forEach {
-				try {
-					sendTitle(it, popup, arrayOf(fD))
-				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastMaxplayersPreShutdown():SendPopUps")
-				}
-			}
-			if (!msg.enabled) {
-				// Send to console only
-				msg.lines.forEach { consoleSendMessage(format(it, arrayOf(fD))) }
-				// Disable for players
-				return
-			}
-		}
-		// Send to everyone
-		msg.lines.forEach { broadcastMessage(format(it, arrayOf(fD))) }
-	}
-	
-	fun broadcastPauseReminder() {
-		// Message fetch
-		val msg = Config.PrivateMessages_PauseReminder
-		val popup = Config.PrivatePopups_PauseReminder
-		// Send to console only
-		msg.lines.forEach { consoleSendMessage(it) }
-		// Check if pop ups are enabled
-		if (popup.enabled) {
-			// send pop ups
-			Bukkit.getOnlinePlayers().forEach {
-				try {
-					sendTitle(it, popup, arrayOf())
-				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastPauseReminder():SendPopUps")
-				}
-			}
-			// Disable for players
-			if (!msg.enabled) return
-		}
-		// Send to everyone
-		msg.lines.forEach { broadcastMessage(it, "autorestart.start") }
-	}
-	
-	fun broadcastShutdown() {
-		// Message fetch
-		val msg = Config.GlobalBroadcast_Shutdown
-		val popup = Config.GlobalPopups_ShutDown
-		// Check if pop ups are enabled
-		if (popup.enabled) {
-			// send pop ups
-			Bukkit.getOnlinePlayers().forEach {
-				try {
-					sendTitle(it, popup, arrayOf())
-				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastShutdown():SendPopUps")
-				}
-			}
-			if (!msg.enabled) {
-				// Send to console only
-				msg.lines.forEach { consoleSendMessage(it) }
-				// Disable for players
-				return
-			}
-		}
-		// Send to everyone
-		msg.lines.forEach { broadcastMessage(it) }
-	}
-	
-	fun messageSenderTime(sender: CommandSender) {
-		// Message fetch
-		val msg = Config.PrivateMessages_Time
-		val popup = Config.PrivatePopups_Time
-		// Checks if sender is a player
-		if (sender is Player) {
-			// Cast sender as player
-			val player: Player = sender
-			// Check if pop ups are enabled
-			if (popup.enabled) {
-				// send pop ups
-				try {
-					sendTitle(player, popup, arrayOf(fH, fM, fS))
-				} catch (e: Exception) {
-					catchError(e, "Messenger.messageSenderTime():SendPopUps")
-				}
-				// Disables message
-				if (!msg.enabled) return
-			}
-		}
-		// Private message lines
-		msg.lines.forEach { sender.sendMessage(format(it, arrayOf(fH, fM, fS))) }
-	}
 }
