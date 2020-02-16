@@ -2,7 +2,7 @@ package org.serversmc.autorestart.utils
 
 import me.clip.placeholderapi.expansion.*
 import org.bukkit.entity.*
-import org.serversmc.autorestart.cmds.objects.*
+import org.serversmc.autorestart.objects.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 
 object PAPI : PlaceholderExpansion() {

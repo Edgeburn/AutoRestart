@@ -1,4 +1,4 @@
-package org.serversmc.autorestart.cmds.objects
+package org.serversmc.autorestart.objects
 
 import org.serversmc.autorestart.core.*
 

@@ -3,7 +3,7 @@ package org.serversmc.autorestart.utils
 import org.bukkit.*
 import org.bukkit.command.*
 import org.bukkit.entity.*
-import org.serversmc.autorestart.cmds.objects.*
+import org.serversmc.autorestart.objects.*
 import org.serversmc.autorestart.utils.Console.catchError
 import org.serversmc.autorestart.utils.Console.consoleSendMessage
 
