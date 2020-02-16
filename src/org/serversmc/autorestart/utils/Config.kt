@@ -5,6 +5,7 @@ package org.serversmc.autorestart.utils
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
+import org.serversmc.autorestart.utils.Console.err
 import org.serversmc.autorestart.utils.Console.warn
 import java.io.*
 import java.lang.Integer.*
@@ -31,7 +32,8 @@ data class Popup(val section: String) {
 					try {
 						parseInt(it)
 					} catch (e: Exception) {
-						error("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
+						timing = GLOBAL_CONFIG.defaults!!.getString("$section.timing")!!
+						err("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
 					}
 				}
 			}
