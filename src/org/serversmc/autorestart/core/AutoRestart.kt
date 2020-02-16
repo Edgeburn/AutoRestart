@@ -26,10 +26,12 @@ class Main : JavaPlugin() {
 	val version = description.version
 	
 	override fun onEnable() {
+		// Start metrics
+		Metrics(this, 2345)
+		// Initialize companion
 		AutoRestart = this
+		// Try to enable plugin
 		try {
-			// Start metrics
-			Metrics(this, 2345)
 			// Setup plugin folder is does not exist
 			dataFolder.mkdirs()
 			// Configuration Files
