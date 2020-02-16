@@ -6,6 +6,7 @@
 - Cleaned up code
 - Removed force broadcast if broadcast and popup is enabled (for people who need a cleaner chat)
 - Fixed bug where you get kicked for "Using Illegal Characters" on tab complete in `/autore help <command>`
+TODO - Added senderror sub command! Send your last error caused by AutoRestart.
 
 4.0.1
 - Added Backwards compatibility
