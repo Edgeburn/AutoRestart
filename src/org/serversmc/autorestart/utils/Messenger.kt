@@ -3,15 +3,9 @@ package org.serversmc.autorestart.utils
 import org.bukkit.*
 import org.bukkit.command.*
 import org.bukkit.entity.*
-import org.serversmc.autorestart.core.*
+import org.serversmc.autorestart.cmds.objects.*
 import org.serversmc.autorestart.utils.Console.catchError
 import org.serversmc.autorestart.utils.Console.consoleSendMessage
-
-object HMS {
-	val H get() = TimerThread.TIME / 3600
-	val M get() = TimerThread.TIME / 60 - H * 60
-	val S get() = TimerThread.TIME - H * 3600 - M * 60
-}
 
 object Messenger {
 	
