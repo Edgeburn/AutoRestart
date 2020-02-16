@@ -37,7 +37,6 @@ data class Popup(val section: String) {
 					}
 				}
 			}
-			error("DEBUG")
 		}
 		val text = ChatColor.translateAlternateColorCodes('&', getString("$section.text"))
 		val fadeIn = parseInt(timing.split(":")[0])
