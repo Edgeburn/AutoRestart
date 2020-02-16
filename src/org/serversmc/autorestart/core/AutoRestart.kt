@@ -30,6 +30,8 @@ class Main : JavaPlugin() {
 		Metrics(this, 2345)
 		// Initialize companion
 		AutoRestart = this
+		// Check if PlaceholderAPI is installed
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) PAPI.register()
 		// Try to enable plugin
 		try {
 			// Setup plugin folder is does not exist
