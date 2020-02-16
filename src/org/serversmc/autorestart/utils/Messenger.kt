@@ -19,12 +19,6 @@ object Messenger {
 		fun regex(): String
 		fun replace(): String
 	}
-	
-	enum class Status(val globalMsg: Message, val privateMsg: Message, val globalPopup: Popup, val privatePopup: Popup, val format: Array<Format>) {
-		RESUME(Config.GlobalBroadcast_Status_Resume, Config.PrivateMessages_Status_Resume, Config.GlobalPopups_Status_Resume, Config.PrivatePopups_Status_Resume, arrayOf()),
-		PAUSE(Config.GlobalBroadcast_Status_Pause, Config.PrivateMessages_Status_Pause, Config.GlobalPopups_Status_Pause, Config.PrivatePopups_Status_Pause, arrayOf()),
-		CHANGE(Config.GlobalBroadcast_Change, Config.PrivateMessages_Change, Config.GlobalPopups_Change, Config.PrivatePopups_Change, arrayOf(fH, fM, fS))
-	}
 
 	private val fH = object : Format {
 		override fun regex(): String = "%h"
@@ -71,6 +65,12 @@ object Messenger {
 		} catch (e: Exception) {
 			catchError(e, "Messenger.sendTitle():formatter")
 		}
+	}
+	
+	enum class Status(val globalMsg: Message, val privateMsg: Message, val globalPopup: Popup, val privatePopup: Popup, val format: Array<Format>) {
+		RESUME(Config.GlobalBroadcast_Status_Resume, Config.PrivateMessages_Status_Resume, Config.GlobalPopups_Status_Resume, Config.PrivatePopups_Status_Resume, arrayOf()),
+		PAUSE(Config.GlobalBroadcast_Status_Pause, Config.PrivateMessages_Status_Pause, Config.GlobalPopups_Status_Pause, Config.PrivatePopups_Status_Pause, arrayOf()),
+		CHANGE(Config.GlobalBroadcast_Change, Config.PrivateMessages_Change, Config.GlobalPopups_Change, Config.PrivatePopups_Change, arrayOf(fH, fM, fS))
 	}
 	
 	enum class Broadcast(val msg: Message, val popup: Popup, val format: Array<Format>) {
