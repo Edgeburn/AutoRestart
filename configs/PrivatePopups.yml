@@ -5,65 +5,45 @@ private_popups:
         enabled: true
         title:
             text: '&cServer Restarting In'
-            fadein: 20
-            stay: 40
-            fadeout: 20
+            timing: 20:40:20
         subtitle:
             text: '&f%h&cH &f%m&cM &f%s&cS!'
-            fadein: 20
-            stay: 40
-            fadeout: 20
+            timing: 20:40:20
         ## Show the pop ups when typed /autore resume or /autore pause
     status: ## There are no tags for this section
         resume:
             enabled: true
             title:
                 text: '&cYou started AutoRestart back up!'
-                fadein: 20
-                stay: 40
-                fadeout: 20
+                timing: 20:40:20
             subtitle:
                 text: ''
-                fadein: 20
-                stay: 40
-                fadeout: 20
+                timing: 20:40:20
         pause:
             enabled: true
             title:
                 text: '&cYou have paused AutoRestart!'
-                fadein: 20
-                stay: 40
-                fadeout: 20
+                timing: 20:40:20
             subtitle:
                 text: ''
-                fadein: 20
-                stay: 40
-                fadeout: 20
+                timing: 20:40:20
     ## Show the pop ups when the server time has been changed!
     change: ## %h - hours, %m - minutes, %s - seconds
         enabled: true
         title:
             text: '&cYou Changed Restart Time to'
-            fadein: 20
-            stay: 40
-            fadeout: 20
+            timing: 20:40:20
         subtitle:
             text: '&f%h&cH &f%m&cM &f%s&cS!'
-            fadein: 20
-            stay: 40
-            fadeout: 20
+            timing: 20:40:20
     ## "/autore pause" reminder
     pause_reminder: ## There are no tags for this section
         enabled: true
         title:
             text: "&cDon't forget that"
-            fadein: 20
-            stay: 40
-            fadeout: 20
+            timing: 20:40:20
         subtitle:
             text: '&cAutoRestart timer is still paused!'
-            fadein: 20
-            stay: 40
-            fadeout: 20
+            timing: 20:40:20
 ## DO NOT TOUCH!!
 version: 1

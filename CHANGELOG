@@ -1,7 +1,9 @@
 4.1.0
+- HUGE CONFIG CHANGES, BE AWARE OF CONFIG UPDATE
 - Redesigned ConfigAPI to help for update changes
 - Redesigned configs for Broadcasts and Popups for a more compact and easier version
 - Merged enabled and messages into one, as well as merged config files for less clutter
+- Minimised TitleAPI timings in config
 - Fixed pause reminder spamming reminder
 - Cleaned up code
 - Removed force broadcast if broadcast and popup is enabled (for people who need a cleaner chat)
