@@ -62,43 +62,57 @@ If you did not receive any errors, then your done! Change the config and make th
   * Set exception message when too many players online.
   * Set message before delayed restart when the amount of players have been met.
   * Shutdown message for Max Players Exception!
-  
- ---
- ### Photos
- _Photos from_ `v2.8.1`
- ![image1](https://proxy.spigotmc.org/3a23489f858738d26dda340964a2f13443be4324?url=http%3A%2F%2Fi.imgur.com%2FYaGitRX.jpg)
- ![image2](https://proxy.spigotmc.org/e99b9b87ab262ce6066eb4333c1a8413e5df8042?url=http%3A%2F%2Fi.imgur.com%2FqxP8AN6.jpg)
- 
- ---
- ### Commands
- | Command | Description |
- | :--- | :--- |
- | /autore help | Shows help screen |
- | /autore time | Shows exactly when is the next server restart |
- | /autore now | Restarts the server now |
- | /autore reload | Reloads the config file |
- | /autore in | Sets the time the server will restart |
- | /autore pause | Pauses the server timer |
- | /autore resume | Resumes the server timer |
- 
- ---
- ### Permissions
- | Command | Permission |
- | :--- | :--- |
- | /autore help |  |
- | /autore time |  |
- | /autore now | autorestart.now |
- | /autore reload | autorestart.reload |
- | /autore in | autorestart.in |
- | /autore pause | autorestart.pause |
- | /autore resume | autorestart.resume |
- 
- ---
- ### Config Files
- <details>
- <summary><code>Commands.yml</code></summary>
- 
- ```yaml
+
+---
+### Placeholder Support
+Placeholder Name | Value | Example
+:--- | :--- | :---
+`autorestart_time_formatted1` | `H`h `M`m `S`s | `5h 23m 41s`<br>
+`autorestart_time_formatted2` | `H` hours `M` minutes `S` seconds | `5 hours 23 minutes 41 seconds`
+`autorestart_time_formatted3` | `H`:`M` | `5:23`
+`autorestart_time_formatted4` | `H`:`M`:`S` | `5:23:41`
+`autorestart_time_hour` | `H` | `5`
+`autorestart_time_minute` | `M` | `23`
+`autorestart_time_seconds` | `S` | `41`
+`autorestart_time_raw_minute` | `M` | `323`
+`autorestart_time_seconds` | `S` | `19421`
+
+---
+### Photos
+_Photos from_ `v2.8.1`
+![image1](https://proxy.spigotmc.org/3a23489f858738d26dda340964a2f13443be4324?url=http%3A%2F%2Fi.imgur.com%2FYaGitRX.jpg)
+![image2](https://proxy.spigotmc.org/e99b9b87ab262ce6066eb4333c1a8413e5df8042?url=http%3A%2F%2Fi.imgur.com%2FqxP8AN6.jpg)
+
+---
+### Commands
+| Command | Description |
+| :--- | :--- |
+| /autore help | Shows help screen |
+| /autore time | Shows exactly when is the next server restart |
+| /autore now | Restarts the server now |
+| /autore reload | Reloads the config file |
+| /autore in | Sets the time the server will restart |
+| /autore pause | Pauses the server timer |
+| /autore resume | Resumes the server timer |
+
+---
+### Permissions
+| Command | Permission |
+| :--- | :--- |
+| /autore help |  |
+| /autore time |  |
+| /autore now | autorestart.now |
+| /autore reload | autorestart.reload |
+| /autore in | autorestart.in |
+| /autore pause | autorestart.pause |
+| /autore resume | autorestart.resume |
+
+---
+### Config Files
+<details>
+<summary><code>Commands.yml</code></summary>
+
+```yaml
 ## This section will allow you to execute commands before the server restarts
 commands:
     ## Enable or disable this feature
@@ -111,13 +125,13 @@ commands:
         - 'say I think it works?'
 ## DO NOT TOUCH!!
 version: 1
- ```
- 
- </details>
- <details>
- <summary><code>GlobalBroadcasts.yml</code></summary>
- 
- ```yaml
+```
+
+</details>
+<details>
+<summary><code>GlobalBroadcasts.yml</code></summary>
+
+```yaml
 ## Global Broadcast and Private Messages adds flexibility on what you want your players to see!
 ## You have the option of having the player who executed the event to see a message while other don't, or
 ## have the player who executed the event see a global message but not a private message
@@ -188,13 +202,13 @@ global_broadcast:
             - '&cServer Restarting!'
 ## DO NOT TOUCH!!
 version: 1
- ```
- 
- </details>
- <details>
- <summary><code>GlobalPopups.yml</code></summary>
- 
- ```yaml
+```
+
+</details>
+<details>
+<summary><code>GlobalPopups.yml</code></summary>
+
+```yaml
 ## To understand ticks. 1 second is relevant to 20 ticks! So a second and a half (1.5s) is 30 ticks!
 ## Fadein, stay, fadeout are the 3 arguments. You can edit how long it takes to fadein, fadeout etc.
 ## You can also put the fade numbers to 0, and then the popup's will be instant!
@@ -316,13 +330,13 @@ global_popups:
                 fadeout: 20
 ## DO NOT TOUCH!!
 version: 1
- ```
- 
- </details>
- <details>
- <summary><code>Main.yml</code></summary>
- 
- ```yaml
+```
+
+</details>
+<details>
+<summary><code>Main.yml</code></summary>
+
+```yaml
 ## Main configuration values
 main:
     ## Recalculate timer on config reload
@@ -347,13 +361,13 @@ main:
     kick_message: '&cServer Restarting! We will be back up any minute!'
 ## DO NOT TOUCH!!
 version: 3
- ```
- 
- </details>
- <details>
- <summary><code>MaxPlayers.yml</code></summary>
- 
- ```yaml
+```
+
+</details>
+<details>
+<summary><code>MaxPlayers.yml</code></summary>
+
+```yaml
 ## This will stop your server from shutting down if you have more than X amount of players configured in "amount".
 max_players:
     ## Enable or Disable this feature
@@ -365,13 +379,13 @@ max_players:
     delay: 10
 ## DO NOT TOUCH!!
 version: 3
- ```
- 
- </details>
- <details>
- <summary><code>PrivateMessages.yml</code></summary>
- 
- ```yaml
+```
+
+</details>
+<details>
+<summary><code>PrivateMessages.yml</code></summary>
+
+```yaml
 ## These are private messages sent to the player when the event is triggered. If the same task is enabled in
 ##  "global_broadcast", this player will not see the global message, but his own.
 ##  Private messages include the prefix in "main.prefix" config.
@@ -407,13 +421,13 @@ private_messages:
             - "&cDon't forget that the server countdown is still paused!"
 ## DO NOT TOUCH!!
 version: 1
- ```
+```
  
- </details>
- <details>
- <summary><code>PrivatePopups.yml</code></summary>
- 
- ```yaml
+</details>
+<details>
+<summary><code>PrivatePopups.yml</code></summary>
+
+```yaml
 ## Private popups
 private_popups:
     ## Enable or Disable the Popups!
@@ -490,13 +504,13 @@ private_popups:
                 fadeout: 20
 ## DO NOT TOUCH!!
 version: 1
- ```
- 
- </details>
- <details>
- <summary><code>Reminder.yml</code></summary>
- 
- ```yaml
+```
+
+</details>
+<details>
+<summary><code>Reminder.yml</code></summary>
+
+```yaml
 ## Reminders will popup in the specified times to let players know when is the next restart
 reminder:
     ## Enables or Disables restart reminder
@@ -519,11 +533,11 @@ reminder:
 version: 1
  ```
  
- </details>
- 
- ---
- ### To Do List
- ```text
+</details>
+
+---
+### To Do List
+```text
 * Add more features (Need feedback from reviews for ideas!)
 * Make it where the server restarts on crash!
 * Play a sound when an alert pops up
