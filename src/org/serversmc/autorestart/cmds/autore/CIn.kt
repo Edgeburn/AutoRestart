@@ -5,7 +5,8 @@ import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.TIME
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
-import org.serversmc.autorestart.utils.Messenger.broadcastChange
+import org.serversmc.autorestart.utils.*
+import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 import java.lang.Integer.*
 
 object CIn : ICommand {
@@ -73,7 +74,7 @@ object CIn : ICommand {
 		// Update timer thread with new time view
 		TIME = time
 		// Send updated time to appropriate players (Method automatically sorts who gets what message, and pop ups)
-		broadcastChange(sender)
+		broadcastStatus(sender, Messenger.Status.CHANGE)
 	}
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? {

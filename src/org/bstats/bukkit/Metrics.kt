@@ -1,27 +1,22 @@
 package org.bstats.bukkit
 
-import com.google.gson.JsonArray
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
-import com.google.gson.JsonPrimitive
-import org.bukkit.Bukkit
-import org.bukkit.configuration.file.YamlConfiguration
-import org.bukkit.plugin.Plugin
-import org.bukkit.plugin.ServicePriority
+import com.google.gson.*
+import org.bukkit.*
+import org.bukkit.configuration.file.*
+import org.bukkit.plugin.*
 import java.io.*
-import java.lang.reflect.InvocationTargetException
-import java.nio.charset.StandardCharsets
+import java.lang.reflect.*
+import java.nio.charset.*
 import java.util.*
-import java.util.concurrent.Callable
-import java.util.logging.Level
-import java.util.zip.GZIPOutputStream
-import javax.net.ssl.HttpsURLConnection
+import java.util.logging.*
+import java.util.zip.*
+import javax.net.ssl.*
 
 // The version of this bStats class
-private val bStatsVersion = 1
+private const val bStatsVersion = 1
 
 // The url to which the data is sent
-private val urlString: String = "https://bStats.org/submitData/bukkit"
+private const val urlString: String = "https://bStats.org/submitData/bukkit"
 
 // Is bStats enabled on this server?
 private var enabled = false
@@ -43,9 +38,6 @@ private var plugin: Plugin? = null
 
 // The plugin id
 private var pluginId = 0
-
-// A list with all custom charts
-private val charts: MutableList<Metrics.CustomChart> = ArrayList()
 
 @SuppressWarnings
 class Metrics(p: Plugin, pId: Int) {
@@ -107,25 +99,6 @@ class Metrics(p: Plugin, pId: Int) {
 	}
 	
 	/**
-	 * Checks if bStats is enabled.
-	 *
-	 * @return Whether bStats is enabled or not.
-	 */
-	fun isEnabled(): Boolean {
-		return enabled
-	}
-	
-	/**
-	 * Adds a custom chart.
-	 *
-	 * @param chart The chart to add.
-	 */
-	fun addCustomChart(chart: CustomChart?) {
-		requireNotNull(chart) { "Chart cannot be null!" }
-		charts.add(chart)
-	}
-	
-	/**
 	 * Starts the Scheduler which submits our data every 30 minutes.
 	 */
 	private fun startSubmitting() {
@@ -144,30 +117,6 @@ class Metrics(p: Plugin, pId: Int) {
 		// Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough time to start
 // WARNING: Changing the frequency has no effect but your plugin WILL be blocked/deleted!
 // WARNING: Just don't do it!
-	}
-	
-	/**
-	 * Gets the plugin specific data.
-	 * This method is called using Reflection.
-	 *
-	 * @return The plugin specific data.
-	 */
-	fun getPluginData(): JsonObject? {
-		val data = JsonObject()
-		val pluginName = plugin!!.description.name
-		val pluginVersion = plugin!!.description.version
-		data.addProperty("pluginName", pluginName) // Append the name of the plugin
-		data.addProperty("id", pluginId) // Append the id of the plugin
-		data.addProperty("pluginVersion", pluginVersion) // Append the version of the plugin
-		val customCharts = JsonArray()
-		for (customChart in charts) { // Add the data of the custom charts
-			val chart: JsonObject = customChart.requestJsonObject
-				?: // If the chart is null, we skip it
-				continue
-			customCharts.add(chart)
-		}
-		data.add("customCharts", customCharts)
-		return data
 	}
 	
 	/**
@@ -327,26 +276,7 @@ class Metrics(p: Plugin, pId: Int) {
 	 */
 	abstract class CustomChart internal constructor(chartId: String?) {
 		// The id of the chart
-		val chartId: String
-		
-		// If the data is null we don't send the chart.
-		val requestJsonObject: JsonObject?
-			get() {
-				val chart = JsonObject()
-				chart.addProperty("chartId", chartId)
-				try {
-					val data = chartData
-						?: // If the data is null we don't send the chart.
-						return null
-					chart.add("data", data)
-				} catch (t: Throwable) {
-					if (logFailedRequests) {
-						Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id $chartId", t)
-					}
-					return null
-				}
-				return chart
-			}
+		private val chartId: String
 		
 		@get:Throws(Exception::class)
 		protected abstract val chartData: JsonObject?
@@ -355,256 +285,6 @@ class Metrics(p: Plugin, pId: Int) {
 			require(!(chartId == null || chartId.isEmpty())) { "ChartId cannot be null or empty!" }
 			this.chartId = chartId
 		}
-	}
-	
-	/**
-	 * Represents a custom simple pie.
-	 */
-	class SimplePie
-	/**
-	 * Class constructor.
-	 *
-	 * @param chartId  The id of the chart.
-	 * @param callable The callable which is used to request the chart data.
-	 */(chartId: String?, private val callable: Callable<String>) : CustomChart(chartId) {
-		// Null = skip the chart
-		@get:Throws(Exception::class)
-		override val chartData: JsonObject?
-			get() {
-				val data = JsonObject()
-				val value = callable.call()
-				if (value == null || value.isEmpty()) { // Null = skip the chart
-					return null
-				}
-				data.addProperty("value", value)
-				return data
-			}
-		
-	}
-	
-	/**
-	 * Represents a custom advanced pie.
-	 */
-	class AdvancedPie
-	/**
-	 * Class constructor.
-	 *
-	 * @param chartId  The id of the chart.
-	 * @param callable The callable which is used to request the chart data.
-	 */(
-		chartId: String?, // Null = skip the chart// Skip this invalid
-		private val callable: Callable<Map<String, Int>>
-	) : CustomChart(chartId) {
-		// Null = skip the chart
-		@get:Throws(Exception::class)
-		override val chartData: JsonObject?
-			get() {
-				val data = JsonObject()
-				val values = JsonObject()
-				val map = callable.call()
-				if (map == null || map.isEmpty()) { // Null = skip the chart
-					return null
-				}
-				var allSkipped = true
-				for ((key, value) in map) {
-					if (value == 0) {
-						continue  // Skip this invalid
-					}
-					allSkipped = false
-					values.addProperty(key, value)
-				}
-				if (allSkipped) { // Null = skip the chart
-					return null
-				}
-				data.add("values", values)
-				return data
-			}
-		
-	}
-	
-	/**
-	 * Represents a custom drilldown pie.
-	 */
-	class DrilldownPie
-	/**
-	 * Class constructor.
-	 *
-	 * @param chartId  The id of the chart.
-	 * @param callable The callable which is used to request the chart data.
-	 */(
-		chartId: String?, // Null = skip the chart
-		private val callable: Callable<Map<String, Map<String, Int>>>
-	) : CustomChart(chartId) {
-		// Null = skip the chart
-		@get:Throws(Exception::class)
-		override val chartData: JsonObject?
-			get() {
-				val data = JsonObject()
-				val values = JsonObject()
-				val map = callable.call()
-				if (map == null || map.isEmpty()) { // Null = skip the chart
-					return null
-				}
-				var reallyAllSkipped = true
-				for ((key) in map) {
-					val value = JsonObject()
-					var allSkipped = true
-					for ((key1, value1) in map[key]!!) {
-						value.addProperty(key1, value1)
-						allSkipped = false
-					}
-					if (!allSkipped) {
-						reallyAllSkipped = false
-						values.add(key, value)
-					}
-				}
-				if (reallyAllSkipped) { // Null = skip the chart
-					return null
-				}
-				data.add("values", values)
-				return data
-			}
-		
-	}
-	
-	/**
-	 * Represents a custom single line chart.
-	 */
-	class SingleLineChart
-	/**
-	 * Class constructor.
-	 *
-	 * @param chartId  The id of the chart.
-	 * @param callable The callable which is used to request the chart data.
-	 */(chartId: String?, private val callable: Callable<Int>) : CustomChart(chartId) {
-		// Null = skip the chart
-		@get:Throws(Exception::class)
-		override val chartData: JsonObject?
-			get() {
-				val data = JsonObject()
-				val value = callable.call()
-				if (value == 0) { // Null = skip the chart
-					return null
-				}
-				data.addProperty("value", value)
-				return data
-			}
-		
-	}
-	
-	/**
-	 * Represents a custom multi line chart.
-	 */
-	class MultiLineChart
-	/**
-	 * Class constructor.
-	 *
-	 * @param chartId  The id of the chart.
-	 * @param callable The callable which is used to request the chart data.
-	 */(
-		chartId: String?, // Null = skip the chart// Skip this invalid
-		private val callable: Callable<Map<String, Int>>
-	) : CustomChart(chartId) {
-		// Null = skip the chart
-		@get:Throws(Exception::class)
-		override val chartData: JsonObject?
-			get() {
-				val data = JsonObject()
-				val values = JsonObject()
-				val map = callable.call()
-				if (map == null || map.isEmpty()) { // Null = skip the chart
-					return null
-				}
-				var allSkipped = true
-				for ((key, value) in map) {
-					if (value == 0) {
-						continue  // Skip this invalid
-					}
-					allSkipped = false
-					values.addProperty(key, value)
-				}
-				if (allSkipped) { // Null = skip the chart
-					return null
-				}
-				data.add("values", values)
-				return data
-			}
-		
-	}
-	
-	/**
-	 * Represents a custom simple bar chart.
-	 */
-	class SimpleBarChart
-	/**
-	 * Class constructor.
-	 *
-	 * @param chartId  The id of the chart.
-	 * @param callable The callable which is used to request the chart data.
-	 */(chartId: String?, private val callable: Callable<Map<String, Int>>) : CustomChart(chartId) {
-		// Null = skip the chart
-		@get:Throws(Exception::class)
-		override val chartData: JsonObject?
-			get() {
-				val data = JsonObject()
-				val values = JsonObject()
-				val map = callable.call()
-				if (map == null || map.isEmpty()) { // Null = skip the chart
-					return null
-				}
-				for ((key, value) in map) {
-					val categoryValues = JsonArray()
-					categoryValues.add(JsonPrimitive(value))
-					values.add(key, categoryValues)
-				}
-				data.add("values", values)
-				return data
-			}
-		
-	}
-	
-	/**
-	 * Represents a custom advanced bar chart.
-	 */
-	class AdvancedBarChart
-	/**
-	 * Class constructor.
-	 *
-	 * @param chartId  The id of the chart.
-	 * @param callable The callable which is used to request the chart data.
-	 */(
-		chartId: String?, // Null = skip the chart// Skip this invalid
-		private val callable: Callable<Map<String, IntArray>>
-	) : CustomChart(chartId) {
-		// Null = skip the chart
-		@get:Throws(Exception::class)
-		override val chartData: JsonObject?
-			get() {
-				val data = JsonObject()
-				val values = JsonObject()
-				val map = callable.call()
-				if (map == null || map.isEmpty()) { // Null = skip the chart
-					return null
-				}
-				var allSkipped = true
-				for ((key, value) in map) {
-					if (value.isEmpty()) {
-						continue  // Skip this invalid
-					}
-					allSkipped = false
-					val categoryValues = JsonArray()
-					for (categoryValue in value) {
-						categoryValues.add(JsonPrimitive(categoryValue))
-					}
-					values.add(key, categoryValues)
-				}
-				if (allSkipped) { // Null = skip the chart
-					return null
-				}
-				data.add("values", values)
-				return data
-			}
-		
 	}
 	
 }

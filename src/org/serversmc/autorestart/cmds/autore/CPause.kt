@@ -1,13 +1,13 @@
 package org.serversmc.autorestart.cmds.autore
 
-import org.bukkit.command.CommandSender
-import org.bukkit.command.ConsoleCommandSender
-import org.bukkit.entity.Player
+import org.bukkit.command.*
+import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.PAUSED
-import org.serversmc.autorestart.enums.RED
-import org.serversmc.autorestart.interfaces.ICommand
+import org.serversmc.autorestart.enums.*
+import org.serversmc.autorestart.interfaces.*
+import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console.consoleSendMessage
-import org.serversmc.autorestart.utils.Messenger.broadcastStatusPause
+import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 
 object CPause: ICommand {
 	
@@ -18,7 +18,7 @@ object CPause: ICommand {
 		}
 		else {
 			PAUSED = true
-			broadcastStatusPause(sender)
+			broadcastStatus(sender, Messenger.Status.PAUSE)
 		}
 	}
 	

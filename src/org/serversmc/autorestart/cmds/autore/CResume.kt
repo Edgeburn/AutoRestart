@@ -1,20 +1,20 @@
 package org.serversmc.autorestart.cmds.autore
 
-import org.bukkit.command.CommandSender
-import org.bukkit.command.ConsoleCommandSender
-import org.bukkit.entity.Player
+import org.bukkit.command.*
+import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.PAUSED
-import org.serversmc.autorestart.enums.RED
-import org.serversmc.autorestart.interfaces.ICommand
+import org.serversmc.autorestart.enums.*
+import org.serversmc.autorestart.interfaces.*
+import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console.consoleSendMessage
-import org.serversmc.autorestart.utils.Messenger.broadcastStatusResume
+import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 
 object CResume: ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		if (PAUSED) {
 			PAUSED = false
-			broadcastStatusResume(sender)
+			broadcastStatus(sender, Messenger.Status.RESUME)
 		}
 		else {
 			sender.sendMessage("${RED}Timer is already running")
