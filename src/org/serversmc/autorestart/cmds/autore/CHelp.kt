@@ -59,7 +59,7 @@ object CHelp : ICommand {
 			else subCommands.forEach {
 				if (!it.hasPermission(player)) return@forEach
 				if (it.getLabel().toLowerCase().startsWith(args[0].toLowerCase())) {
-					add("$AQUA${args.last()}$RESET" + it.getLabel().toLowerCase().substring(args.last().length))
+					add(it.getLabel().toLowerCase().substring(args.last().length))
 				}
 			}
 			if (isEmpty()) add(tabNotValid)
