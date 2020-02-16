@@ -74,7 +74,7 @@ object Config {
 	val MaxPlayers_Amount get() = getInt("max_players.amount")
 	val MaxPlayers_Delay get() = getInt("max_players.delay")
 	
-	val GLOBAL_CONFIG = YamlConfiguration()
+	private val GLOBAL_CONFIG = YamlConfiguration()
 	
 	private val FILE_MAIN = File(AutoRestart.dataFolder, "Main.yml")
 	private val FILE_REMINDER = File(AutoRestart.dataFolder, "Reminder.yml")
@@ -97,8 +97,6 @@ object Config {
 	private fun getIntegerList(path: String): MutableList<Int> = GLOBAL_CONFIG.getIntegerList(path)
 	private fun getStringList(path: String): MutableList<String> = GLOBAL_CONFIG.getStringList(path)
 	private fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampManager.parseStringList(GLOBAL_CONFIG.getStringList(path))
-	private fun getPopup(path: String): Popup = Popup(GLOBAL_CONFIG.getConfigurationSection(path)!!)
-	private fun getMessage(path: String): Message = Message(GLOBAL_CONFIG.getConfigurationSection(path)!!)
 	private fun getGlobal(name: String): ConfigSection = ConfigSection(
 		Message(GLOBAL_CONFIG.getConfigurationSection("global_broadcast.$name")!!),
 		Popup(GLOBAL_CONFIG.getConfigurationSection("global_popups.$name")!!)
