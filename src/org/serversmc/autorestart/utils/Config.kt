@@ -10,9 +10,11 @@ import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
 
+data class ConfigSection(val message: Message, val popup: Popup)
+
 data class Popup(val section: ConfigurationSection) {
 	
-	val enabled =  section.getBoolean("enabled")
+	val enabled = section.getBoolean("enabled")
 	val title = Timings(section.getConfigurationSection("title")!!)
 	val subtitle = Timings(section.getConfigurationSection("subtitle")!!)
 	
@@ -49,35 +51,20 @@ object Config {
 	val Reminder_Seconds get() = getInt("reminder.seconds")
 	val Reminder_PauseReminder get() = getInt("reminder.pause_reminder")
 	
-	val GlobalBroadcast_Minutes get() = getMessage("global_broadcast.minutes")
-	val GlobalBroadcast_Seconds get() = getMessage("global_broadcast.seconds")
-	val GlobalBroadcast_Status_Resume get() = getMessage("global_broadcast.status.resume")
-	val GlobalBroadcast_Status_Pause get() = getMessage("global_broadcast.status.pause")
-	val GlobalBroadcast_Change get() = getMessage("global_broadcast.change")
-	val GlobalBroadcast_MaxPlayers_Alert get() = getMessage("global_broadcast.max_players.alert")
-	val GlobalBroadcast_MaxPlayers_PreShutdown get() = getMessage("global_broadcast.max_players.pre_shutdown")
-	val GlobalBroadcast_Shutdown get() = getMessage("global_broadcast.shutdown")
+	val Global_Minutes get() = getGlobal("minutes")
+	val Global_Seconds get() = getGlobal("seconds")
+	val Global_Status_Resume get() = getGlobal("status.resume")
+	val Global_Status_Pause get() = getGlobal("status.pause")
+	val Global_Change get() = getGlobal("change")
+	val Global_MaxPlayers_Alert get() = getGlobal("max_players.alert")
+	val Global_MaxPlayers_PreShutdown get() = getGlobal("max_players.pre_shutdown")
+	val Global_Shutdown get() = getGlobal("shutdown")
 	
-	val PrivateMessages_Time get() = getMessage("private_messages.time")
-	val PrivateMessages_Status_Resume get() = getMessage("private_messages.status.resume")
-	val PrivateMessages_Status_Pause get() = getMessage("private_messages.status.pause")
-	val PrivateMessages_Change get() = getMessage("private_messages.change")
-	val PrivateMessages_PauseReminder get() = getMessage("private_messages.pause_reminder")
-	
-	val GlobalPopups_Minutes get() = getPopup("global_popups.minutes")
-	val GlobalPopups_Seconds get() = getPopup("global_popups.seconds")
-	val GlobalPopups_Status_Resume get() = getPopup("global_popups.status.resume")
-	val GlobalPopups_Status_Pause get() = getPopup("global_popups.status.pause")
-	val GlobalPopups_Change get() = getPopup("global_popups.change")
-	val GlobalPopups_MaxPlayers_Alert get() = getPopup("global_popups.max_players.alert")
-	val GlobalPopups_MaxPlayers_PreShutdown get() = getPopup("global_popups.max_players.preshutdown")
-	val GlobalPopups_ShutDown get() = getPopup("global_popups.shutdown")
-	
-	val PrivatePopups_Time get() = getPopup("private_popups.time")
-	val PrivatePopups_Status_Resume get() = getPopup("private_popups.status.resume")
-	val PrivatePopups_Status_Pause get() = getPopup("private_popups.status.pause")
-	val PrivatePopups_Change get() = getPopup("private_popups.change")
-	val PrivatePopups_PauseReminder get() = getPopup("private_popups.pause_reminder")
+	val Private_Time get() = getPrivate("time")
+	val Private_Status_Resume get() = getPrivate("status.resume")
+	val Private_Status_Pause get() = getPrivate("status.pause")
+	val Private_Change get() = getPrivate("change")
+	val Private_PauseReminder get() = getPrivate("pause_reminder")
 	
 	val Commands_Enabled get() = getBoolean("commands.enabled")
 	val Commands_Seconds get() = getInt("commands.seconds")
@@ -87,7 +74,7 @@ object Config {
 	val MaxPlayers_Amount get() = getInt("max_players.amount")
 	val MaxPlayers_Delay get() = getInt("max_players.delay")
 	
-	private val GLOBAL_CONFIG = YamlConfiguration()
+	val GLOBAL_CONFIG = YamlConfiguration()
 	
 	private val FILE_MAIN = File(AutoRestart.dataFolder, "Main.yml")
 	private val FILE_REMINDER = File(AutoRestart.dataFolder, "Reminder.yml")
@@ -112,6 +99,14 @@ object Config {
 	private fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampManager.parseStringList(GLOBAL_CONFIG.getStringList(path))
 	private fun getPopup(path: String): Popup = Popup(GLOBAL_CONFIG.getConfigurationSection(path)!!)
 	private fun getMessage(path: String): Message = Message(GLOBAL_CONFIG.getConfigurationSection(path)!!)
+	private fun getGlobal(name: String): ConfigSection = ConfigSection(
+		Message(GLOBAL_CONFIG.getConfigurationSection("global_broadcast.$name")!!),
+		Popup(GLOBAL_CONFIG.getConfigurationSection("global_popups.$name")!!)
+	)
+	private fun getPrivate(name: String): ConfigSection = ConfigSection(
+		Message(GLOBAL_CONFIG.getConfigurationSection("private_messages.$name")!!),
+		Popup(GLOBAL_CONFIG.getConfigurationSection("private_popups.$name")!!)
+	)
 	
 	private lateinit var configs: ArrayList<ConfigFile>
 	

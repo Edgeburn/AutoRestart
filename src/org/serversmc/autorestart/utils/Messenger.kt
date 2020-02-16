@@ -67,28 +67,27 @@ object Messenger {
 		}
 	}
 	
-	enum class Status(val globalMsg: Message, val privateMsg: Message, val globalPopup: Popup, val privatePopup: Popup, val format: Array<Format>) {
-		RESUME(Config.GlobalBroadcast_Status_Resume, Config.PrivateMessages_Status_Resume, Config.GlobalPopups_Status_Resume, Config.PrivatePopups_Status_Resume, arrayOf()),
-		PAUSE(Config.GlobalBroadcast_Status_Pause, Config.PrivateMessages_Status_Pause, Config.GlobalPopups_Status_Pause, Config.PrivatePopups_Status_Pause, arrayOf()),
-		CHANGE(Config.GlobalBroadcast_Change, Config.PrivateMessages_Change, Config.GlobalPopups_Change, Config.PrivatePopups_Change, arrayOf(fH, fM, fS))
+	enum class Status(val globalSection: ConfigSection, val privateSection: ConfigSection, val format: Array<Format>) {
+		RESUME(Config.Global_Status_Resume, Config.Private_Status_Resume, arrayOf()),
+		PAUSE(Config.Global_Status_Pause, Config.Private_Status_Pause, arrayOf()),
+		CHANGE(Config.Global_Change, Config.Private_Change, arrayOf(fH, fM, fS))
 	}
 	
-	enum class Broadcast(val msg: Message, val popup: Popup, val format: Array<Format>) {
-		MINUTES(Config.GlobalBroadcast_Minutes, Config.GlobalPopups_Minutes, arrayOf(fM)),
-		SECONDS(Config.GlobalBroadcast_Seconds, Config.GlobalPopups_Seconds, arrayOf(fS)),
-		MAXPLAYERS_ALERT(Config.GlobalBroadcast_MaxPlayers_Alert, Config.GlobalPopups_MaxPlayers_Alert, arrayOf(fA)),
-		MAXPLAYERS_PRESHUTDOWN(Config.GlobalBroadcast_MaxPlayers_PreShutdown, Config.GlobalPopups_MaxPlayers_PreShutdown, arrayOf(fD)),
-		SHUTDOWN(Config.GlobalBroadcast_Shutdown, Config.GlobalPopups_ShutDown, arrayOf()),
+	enum class Global(val section: ConfigSection, val format: Array<Format>) {
+		MINUTES(Config.Global_Minutes, arrayOf(fM)),
+		SECONDS(Config.Global_Seconds, arrayOf(fS)),
+		MAXPLAYERS_ALERT(Config.Global_MaxPlayers_Alert, arrayOf(fA)),
+		MAXPLAYERS_PRESHUTDOWN(Config.Global_MaxPlayers_PreShutdown, arrayOf(fD)),
+		SHUTDOWN(Config.Global_Shutdown, arrayOf()),;
 	}
 	
-	enum class Private(val msg: Message, val popup: Popup, val format: Array<Format>) {
-		PAUSE_REMINDER(Config.PrivateMessages_PauseReminder, Config.PrivatePopups_PauseReminder, arrayOf()),
-		TIME(Config.PrivateMessages_Time, Config.PrivatePopups_Time, arrayOf(fH, fM, fS))
+	enum class Private(val section: ConfigSection, val format: Array<Format>) {
+		PAUSE_REMINDER(Config.Private_PauseReminder, arrayOf()),
+		TIME(Config.Private_Time, arrayOf(fH, fM, fS))
 	}
 	
-	fun broadcast(broadcast: Broadcast) {
-		val msg = broadcast.msg
-		val popup = broadcast.popup
+	fun broadcast(broadcast: Global) {
+		val (msg, popup) = broadcast.section
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
@@ -112,8 +111,7 @@ object Messenger {
 	
 	fun message(sender: CommandSender, private: Private) {
 		// Message fetch
-		val msg = private.msg
-		val popup = private.popup
+		val (msg, popup) = private.section
 		// Checks if sender is a player
 		if (sender is Player) {
 			// Cast sender as player
@@ -136,11 +134,8 @@ object Messenger {
 	
 	fun broadcastStatus(sender: CommandSender, status: Status) {
 		// Placeholder setups and message fetch
-		val globalMsg = status.globalMsg
-		val privateMsg = status.privateMsg
-		// Boolean shortcuts
-		val globalPopup = status.globalPopup
-		val privatePopup = status.privatePopup
+		val (globalMsg, globalPopup) =  status.globalSection
+		val (privateMsg, privatePopup) = status.privateSection
 		// Check if global popups are enabled
 		if (globalPopup.enabled) {
 			// Check if private popups are enabled

@@ -86,9 +86,9 @@ object TimerThread {
 			}
 			PAUSED_TIMER = 0
 			// Minutes Reminder
-			if (Config.Reminder_Enabled_Minutes) Config.Reminder_Minutes.forEach { if (TIME == it * 60) Messenger.broadcast(Messenger.Broadcast.MINUTES) }
+			if (Config.Reminder_Enabled_Minutes) Config.Reminder_Minutes.forEach { if (TIME == it * 60) Messenger.broadcast(Messenger.Global.MINUTES) }
 			// Seconds Reminder
-			if (Config.Reminder_Enabled_Seconds && (TIME <= Config.Reminder_Seconds)) Messenger.broadcast(Messenger.Broadcast.SECONDS)
+			if (Config.Reminder_Enabled_Seconds && (TIME <= Config.Reminder_Seconds)) Messenger.broadcast(Messenger.Global.SECONDS)
 			// Command Execute
 			if (Config.Commands_Enabled && (TIME == Config.Commands_Seconds))
 				Config.Commands_List.forEach { Bukkit.dispatchCommand(consoleSender, it) }
@@ -103,14 +103,14 @@ object TimerThread {
 			// Check if player count is over configured amount
 			if (Bukkit.getOnlinePlayers().size > Config.MaxPlayers_Amount) {
 				// Broadcast alert
-				Messenger.broadcast(Messenger.Broadcast.MAXPLAYERS_ALERT)
+				Messenger.broadcast(Messenger.Global.MAXPLAYERS_ALERT)
 				maxplayersId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, {
 					// Start Shutdown wait
 					if (Bukkit.getOnlinePlayers().size <= Config.MaxPlayers_Amount) {
 						return@scheduleSyncRepeatingTask
 					}
 					// Broadcast pre shutdown message
-					Messenger.broadcast(Messenger.Broadcast.MAXPLAYERS_PRESHUTDOWN)
+					Messenger.broadcast(Messenger.Global.MAXPLAYERS_PRESHUTDOWN)
 					Bukkit.getScheduler().cancelTask(maxplayersId)
 				}, 0L, 1L)
 			}
@@ -119,7 +119,7 @@ object TimerThread {
 	}
 	
 	private var shutdown = fun() {
-		Messenger.broadcast(Messenger.Broadcast.SHUTDOWN)
+		Messenger.broadcast(Messenger.Global.SHUTDOWN)
 		// Player kick / restart message
 		Bukkit.getScheduler().callSyncMethod(AutoRestart) {
 			Bukkit.getOnlinePlayers().forEach { player ->
