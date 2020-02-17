@@ -87,6 +87,9 @@ object Messenger {
 			// send pop ups
 			Bukkit.getOnlinePlayers().forEach {
 				try {
+					// Play Sound
+					it.playNote(it.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
+					// Send Title
 					sendTitle(it, popup, broadcast.format)
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcast(Broadcast):sendTitle(Player, Popup, Array<Format>)")
@@ -110,6 +113,10 @@ object Messenger {
 		if (sender is Player) {
 			// Cast sender as player
 			val player: Player = sender
+			
+			// Play Sound
+			player.playNote(player.location, Instrument.PIANO, Note.natural(0, Note.Tone.G))
+			
 			// Check if pop ups are enabled
 			if (popup.enabled) {
 				// send pop ups
@@ -135,11 +142,15 @@ object Messenger {
 			// Check if private popups are enabled
 			if (privatePopup.enabled && sender is Player) {
 				try {
+					sender.playNote(sender.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
 					sendTitle(sender, privatePopup, arrayOf())
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>)")
 				}
-				Bukkit.getOnlinePlayers().forEach { if (it != sender) sendTitle(it, globalPopup, arrayOf()) }
+				Bukkit.getOnlinePlayers().forEach { if (it != sender) {
+					it.playNote(it.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
+					sendTitle(it, globalPopup, arrayOf())
+				} }
 			}
 			else {
 				Bukkit.getOnlinePlayers().forEach { sendTitle(it, globalPopup, status.format) }
