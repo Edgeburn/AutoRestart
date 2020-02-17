@@ -13,46 +13,46 @@ global_popups:
         enabled: true
         title:
             text: '&cServer Restarting In'
-            timing: 20:40:20
+            timing: '20:40:20'
         subtitle:
             text: '&f%m &cMinutes!'
-            timing: 20:40:20
+            timing: '20:40:20'
     ## Show the pop ups on the last seconds of a server restart!
     seconds: ## %s - seconds
         enabled: true
         title:
             text: '&cServer Restarting In'
-            timing: 5:20:5
+            timing: '5:20:5'
         subtitle:
             text: '&f%s &cSeconds!'
-            timing: 5:20:5
+            timing: '5:20:5'
     ## Show the pop ups when type /autore time
     status: ## There are no tags for this section
         resume:
             enabled: true
             title:
                 text: '&cAutoRestart has started!'
-                timing: 20:40:20
+                timing: '20:40:20'
             subtitle:
                 text: ''
-                timing: 20:40:20
+                timing: '20:40:20'
         pause:
             enabled: true
             title:
                 text: '&cAutoRestart has been paused!'
-                timing: 20:40:20
+                timing: '20:40:20'
             subtitle:
                 text: ''
-                timing: 20:40:20
+                timing: '20:40:20'
     ## Show the pop ups when the server time has been changed!
     change: ## %h - hours, %m - minutes, %s - seconds
         enabled: true
         title:
             text: '&cServer Restarting In'
-            timing: 20:40:20
+            timing: '20:40:20'
         subtitle:
             text: '&f%h&cH &f%m&cM &f%s&cS!'
-            timing: 20:40:20
+            timing: '20:40:20'
     ## Show the Maxplayers pop ups
     max_players:
         ## The pop up broadcasts when too many players are online on restart!
@@ -60,27 +60,27 @@ global_popups:
             enabled: true
             title:
                 text: '&bToo many players online for restart.'
-                timing: 20:40:20
+                timing: '20:40:20'
             subtitle:
                 text: 'Max &f%a&b amount of players allowed for a restart.'
-                timing: 20:40:20
+                timing: '20:40:20'
                 ## This pop up appears when the amount of players requirement is met!
         pre_shutdown: ## %d - delay
             enabled: true
             title:
                 text: '&aServer now restarting in &f%d&a seconds!'
-                timing: 20:40:20
+                timing: '20:40:20'
             subtitle:
                 text: ''
-                timing: 20:40:20
+                timing: '20:40:20'
     ## Shows the popup before restart
     shutdown:
         enabled: true
         title:
             text: '&cServer is now'
-            timing: 20:80:20
+            timing: '20:80:20'
         subtitle:
             text: '&cRestarting!'
-            timing: 20:80:20
+            timing: '20:80:20'
 ## DO NOT TOUCH!!
 version: 2
