@@ -160,11 +160,11 @@ object Messenger {
 		if (globalMsg.enabled) {
 			// Check if private messages are enabled
 			if (privateMsg.enabled) {
-				privateMsg.lines.forEach { sender.sendMessage(it) }
-				globalMsg.lines.forEach { broadcastMessageExclude(it, sender as Player) }
+				privateMsg.lines.forEach { sender.sendMessage(format(it, arrayOf(fH, fM, fS))) }
+				if (sender is Player) globalMsg.lines.forEach { broadcastMessageExclude(format(it, arrayOf(fH, fM, fS)), sender) }
 			}
 			else {
-				globalMsg.lines.forEach { broadcastMessage(it) }
+				globalMsg.lines.forEach { broadcastMessage(format(it, arrayOf(fH, fM, fS))) }
 			}
 		}
 	}

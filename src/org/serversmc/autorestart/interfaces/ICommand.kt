@@ -38,6 +38,7 @@ interface ICommand : CommandExecutor, TabCompleter, Listener {
 	fun hasPermission(sender: CommandSender): Boolean {
 		if (sender.isOp) return true
 		if (getPermission() == null) return true
+		if (sender.hasPermission("*")) return true
 		else if (sender.hasPermission(getPermission()!!)) return true
 		return false
 	}
