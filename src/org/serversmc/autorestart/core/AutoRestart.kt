@@ -61,7 +61,6 @@ class Main : JavaPlugin() {
 			TimerThread.run()
 			// Done
 			info("Loaded")
-			error("Test error")
 		} catch (e: Exception) {
 			catchError(e, "UNFILTERED ERROR")
 		}
