@@ -68,6 +68,8 @@ private fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampMa
 private fun getGlobal(name: String): ConfigSection = ConfigSection(Message("global_broadcast.$name"), Popup("global_popups.$name"))
 private fun getPrivate(name: String): ConfigSection = ConfigSection(Message("private_messages.$name"), Popup("private_popups.$name"))
 
+// TODO() export this to ServersMC API
+
 object Config {
 	
 	val Main_RecalculateOnreload get() = getBoolean("main.recalculate_onreload")
