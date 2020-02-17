@@ -4,7 +4,7 @@ import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.bukkit.event.*
 import org.serversmc.autorestart.enums.*
-import org.serversmc.autorestart.utils.Console.catchError
+import org.serversmc.console.Console.catchError
 
 interface ICommand : CommandExecutor, TabCompleter, Listener {
 	

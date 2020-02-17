@@ -6,7 +6,7 @@ import org.serversmc.autorestart.cmds.CAutoRestart.subCommands
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
-import org.serversmc.autorestart.utils.Console.consoleSendMessage
+import org.serversmc.console.Console.consoleSendMessage
 import java.io.*
 
 object CHelp : ICommand {

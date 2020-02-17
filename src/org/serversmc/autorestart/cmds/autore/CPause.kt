@@ -6,8 +6,8 @@ import org.serversmc.autorestart.core.TimerThread.PAUSED
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
-import org.serversmc.autorestart.utils.Console.consoleSendMessage
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
+import org.serversmc.console.Console.consoleSendMessage
 
 object CPause: ICommand {
 	

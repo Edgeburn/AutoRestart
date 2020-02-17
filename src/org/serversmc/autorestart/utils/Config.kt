@@ -5,8 +5,9 @@ package org.serversmc.autorestart.utils
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.autorestart.utils.Console.err
-import org.serversmc.autorestart.utils.Console.warn
+import org.serversmc.console.Console.err
+import org.serversmc.console.Console.info
+import org.serversmc.console.Console.warn
 import java.io.*
 import java.lang.Integer.*
 import java.util.*
@@ -158,7 +159,7 @@ object Config {
 			// Save configs if needed
 			if (!file.exists()) {
 				AutoRestart.saveResource(file.name, false)
-				Console.info("Created ${file.name} config file!")
+				info("Created ${file.name} config file!")
 			}
 			// Get config defaults
 			yaml.load(file)
@@ -172,7 +173,7 @@ object Config {
 			// Update configs if needed
 			if (yaml.getInt("version") != GLOBAL_CONFIG.getInt("version")) {
 				// Prompt console about update
-				Console.info("The config file ${file.name} has changed since the last update!")
+				info("The config file ${file.name} has changed since the last update!")
 				// Create rename file
 				val cal = Calendar.getInstance()
 				val time = cal.time.toString().replace(":", "_")

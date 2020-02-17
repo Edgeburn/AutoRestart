@@ -6,8 +6,8 @@ import org.serversmc.autorestart.cmds.autore.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
-import org.serversmc.autorestart.utils.Console.catchError
-import org.serversmc.autorestart.utils.Console.consoleSendMessage
+import org.serversmc.console.Console.catchError
+import org.serversmc.console.Console.consoleSendMessage
 
 object CAutoRestart : ICommand {
 	

@@ -5,8 +5,9 @@ import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.core.TimeManager.calculateInterval
 import org.serversmc.autorestart.core.TimeManager.calculateTimestamp
 import org.serversmc.autorestart.utils.*
-import org.serversmc.autorestart.utils.Console.consoleSender
-import org.serversmc.autorestart.utils.Console.err
+import org.serversmc.console.Console.consoleSender
+import org.serversmc.console.Console.err
+import org.serversmc.console.Console.warn
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -30,7 +31,7 @@ object TimeManager {
 		}
 		// Check if list is empty
 		if (differences.isEmpty()) {
-			Console.warn("There are no accepted timestamps available! Please check config to ensure that you have followed the correct format.")
+			warn("There are no accepted timestamps available! Please check config to ensure that you have followed the correct format.")
 			return
 		}
 		// Get smallest difference
