@@ -4,9 +4,10 @@ import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.cmds.CAutoRestart.subCommands
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
-import org.serversmc.console.Console.consoleSendMessage
+import org.serversmc.utils.ChatColor.GRAY
+import org.serversmc.utils.ChatColor.RED
+import org.serversmc.utils.Console.consoleSendMessage
 import java.io.*
 
 object CHelp : ICommand {

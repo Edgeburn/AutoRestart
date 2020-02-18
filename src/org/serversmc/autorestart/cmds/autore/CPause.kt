@@ -3,11 +3,11 @@ package org.serversmc.autorestart.cmds.autore
 import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.PAUSED
-import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
-import org.serversmc.console.Console.consoleSendMessage
+import org.serversmc.utils.ChatColor.RED
+import org.serversmc.utils.Console.consoleSendMessage
 
 object CPause: ICommand {
 	

@@ -1,6 +1,6 @@
 package org.serversmc.autorestart.utils
 
-import org.serversmc.console.Console.err
+import org.serversmc.utils.Console.err
 import java.lang.Integer.*
 import java.util.*
 import kotlin.collections.ArrayList

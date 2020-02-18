@@ -3,8 +3,8 @@ package org.serversmc.autorestart.interfaces
 import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.bukkit.event.*
-import org.serversmc.autorestart.enums.*
-import org.serversmc.console.Console.catchError
+import org.serversmc.utils.ChatColor.RED
+import org.serversmc.utils.Console.catchError
 
 interface ICommand : CommandExecutor, TabCompleter, Listener {
 	

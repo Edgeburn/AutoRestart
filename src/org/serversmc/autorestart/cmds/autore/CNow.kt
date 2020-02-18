@@ -1,10 +1,10 @@
 package org.serversmc.autorestart.cmds.autore
 
-import org.bukkit.command.CommandSender
-import org.bukkit.entity.Player
+import org.bukkit.command.*
+import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.TIME
-import org.serversmc.autorestart.enums.GRAY
-import org.serversmc.autorestart.interfaces.ICommand
+import org.serversmc.autorestart.interfaces.*
+import org.serversmc.utils.ChatColor.GRAY
 
 object CNow: ICommand {
 	

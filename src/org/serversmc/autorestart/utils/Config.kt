@@ -5,9 +5,9 @@ package org.serversmc.autorestart.utils
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.console.Console.err
-import org.serversmc.console.Console.info
-import org.serversmc.console.Console.warn
+import org.serversmc.utils.Console.err
+import org.serversmc.utils.Console.info
+import org.serversmc.utils.Console.warn
 import java.io.*
 import java.lang.Integer.*
 import java.util.*

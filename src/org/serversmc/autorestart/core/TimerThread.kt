@@ -5,9 +5,9 @@ import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.core.TimeManager.calculateInterval
 import org.serversmc.autorestart.core.TimeManager.calculateTimestamp
 import org.serversmc.autorestart.utils.*
-import org.serversmc.console.Console.consoleSender
-import org.serversmc.console.Console.err
-import org.serversmc.console.Console.warn
+import org.serversmc.utils.Console.consoleSender
+import org.serversmc.utils.Console.err
+import org.serversmc.utils.Console.warn
 import java.util.*
 import kotlin.collections.ArrayList
 

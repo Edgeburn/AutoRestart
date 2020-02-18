@@ -4,9 +4,9 @@ import org.bukkit.*
 import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.objects.*
-import org.serversmc.console.Console.catchError
-import org.serversmc.console.Console.consoleSendMessage
 import org.serversmc.title.*
+import org.serversmc.utils.Console.catchError
+import org.serversmc.utils.Console.consoleSendMessage
 
 object Messenger {
 	

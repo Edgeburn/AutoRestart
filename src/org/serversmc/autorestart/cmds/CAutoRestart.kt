@@ -4,10 +4,11 @@ import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.cmds.autore.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
-import org.serversmc.console.Console.catchError
-import org.serversmc.console.Console.consoleSendMessage
+import org.serversmc.utils.ChatColor.GRAY
+import org.serversmc.utils.ChatColor.RED
+import org.serversmc.utils.Console.catchError
+import org.serversmc.utils.Console.consoleSendMessage
 
 object CAutoRestart : ICommand {
 	
