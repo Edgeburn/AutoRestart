@@ -56,15 +56,15 @@ data class Message(val section: String) {
 
 object Config: ConfigAPI {
 	
-	override fun addFiles() {
-		ConfigFile("Main.yml")
-		ConfigFile("Reminder.yml")
-		ConfigFile("GlobalBroadcast.yml")
-		ConfigFile("PrivateMessages.yml")
-		ConfigFile("GlobalPopups.yml")
-		ConfigFile("PrivatePopups.yml")
-		ConfigFile("Commands.yml")
-		ConfigFile("MaxPlayers.yml")
+	override fun initializeConfigList() {
+		addFile("Main")
+		addFile("Reminder")
+		addFile("GlobalBroadcast")
+		addFile("PrivateMessages")
+		addFile("GlobalPopups")
+		addFile("PrivatePopups")
+		addFile("Commands")
+		addFile("MaxPlayers")
 	}
 	
 	private fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampManager.parseStringList(globalConfig.getStringList(path))
