@@ -28,7 +28,6 @@ class Main : JavaPlugin() {
 		// Initialize libraries
 		Metrics(this, 2345)
 		ServersMC.init(this)
-		// Initialize companion
 		AutoRestart = this
 		// Check if PlaceholderAPI is installed
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) PAPI.register()

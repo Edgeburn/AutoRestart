@@ -19,6 +19,7 @@ data class Popup(val section: String) {
 		private var timing = Config.getString("$section.timing")
 		init {
 			if (timing.split(":").size != 3) {
+				println(Config.globalConfig.defaults!!.getKeys(true))
 				timing = Config.globalConfig.defaults!!.getString("$section.timing")!!
 				warn("Invalid timing format at $section.timing. Please review: $timing")
 			}
@@ -50,8 +51,8 @@ data class Message(val section: String) {
 	}
 }
 
-object Config: ConfigAPI {
-	
+object Config: ConfigAPI() {
+		
 	override fun setupConfigs() {
 		addFile("Main")
 		addFile("Reminder")
