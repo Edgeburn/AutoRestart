@@ -3,6 +3,7 @@
 package org.serversmc.autorestart.utils
 
 import org.serversmc.utils.*
+import org.serversmc.utils.ConfigAPI.Companion.globalConfig
 import org.serversmc.utils.Console.err
 import org.serversmc.utils.Console.warn
 import java.lang.Integer.*
@@ -19,8 +20,7 @@ data class Popup(val section: String) {
 		private var timing = Config.getString("$section.timing")
 		init {
 			if (timing.split(":").size != 3) {
-				println(Config.globalConfig.defaults!!.getKeys(true))
-				timing = Config.globalConfig.defaults!!.getString("$section.timing")!!
+				timing = globalConfig.defaults!!.getString("$section.timing")!!
 				warn("Invalid timing format at $section.timing. Please review: $timing")
 			}
 			else {
@@ -28,7 +28,7 @@ data class Popup(val section: String) {
 					try {
 						parseInt(it)
 					} catch (e: Exception) {
-						timing = Config.globalConfig.defaults!!.getString("$section.timing")!!
+						timing = globalConfig.defaults!!.getString("$section.timing")!!
 						err("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
 					}
 				}
@@ -51,7 +51,7 @@ data class Message(val section: String) {
 	}
 }
 
-object Config: ConfigAPI() {
+object Config: ConfigAPI {
 		
 	override fun setupConfigs() {
 		addFile("Main")
