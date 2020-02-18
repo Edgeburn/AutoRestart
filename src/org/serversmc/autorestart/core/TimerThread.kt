@@ -12,13 +12,12 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 object TimeManager {
-
+	
 	fun calculateInterval() {
 		TimerThread.TIME = (Config.Main_Modes_Interval * 3600.0).toInt()
 	}
-
+	
 	fun calculateTimestamp() {
-		
 		// Initialize variables
 		val timestamps = Config.Main_Modes_Timestamp
 		val differences = ArrayList<Long>()
@@ -40,7 +39,7 @@ object TimeManager {
 		// Convert milliseconds to time
 		TimerThread.TIME = time.toInt() / 1000
 	}
-
+	
 }
 
 object TimerThread {
@@ -53,7 +52,7 @@ object TimerThread {
 	var shutdownId = 0
 	
 	fun calculateTimer() {
-		when(Config.Main_RestartMode.toUpperCase()) {
+		when (Config.Main_RestartMode.toUpperCase()) {
 			"INTERVAL" -> calculateInterval()
 			"TIMESTAMP" -> calculateTimestamp()
 			else -> {

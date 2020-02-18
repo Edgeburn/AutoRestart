@@ -14,27 +14,27 @@ object Messenger {
 		fun regex(): String
 		fun replace(): String
 	}
-
+	
 	private val fH = object : Format {
 		override fun regex(): String = "%h"
 		override fun replace(): String = HMS.H.toString()
 	}
-
+	
 	private val fM = object : Format {
 		override fun regex(): String = "%m"
 		override fun replace(): String = HMS.M.toString()
 	}
-
+	
 	private val fS = object : Format {
 		override fun regex(): String = "%s"
 		override fun replace(): String = HMS.S.toString()
 	}
-
+	
 	private val fA = object : Format {
 		override fun regex(): String = "%a"
 		override fun replace(): String = Config.MaxPlayers_Amount.toString()
 	}
-
+	
 	private val fD = object : Format {
 		override fun regex(): String = "%d"
 		override fun replace(): String = Config.MaxPlayers_Delay.toString()
@@ -73,7 +73,7 @@ object Messenger {
 		SECONDS(Config.Global_Seconds, arrayOf(fS)),
 		MAXPLAYERS_ALERT(Config.Global_MaxPlayers_Alert, arrayOf(fA)),
 		MAXPLAYERS_PRESHUTDOWN(Config.Global_MaxPlayers_PreShutdown, arrayOf(fD)),
-		SHUTDOWN(Config.Global_Shutdown, arrayOf()),;
+		SHUTDOWN(Config.Global_Shutdown, arrayOf()), ;
 	}
 	
 	enum class Private(val section: Config.ConfigSection, val format: Array<Format>) {
@@ -136,7 +136,7 @@ object Messenger {
 	
 	fun broadcastStatus(sender: CommandSender, status: Status) {
 		// Placeholder setups and message fetch
-		val (globalMsg, globalPopup) =  status.globalSection
+		val (globalMsg, globalPopup) = status.globalSection
 		val (privateMsg, privatePopup) = status.privateSection
 		// Check if global popups are enabled
 		if (globalPopup.enabled) {
@@ -148,10 +148,12 @@ object Messenger {
 				} catch (e: Exception) {
 					catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>)")
 				}
-				Bukkit.getOnlinePlayers().forEach { if (it != sender) {
-					it.playNote(it.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
-					sendTitle(it, globalPopup, arrayOf())
-				} }
+				Bukkit.getOnlinePlayers().forEach {
+					if (it != sender) {
+						it.playNote(it.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
+						sendTitle(it, globalPopup, arrayOf())
+					}
+				}
 			}
 			else {
 				Bukkit.getOnlinePlayers().forEach { sendTitle(it, globalPopup, status.format) }

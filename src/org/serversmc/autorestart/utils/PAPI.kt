@@ -15,7 +15,7 @@ object PAPI : PlaceholderExpansion() {
 	
 	override fun onPlaceholderRequest(p: Player?, params: String?): String? {
 		if (params == null) return null
-		return when(params.toLowerCase()) {
+		return when (params.toLowerCase()) {
 			"time_formatted1" -> "${HMS.H}h ${HMS.M}m ${HMS.S}s"
 			"time_formatted2" -> "${HMS.H} hours ${HMS.M} minutes ${HMS.S} seconds"
 			"time_formatted3" -> "${HMS.H}:${HMS.M}"

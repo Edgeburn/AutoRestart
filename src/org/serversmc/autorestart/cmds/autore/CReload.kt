@@ -7,7 +7,7 @@ import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.utils.ChatColor.GRAY
 
-object CReload: ICommand {
+object CReload : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		Config.reloadConfig()

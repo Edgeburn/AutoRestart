@@ -6,7 +6,7 @@ import org.serversmc.autorestart.core.TimerThread.TIME
 import org.serversmc.autorestart.interfaces.*
 import org.serversmc.utils.ChatColor.GRAY
 
-object CNow: ICommand {
+object CNow : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		sender.sendMessage("${GRAY}Restarting server!")

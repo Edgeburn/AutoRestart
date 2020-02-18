@@ -9,7 +9,7 @@ import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 import org.serversmc.utils.ChatColor.RED
 import org.serversmc.utils.Console.consoleSendMessage
 
-object CResume: ICommand {
+object CResume : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		if (PAUSED) {

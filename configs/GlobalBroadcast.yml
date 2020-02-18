@@ -10,7 +10,7 @@
 ## and popups are all disabled, then it will as well be automatically enabled in broadcasts. If broadcasts and
 ## private messages are disabled, but popups are enabled, console will get a private message for logs. Since
 ## command line cant receive popups.
-    
+
 ## These are global broadcasts the everyone sees. If the same task is enabled in "private_message"
 ##  the player who initiated the event will not see the broadcast, but will see his own broadcast.
 ##  Global broadcasts include the prefix in "main.prefix" config.

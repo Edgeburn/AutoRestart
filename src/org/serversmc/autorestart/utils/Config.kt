@@ -8,7 +8,7 @@ import org.serversmc.utils.Console.err
 import org.serversmc.utils.Console.warn
 import java.lang.Integer.*
 
-object Config: ConfigAPI {
+object Config : ConfigAPI {
 	
 	data class ConfigSection(val message: Message, val popup: Popup)
 	
@@ -19,6 +19,7 @@ object Config: ConfigAPI {
 		val subtitle = Timings("$section.subtitle")
 		
 		data class Timings(val section: String) {
+			
 			private var timing = Config.getString("$section.timing")
 			
 			init {
@@ -54,7 +55,7 @@ object Config: ConfigAPI {
 			}
 		}
 	}
-		
+	
 	override fun setupConfigs() {
 		addFile("Main")
 		addFile("Reminder")

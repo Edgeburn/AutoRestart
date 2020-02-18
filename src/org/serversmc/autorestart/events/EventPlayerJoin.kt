@@ -9,7 +9,7 @@ import org.serversmc.utils.ChatColor.RED
 object EventPlayerJoin : Listener {
 	
 	@EventHandler
-	fun onPlayerJoin(event : PlayerJoinEvent) {
+	fun onPlayerJoin(event: PlayerJoinEvent) {
 		// Get Player Entity
 		val player = event.player
 		// Check if there is an update
