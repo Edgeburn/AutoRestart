@@ -50,7 +50,7 @@ object Messenger {
 	private fun broadcastMessage(msg: String) = Bukkit.broadcastMessage(getPrefix() + msg)
 	private fun broadcastMessageExclude(msg: String, player: Player) = Bukkit.getOnlinePlayers().forEach { if (it != player) it.sendMessage(msg) }
 	
-	private fun sendTitle(player: Player, popup: Popup, format: Array<Format>) {
+	private fun sendTitle(player: Player, popup: Config.Popup, format: Array<Format>) {
 		TitleAPI.sendTitle(player, 0, 0, 0, "", "")
 		val title = popup.title
 		val subtitle = popup.subtitle
@@ -62,13 +62,13 @@ object Messenger {
 		}
 	}
 	
-	enum class Status(val globalSection: ConfigSection, val privateSection: ConfigSection, val format: Array<Format>) {
+	enum class Status(val globalSection: Config.ConfigSection, val privateSection: Config.ConfigSection, val format: Array<Format>) {
 		RESUME(Config.Global_Status_Resume, Config.Private_Status_Resume, arrayOf()),
 		PAUSE(Config.Global_Status_Pause, Config.Private_Status_Pause, arrayOf()),
 		CHANGE(Config.Global_Change, Config.Private_Change, arrayOf(fH, fM, fS))
 	}
 	
-	enum class Global(val section: ConfigSection, val format: Array<Format>) {
+	enum class Global(val section: Config.ConfigSection, val format: Array<Format>) {
 		MINUTES(Config.Global_Minutes, arrayOf(fM)),
 		SECONDS(Config.Global_Seconds, arrayOf(fS)),
 		MAXPLAYERS_ALERT(Config.Global_MaxPlayers_Alert, arrayOf(fA)),
@@ -76,7 +76,7 @@ object Messenger {
 		SHUTDOWN(Config.Global_Shutdown, arrayOf()),;
 	}
 	
-	enum class Private(val section: ConfigSection, val format: Array<Format>) {
+	enum class Private(val section: Config.ConfigSection, val format: Array<Format>) {
 		PAUSE_REMINDER(Config.Private_PauseReminder, arrayOf()),
 		TIME(Config.Private_Time, arrayOf(fH, fM, fS))
 	}

@@ -8,50 +8,52 @@ import org.serversmc.utils.Console.err
 import org.serversmc.utils.Console.warn
 import java.lang.Integer.*
 
-data class ConfigSection(val message: Message, val popup: Popup)
-
-data class Popup(val section: String) {
+object Config: ConfigAPI {
 	
-	val enabled = Config.getBoolean("$section.enabled")
-	val title = Timings("$section.title")
-	val subtitle = Timings("$section.subtitle")
+	data class ConfigSection(val message: Message, val popup: Popup)
 	
-	data class Timings(val section: String) {
-		private var timing = Config.getString("$section.timing")
-		init {
-			if (timing.split(":").size != 3) {
-				timing = globalConfig.defaults!!.getString("$section.timing")!!
-				warn("Invalid timing format at $section.timing. Please review: $timing")
-			}
-			else {
-				timing.split(":").forEach {
-					try {
-						parseInt(it)
-					} catch (e: Exception) {
-						timing = globalConfig.defaults!!.getString("$section.timing")!!
-						err("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
+	data class Popup(val section: String) {
+		
+		val enabled = Config.getBoolean("$section.enabled")
+		val title = Timings("$section.title")
+		val subtitle = Timings("$section.subtitle")
+		
+		data class Timings(val section: String) {
+			private var timing = Config.getString("$section.timing")
+			
+			init {
+				if (timing.split(":").size != 3) {
+					timing = globalConfig.defaults!!.getString("$section.timing")!!
+					warn("Invalid timing format at $section.timing. Please review: $timing")
+				}
+				else {
+					timing.split(":").forEach {
+						try {
+							parseInt(it)
+						} catch (e: Exception) {
+							timing = globalConfig.defaults!!.getString("$section.timing")!!
+							err("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
+						}
 					}
 				}
 			}
+			
+			val text = ChatColor.translate('&', Config.getString("$section.text"))
+			val fadeIn = parseInt(timing.split(":")[0])
+			val stay = parseInt(timing.split(":")[1])
+			val fadeOut = parseInt(timing.split(":")[2])
 		}
-		val text = ChatColor.translate('&', Config.getString("$section.text"))
-		val fadeIn = parseInt(timing.split(":")[0])
-		val stay = parseInt(timing.split(":")[1])
-		val fadeOut = parseInt(timing.split(":")[2])
+		
 	}
 	
-}
-
-data class Message(val section: String) {
-	val enabled = Config.getBoolean("$section.enabled")
-	val lines: MutableList<String> = ArrayList<String>().apply {
-		Config.getStringList("$section.message").forEach {
-			add(ChatColor.translate('&', it))
+	data class Message(val section: String) {
+		val enabled = Config.getBoolean("$section.enabled")
+		val lines: MutableList<String> = ArrayList<String>().apply {
+			Config.getStringList("$section.message").forEach {
+				add(ChatColor.translate('&', it))
+			}
 		}
 	}
-}
-
-object Config: ConfigAPI {
 		
 	override fun setupConfigs() {
 		addFile("Main")
