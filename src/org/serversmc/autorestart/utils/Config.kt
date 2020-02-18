@@ -52,11 +52,9 @@ data class Message(val section: String) {
 	}
 }
 
-// TODO() export this to ServersMC API
-
 object Config: ConfigAPI {
 	
-	override fun initializeConfigList() {
+	override fun setupConfigs() {
 		addFile("Main")
 		addFile("Reminder")
 		addFile("GlobalBroadcast")
