@@ -4,6 +4,7 @@ import org.bstats.bukkit.*
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.bukkit.plugin.java.*
+import org.serversmc.*
 import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.core.TimerThread.loopId
 import org.serversmc.autorestart.core.TimerThread.maxplayersId
@@ -11,7 +12,6 @@ import org.serversmc.autorestart.core.TimerThread.shutdownId
 import org.serversmc.autorestart.core.UpdateChecker.UPDATE_FOUND
 import org.serversmc.autorestart.events.*
 import org.serversmc.autorestart.utils.*
-import org.serversmc.utils.Console
 import org.serversmc.utils.Console.catchError
 import org.serversmc.utils.Console.info
 import org.serversmc.utils.Console.warn
@@ -27,7 +27,7 @@ class Main : JavaPlugin() {
 	override fun onEnable() {
 		// Initialize libraries
 		Metrics(this, 2345)
-		Console.init(this)
+		ServersMC.init(this)
 		// Initialize companion
 		AutoRestart = this
 		// Check if PlaceholderAPI is installed
