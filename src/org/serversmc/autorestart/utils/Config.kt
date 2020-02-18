@@ -2,8 +2,6 @@
 
 package org.serversmc.autorestart.utils
 
-import com.sun.deploy.util.GeneralUtil.*
-import org.bukkit.ChatColor
 import org.serversmc.utils.*
 import org.serversmc.utils.Console.err
 import org.serversmc.utils.Console.warn
@@ -35,7 +33,7 @@ data class Popup(val section: String) {
 				}
 			}
 		}
-		val text = ChatColor.translateAlternateColorCodes('&', Config.getString("$section.text"))
+		val text = ChatColor.translate('&', Config.getString("$section.text"))
 		val fadeIn = parseInt(timing.split(":")[0])
 		val stay = parseInt(timing.split(":")[1])
 		val fadeOut = parseInt(timing.split(":")[2])
@@ -46,8 +44,8 @@ data class Popup(val section: String) {
 data class Message(val section: String) {
 	val enabled = Config.getBoolean("$section.enabled")
 	val lines: MutableList<String> = ArrayList<String>().apply {
-		getStringList("$section.message").forEach {
-			add(ChatColor.translateAlternateColorCodes('&', it))
+		Config.getStringList("$section.message").forEach {
+			add(ChatColor.translate('&', it))
 		}
 	}
 }

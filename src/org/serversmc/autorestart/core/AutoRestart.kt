@@ -70,6 +70,7 @@ class Main : JavaPlugin() {
 		arrayOf(loopId, shutdownId, maxplayersId).forEach { if (it != 0) Bukkit.getScheduler().cancelTask(it) }
 		info("Done")
 	}
+	
 }
 
 object UpdateChecker {

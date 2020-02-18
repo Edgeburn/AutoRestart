@@ -18,6 +18,7 @@ object TimeManager {
 	}
 
 	fun calculateTimestamp() {
+		
 		// Initialize variables
 		val timestamps = Config.Main_Modes_Timestamp
 		val differences = ArrayList<Long>()
