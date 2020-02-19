@@ -19,3 +19,5 @@ sounds:
         ## I recommend having it at 5 seconds, this is the perfect duration of the sound
         ## But if you want to make it earlier, that is up to you.
         seconds: 5
+## DO NOT TOUCH!
+version: 1
