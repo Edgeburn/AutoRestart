@@ -10,10 +10,11 @@ object TimerThread {
 	
 	var TIME = 0
 	var PAUSED = false
-	private var PAUSED_TIMER = 0
 	var loopId = 0
 	var maxplayersId = 0
 	var shutdownId = 0
+	
+	private var PAUSED_TIMER = 0
 	
 	fun run() {
 		calculateTimer()
