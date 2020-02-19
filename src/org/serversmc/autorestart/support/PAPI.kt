@@ -1,4 +1,4 @@
-package org.serversmc.autorestart.utils
+package org.serversmc.autorestart.support
 
 import me.clip.placeholderapi.expansion.*
 import org.bukkit.entity.*
