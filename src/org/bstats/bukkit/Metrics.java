@@ -163,12 +163,13 @@ public class Metrics {
 		}
 
 		StringBuilder builder = new StringBuilder();
-		try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+		try {
+			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
 				builder.append(line);
 			}
-		}
+		} catch (Exception e) {}
 
 		if (logResponseStatusText) {
 			plugin.getLogger().info("Sent data to bStats and received response: " + builder);
