@@ -3,7 +3,6 @@ package org.serversmc.autorestart.core
 import org.bukkit.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.utils.*
-import org.serversmc.autorestart.utils.TimeManager.calculateTimer
 import org.serversmc.utils.Console.consoleSender
 
 object TimerThread {
@@ -17,7 +16,7 @@ object TimerThread {
 	private var PAUSED_TIMER = 0
 	
 	fun run() {
-		calculateTimer()
+		Config.Main_RestartMode.calculate()
 		// Start and store loopId
 		loopId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, Runnable {
 			// Timer end break
