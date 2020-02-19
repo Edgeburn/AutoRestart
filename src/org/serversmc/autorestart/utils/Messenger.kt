@@ -7,6 +7,7 @@ import org.serversmc.autorestart.objects.*
 import org.serversmc.title.*
 import org.serversmc.utils.Console.catchError
 import org.serversmc.utils.Console.consoleSendMessage
+import org.serversmc.utils.Console.consoleSender
 
 object Messenger {
 	
@@ -48,17 +49,25 @@ object Messenger {
 	
 	private fun getPrefix(): String = Config.Main_Prefix
 	private fun broadcastMessage(msg: String) = Bukkit.broadcastMessage(getPrefix() + msg)
-	private fun broadcastMessageExclude(msg: String, player: Player) = Bukkit.getOnlinePlayers().forEach { if (it != player) it.sendMessage(msg) }
+	private fun broadcastMessageExclude(msg: String, sender: CommandSender) {
+		Bukkit.getOnlinePlayers().forEach {
+			if (it != sender) {
+				it.sendMessage(msg)
+			}
+		}
+		if (sender != consoleSender) {
+			sender.sendMessage(msg)
+		}
+	}
 	
 	private fun sendTitle(player: Player, popup: Config.Popup, format: Array<Format>) {
 		TitleAPI.sendTitle(player, 0, 0, 0, "", "")
 		val title = popup.title
 		val subtitle = popup.subtitle
 		try {
-			TitleAPI.sendTitle(player, title.fadeIn, title.stay, title.fadeOut, format(title.text, format), null)
-			TitleAPI.sendTitle(player, subtitle.fadeIn, subtitle.stay, subtitle.fadeOut, null, format(subtitle.text, format))
+			TitleAPI.sendTitle(player, title.fadeIn, title.stay, title.fadeOut, format(title.text, format), format(subtitle.text, format))
 		} catch (e: Exception) {
-			catchError(e, "Messenger.sendTitle():formatter")
+			catchError(e, "Messenger.sendTitle(Player, Config.Popup, Array<Format>:TitleAPI.sendTitle(Player, Int, Int, Int, String?, String?))")
 		}
 	}
 	
@@ -82,14 +91,10 @@ object Messenger {
 	}
 	
 	fun broadcast(broadcast: Global) {
+		// Initialize ConfigSection
 		val (msg, popup) = broadcast.section
-		// Check if sound should play
-		if ((popup.enabled || msg.enabled) && Config.Sounds_Broadcast_Enabled) {
-			// Play sound to everyone
-			Bukkit.getOnlinePlayers().forEach {
-				it.playNote(it.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
-			}
-		}
+		// Call SoundManager
+		SoundManager.playBroadcast(broadcast.section)
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
@@ -120,11 +125,8 @@ object Messenger {
 		if (sender is Player) {
 			// Cast sender as player
 			val player: Player = sender
-			// Check if sound should play
-			if ((popup.enabled || msg.enabled) && Config.Sounds_Private_Enabled) {
-				// Play sound to everyone
-				if (Config.Sounds_Private_Enabled) player.playNote(player.location, Instrument.PIANO, Note.natural(0, Note.Tone.G))
-			}
+			// Call SoundManager
+			SoundManager.playPrivate(private.section, player)
 			// Check if pop ups are enabled
 			if (popup.enabled) {
 				// send pop ups
@@ -142,41 +144,62 @@ object Messenger {
 	}
 	
 	fun broadcastStatus(sender: CommandSender, status: Status) {
-		// Placeholder setups and message fetch
+		// Initialize ConfigSection
 		val (globalMsg, globalPopup) = status.globalSection
 		val (privateMsg, privatePopup) = status.privateSection
-		// Check if global popups are enabled
-		if (globalPopup.enabled) {
+		// Check if sender is a Player
+		if (sender is Player) {
+			// Cast Player type
+			val player: Player = sender
 			// Check if private popups are enabled
-			if (privatePopup.enabled && sender is Player) {
+			if (privatePopup.enabled) {
+				// Try to send title to player
 				try {
-					sender.playNote(sender.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
-					sendTitle(sender, privatePopup, arrayOf())
+					// Send title to player
+					sendTitle(player, privatePopup, status.format)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>)")
+					catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>) // Private")
 				}
-				Bukkit.getOnlinePlayers().forEach {
-					if (it != sender) {
-						it.playNote(it.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
-						sendTitle(it, globalPopup, arrayOf())
+			}
+			// Check if global popups are enabled
+			if (globalPopup.enabled) {
+				// Check if private popups are enabled
+				for (onlinePlayer in Bukkit.getOnlinePlayers()) {
+					// Cancel global pop to sender if private popups are enabled
+					if ((onlinePlayer == player) && privatePopup.enabled) continue
+					// Try to send popup to every player
+					try {
+						// Send title to every player
+						sendTitle(player, privatePopup, status.format)
+					} catch (e: Exception) {
+						catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>) // Global")
 					}
 				}
 			}
-			else {
-				Bukkit.getOnlinePlayers().forEach { sendTitle(it, globalPopup, status.format) }
-			}
+			// Call SoundManager
+			SoundManager.playPrivate(status.privateSection, player)
 		}
-		// Check if global messages are enabled
+		// Call SoundManager
+		SoundManager.playBroadcast(status.globalSection)
+		// Check if private messages are enabled
+		if (privateMsg.enabled) {
+			// Check if global messages are enabled
+			if (globalMsg.enabled) {
+				// Broadcast global messages excluding player
+				globalMsg.lines.forEach { broadcastMessageExclude(format(it, status.format), sender) }
+			}
+			// Send private messages
+			privateMsg.lines.forEach { sender.sendMessage(format(it, status.format)) }
+		}
+		// Is called if private message is disabled
 		if (globalMsg.enabled) {
-			// Check if private messages are enabled
-			if (privateMsg.enabled) {
-				privateMsg.lines.forEach { sender.sendMessage(format(it, arrayOf(fH, fM, fS))) }
-				if (sender is Player) globalMsg.lines.forEach { broadcastMessageExclude(format(it, arrayOf(fH, fM, fS)), sender) }
-			}
-			else {
-				globalMsg.lines.forEach { broadcastMessage(format(it, arrayOf(fH, fM, fS))) }
-			}
+			// Broadcast global message
+			globalMsg.lines.forEach { broadcastMessage(format(it, status.format)) }
+			// Cancel console send since console will see broadcast
+			return
 		}
+		// Sends to console if global and private is disabled
+		globalMsg.lines.forEach { consoleSendMessage(format(it, status.format)) }
 	}
 	
 }

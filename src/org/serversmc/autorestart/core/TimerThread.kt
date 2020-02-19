@@ -59,7 +59,7 @@ object TimerThread {
 			// Command Execute
 			if (Config.Commands_Enabled && (TIME == Config.Commands_Seconds)) Config.Commands_List.forEach { Bukkit.dispatchCommand(consoleSender, it) }
 			// Play shutdown sound
-			if (TIME == Config.Reminder_Seconds) Bukkit.getOnlinePlayers().forEach { it.playSound(it.location, Sound.UI_TOAST_CHALLENGE_COMPLETE, 100.0f, 1.0f) }
+			if (TIME == Config.Sounds_Shutdown_Seconds) SoundManager.playShutdown()
 			// Timer decrement
 			TIME--
 		}, 0L, 20L)
