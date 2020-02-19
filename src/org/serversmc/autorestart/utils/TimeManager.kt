@@ -8,7 +8,18 @@ import kotlin.collections.ArrayList
 
 object TimeManager {
 	
-	fun calculateInterval() {
+	fun calculateTimer() {
+		when (Config.Main_RestartMode.toUpperCase()) {
+			"INTERVAL" -> calculateInterval()
+			"TIMESTAMP" -> calculateTimestamp()
+			else -> {
+				err("Restart mode \"${Config.Main_RestartMode}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
+				calculateInterval()
+			}
+		}
+	}
+	
+	private fun calculateInterval() {
 		when (Config.Main_Modes_Interval_Factor) {
 			"hours" -> TimerThread.TIME = (Config.Main_Modes_Interval_Value * 3600.0).toInt()
 			"days" -> TimerThread.TIME = (Config.Main_Modes_Interval_Value * 86400.0).toInt()
@@ -19,7 +30,7 @@ object TimeManager {
 		}
 	}
 	
-	fun calculateTimestamp() {
+	private fun calculateTimestamp() {
 		// Initialize variables
 		val timestamps = Config.Main_Modes_Timestamp
 		val differences = ArrayList<Long>()

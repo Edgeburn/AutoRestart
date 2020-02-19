@@ -2,9 +2,9 @@ package org.serversmc.autorestart.cmds.autore
 
 import org.bukkit.command.*
 import org.bukkit.entity.*
-import org.serversmc.autorestart.core.TimerThread.calculateTimer
 import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
+import org.serversmc.autorestart.utils.TimeManager.calculateTimer
 import org.serversmc.utils.ChatColor.GRAY
 
 object CReload : ICommand {

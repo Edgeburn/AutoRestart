@@ -3,10 +3,8 @@ package org.serversmc.autorestart.core
 import org.bukkit.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.utils.*
-import org.serversmc.autorestart.utils.TimeManager.calculateInterval
-import org.serversmc.autorestart.utils.TimeManager.calculateTimestamp
+import org.serversmc.autorestart.utils.TimeManager.calculateTimer
 import org.serversmc.utils.Console.consoleSender
-import org.serversmc.utils.Console.err
 
 object TimerThread {
 	
@@ -16,17 +14,6 @@ object TimerThread {
 	var loopId = 0
 	var maxplayersId = 0
 	var shutdownId = 0
-	
-	fun calculateTimer() {
-		when (Config.Main_RestartMode.toUpperCase()) {
-			"INTERVAL" -> calculateInterval()
-			"TIMESTAMP" -> calculateTimestamp()
-			else -> {
-				err("Restart mode \"${Config.Main_RestartMode}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
-				calculateInterval()
-			}
-		}
-	}
 	
 	fun run() {
 		calculateTimer()
