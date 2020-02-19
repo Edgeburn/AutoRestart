@@ -1,5 +1,3 @@
-@file:Suppress("SpellCheckingInspection", "SpellCheckingInspection")
-
 package org.serversmc.autorestart.utils
 
 import org.serversmc.autorestart.enums.*
@@ -8,8 +6,29 @@ import org.serversmc.utils.ConfigAPI.Companion.globalConfig
 import org.serversmc.utils.Console.err
 import org.serversmc.utils.Console.warn
 import java.lang.Integer.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 object Config : ConfigAPI {
+	
+	data class TimeStamp(val h: Int, val m: Int) {
+		
+		override fun toString(): String {
+			return "$h:$m"
+		}
+		
+		fun getTimeInMillis(): Long {
+			var time = Calendar.getInstance().run {
+				set(Calendar.HOUR_OF_DAY, h)
+				set(Calendar.MINUTE, m)
+				set(Calendar.SECOND, 0)
+				timeInMillis
+			}
+			if (time - Calendar.getInstance().timeInMillis < 0) time += 86400000L
+			return time
+		}
+		
+	}
 	
 	data class ConfigSection(val message: Message, val popup: Popup)
 	
@@ -44,6 +63,7 @@ object Config : ConfigAPI {
 			val fadeIn = parseInt(timing.split(":")[0])
 			val stay = parseInt(timing.split(":")[1])
 			val fadeOut = parseInt(timing.split(":")[2])
+			
 		}
 		
 	}
@@ -69,7 +89,20 @@ object Config : ConfigAPI {
 		addFile("Sounds")
 	}
 	
-	private fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampManager.parseStringList(globalConfig.getStringList(path))
+	private fun getTimeStampList(path: String): MutableList<TimeStamp> {
+		return ArrayList<TimeStamp>().apply {
+			getStringList(path).forEach {
+				try {
+					val h = parseInt(it.split(":")[0])
+					val m = parseInt(it.split(":")[1])
+					add(TimeStamp(h, m))
+				} catch (e: Exception) {
+					err("Could not read \"$it\" please check Main.yml:main.modes.interval")
+				}
+			}
+		}
+	}
+	
 	private fun getGlobal(name: String): ConfigSection = ConfigSection(Message("global_broadcast.$name"), Popup("global_popups.$name"))
 	private fun getPrivate(name: String): ConfigSection = ConfigSection(Message("private_messages.$name"), Popup("private_popups.$name"))
 	
