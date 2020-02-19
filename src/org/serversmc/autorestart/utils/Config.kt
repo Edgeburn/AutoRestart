@@ -2,6 +2,7 @@
 
 package org.serversmc.autorestart.utils
 
+import org.serversmc.autorestart.enums.*
 import org.serversmc.utils.*
 import org.serversmc.utils.ConfigAPI.Companion.globalConfig
 import org.serversmc.utils.Console.err
@@ -73,8 +74,10 @@ object Config : ConfigAPI {
 	private fun getPrivate(name: String): ConfigSection = ConfigSection(Message("private_messages.$name"), Popup("private_popups.$name"))
 	
 	val Main_RecalculateOnreload get() = getBoolean("main.recalculate_onreload")
-	val Main_RestartMode get() = getString("main.restart_mode")
-	val Main_Modes_Interval_Factor get() = getString("main.modes.interval.factor")
+	val Main_RestartMode get() = RestartMode.parse(Main_RestartMode_Raw)
+	val Main_RestartMode_Raw get() = getString("main.restart_mode")
+	val Main_Modes_Interval_Factor get() = IntervalFactor.parse(Main_Modes_Interval_Factor_Raw)
+	val Main_Modes_Interval_Factor_Raw get() = getString("main.modes.interval.factor")
 	val Main_Modes_Interval_Value get() = getDouble("main.modes.interval.value")
 	val Main_Modes_Timestamp get() = getTimeStampList("main.modes.timestamp")
 	val Main_Prefix get() = getString("main.prefix")

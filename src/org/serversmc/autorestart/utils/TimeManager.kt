@@ -1,6 +1,7 @@
 package org.serversmc.autorestart.utils
 
 import org.serversmc.autorestart.core.*
+import org.serversmc.autorestart.enums.*
 import org.serversmc.utils.*
 import org.serversmc.utils.Console.err
 import java.util.*
@@ -9,11 +10,11 @@ import kotlin.collections.ArrayList
 object TimeManager {
 	
 	fun calculateTimer() {
-		when (Config.Main_RestartMode.toUpperCase()) {
-			"INTERVAL" -> calculateInterval()
-			"TIMESTAMP" -> calculateTimestamp()
-			else -> {
-				err("Restart mode \"${Config.Main_RestartMode}\" in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
+		when (Config.Main_RestartMode) {
+			RestartMode.INTERVAL -> calculateInterval()
+			RestartMode.TIMESTAMP -> calculateTimestamp()
+			RestartMode.NONE -> {
+				err("Restart mode '${Config.Main_RestartMode_Raw}' in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
 				calculateInterval()
 			}
 		}
@@ -21,10 +22,10 @@ object TimeManager {
 	
 	private fun calculateInterval() {
 		when (Config.Main_Modes_Interval_Factor) {
-			"hours" -> TimerThread.TIME = (Config.Main_Modes_Interval_Value * 3600.0).toInt()
-			"days" -> TimerThread.TIME = (Config.Main_Modes_Interval_Value * 86400.0).toInt()
-			else -> {
-				err("Interval factor \"${Config.Main_Modes_Interval_Factor}\" in 'Main.yml:main.interval.factor' was not found! Switching to 'hours' factor!")
+			IntervalFactor.HOURS -> TimerThread.TIME = (Config.Main_Modes_Interval_Value * 3600.0).toInt()
+			IntervalFactor.DAYS -> TimerThread.TIME = (Config.Main_Modes_Interval_Value * 86400.0).toInt()
+			IntervalFactor.NONE -> {
+				err("Interval factor '${Config.Main_Modes_Interval_Factor_Raw}' in 'Main.yml:main.interval.factor' was not found! Switching to 'hours' factor!")
 				TimerThread.TIME = (Config.Main_Modes_Interval_Value * 3600.0).toInt()
 			}
 		}
