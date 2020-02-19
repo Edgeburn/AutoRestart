@@ -348,8 +348,19 @@ main:
     restart_mode: 'interval'
     ## restart mode specific settings
     modes:
-        ## Interval in Hours (DECIMALS ALLOWED)
-        interval: 3.0
+        ## Restart server in intervals
+        ## In hours or daily
+        interval:
+            ## Set the multiplication factor
+            ## Options are 'hours' or 'days'
+            factor: 'hours'
+            ## Set the actual value of the interval
+            ## If you set factor to 'hours' and value is 4
+            ##   Server will restart in 4 hours
+            ## If factor is set to days
+            ##   Server will restart in 4 days
+            ## Decimals are allowed
+            value: 3.0
         ## Set the timestamp in 24 hour time format HH:MM
         ## Multiple timestamps allowed
         timestamp:
@@ -362,7 +373,7 @@ main:
     ## Client restart message in game chat
     kick_message: '&cServer Restarting! We will be back up any minute!'
 ## DO NOT TOUCH!!
-version: 3
+version: 5
 ```
 
 </details>
