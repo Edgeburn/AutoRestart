@@ -83,28 +83,34 @@ object Messenger {
 	
 	fun broadcast(broadcast: Global) {
 		val (msg, popup) = broadcast.section
+		// Check if sound should play
+		if ((popup.enabled || msg.enabled) && Config.Sounds_Broadcast_Enabled) {
+			// Play sound to everyone
+			Bukkit.getOnlinePlayers().forEach {
+				it.playNote(it.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
+			}
+		}
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
 			Bukkit.getOnlinePlayers().forEach {
 				try {
-					// Play Sound
-					it.playNote(it.location, Instrument.PIANO, Note.natural(0, Note.Tone.C))
 					// Send Title
 					sendTitle(it, popup, broadcast.format)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcast(Broadcast):sendTitle(Player, Popup, Array<Format>)")
+					catchError(e, "Messenger.broadcast(Global):sendTitle(Player, Config.Popup, Array<Format>)")
 				}
 			}
-			if (!msg.enabled) {
-				// Send to console only
-				msg.lines.forEach { consoleSendMessage(format(it, broadcast.format)) }
-				// Disable for players
-				return
-			}
 		}
-		// Send to everyone
-		msg.lines.forEach { broadcastMessage(format(it, broadcast.format)) }
+		// Check if messages are enabled
+		if (msg.enabled) {
+			// Send to everyone
+			msg.lines.forEach { broadcastMessage(format(it, broadcast.format)) }
+			// Disable for players
+			return
+		}
+		// Send to console only
+		msg.lines.forEach { consoleSendMessage(format(it, broadcast.format)) }
 	}
 	
 	fun message(sender: CommandSender, private: Private) {
@@ -114,21 +120,22 @@ object Messenger {
 		if (sender is Player) {
 			// Cast sender as player
 			val player: Player = sender
-			
-			// Play Sound
-			player.playNote(player.location, Instrument.PIANO, Note.natural(0, Note.Tone.G))
-			
+			// Check if sound should play
+			if ((popup.enabled || msg.enabled) && Config.Sounds_Private_Enabled) {
+				// Play sound to everyone
+				if (Config.Sounds_Private_Enabled) player.playNote(player.location, Instrument.PIANO, Note.natural(0, Note.Tone.G))
+			}
 			// Check if pop ups are enabled
 			if (popup.enabled) {
 				// send pop ups
 				try {
 					sendTitle(player, popup, private.format)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.messageSenderTime():SendPopUps")
+					catchError(e, "Messenger.message(CommandSender, Private):sendTitle(Player, Config.Popup, Array<Format>)")
 				}
-				// Disables message
-				if (!msg.enabled) return
 			}
+			// Disables message
+			if (!msg.enabled) return
 		}
 		// Private message lines
 		msg.lines.forEach { sender.sendMessage(format(it, private.format)) }
