@@ -6,6 +6,7 @@ import org.serversmc.utils.*
 import java.util.*
 import kotlin.collections.ArrayList
 
+@Suppress("unused")
 enum class RestartMode {
 	INTERVAL {
 		

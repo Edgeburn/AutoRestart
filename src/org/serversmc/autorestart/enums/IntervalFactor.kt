@@ -4,6 +4,7 @@ import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.utils.*
 
+@Suppress("unused")
 enum class IntervalFactor {
 	HOURS {
 		
