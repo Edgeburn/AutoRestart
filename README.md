@@ -62,6 +62,8 @@ If you did not receive any errors, then your done! Change the config and make th
   * Set exception message when too many players online.
   * Set message before delayed restart when the amount of players have been met.
   * Shutdown message for Max Players Exception!
+* Plays sounds when a notification is displayed (Announcement/Popup)
+* Enable or Disable sounds
 
 ---
 ### Placeholder Support
@@ -534,13 +536,42 @@ version: 1
  ```
  
 </details>
+<details>
+<summary><code>Sounds.yml</code></summary>
+
+```yaml
+## This file will allow you to enable/disable sound effects in AutoRestart
+## If the broadcast message or popup is disabled the sound will not play!
+sounds:
+    ## This is the sound that is played when everyone receives a message.
+    ## For example, an automated (Server restarting in 15 minutes) is a global broadcast
+    broadcast:
+        ## Enables or disables the sound
+        enabled: true
+    ## This is the sound that is played when a player requests information from the plugin.
+    ## For example, when typing `/autore time`, this is a player requested popup.
+    private:
+        ## Enables or disables the sound
+        enabled: true
+    ## This is the dramatic restart sound that is played seconds before the server restarts.
+    ## You can configure when the sound will start to play, "Its a little long and dramatic"
+    shutdown:
+        ## Enables or disables the sound
+        enabled: true
+        ## I recommend having it at 5 seconds, this is the perfect duration of the sound
+        ## But if you want to make it earlier, that is up to you.
+        seconds: 5
+## DO NOT TOUCH!
+version: 1
+```
+
+</details>
 
 ---
 ### To Do List
 ```text
 * Add more features (Need feedback from reviews for ideas!)
 * Make it where the server restarts on crash!
-* Play a sound when an alert pops up
 * Add BungeeCord support
 * Add a boss bar for server countdown
 ```
