@@ -7,19 +7,15 @@ import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 import org.serversmc.utils.ChatColor.RED
-import org.serversmc.utils.Console.consoleSendMessage
 
 object CPause : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
-		if (PAUSED) {
-			sender.sendMessage("${RED}Timer is already paused.")
-			if (sender is ConsoleCommandSender) consoleSendMessage(" Tried to use command, but timer is already paused.")
-		}
-		else {
+		if (!PAUSED) {
 			PAUSED = true
 			broadcastStatus(sender, Messenger.Status.PAUSE)
 		}
+		else sender.sendMessage("${RED}Timer is already paused.")
 	}
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()

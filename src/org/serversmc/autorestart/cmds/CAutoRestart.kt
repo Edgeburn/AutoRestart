@@ -8,7 +8,6 @@ import org.serversmc.autorestart.interfaces.*
 import org.serversmc.utils.ChatColor.GRAY
 import org.serversmc.utils.ChatColor.RED
 import org.serversmc.utils.Console.catchError
-import org.serversmc.utils.Console.consoleSendMessage
 
 object CAutoRestart : ICommand {
 	
@@ -35,7 +34,6 @@ object CAutoRestart : ICommand {
 					if (!it.hasPermission(sender)) {
 						// Not enough permissions error
 						sender.sendMessage("${RED}You do not have permission to use this command!")
-						consoleSendMessage(" Does not have permission")
 						return@forEach
 					}
 					try {

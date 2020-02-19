@@ -7,7 +7,6 @@ import org.serversmc.autorestart.objects.*
 import org.serversmc.title.*
 import org.serversmc.utils.Console.catchError
 import org.serversmc.utils.Console.consoleSendMessage
-import org.serversmc.utils.Console.consoleSender
 
 object Messenger {
 	
@@ -51,13 +50,9 @@ object Messenger {
 	private fun broadcastMessage(msg: String) = Bukkit.broadcastMessage(getPrefix() + msg)
 	private fun broadcastMessageExclude(msg: String, sender: CommandSender) {
 		Bukkit.getOnlinePlayers().forEach {
-			if (it != sender) {
-				it.sendMessage(msg)
-			}
+			if (it != sender) it.sendMessage(getPrefix() + msg)
 		}
-		if (sender != consoleSender) {
-			sender.sendMessage(msg)
-		}
+		if (sender is Player) consoleSendMessage(getPrefix() + msg)
 	}
 	
 	private fun sendTitle(player: Player, popup: Config.Popup, format: Array<Format>) {
@@ -183,23 +178,21 @@ object Messenger {
 		SoundManager.playBroadcast(status.globalSection)
 		// Check if private messages are enabled
 		if (privateMsg.enabled) {
-			// Check if global messages are enabled
-			if (globalMsg.enabled) {
-				// Broadcast global messages excluding player
-				globalMsg.lines.forEach { broadcastMessageExclude(format(it, status.format), sender) }
-			}
-			// Send private messages
+			// Send private messages if sender is not console
 			privateMsg.lines.forEach { sender.sendMessage(format(it, status.format)) }
 		}
 		// Is called if private message is disabled
 		if (globalMsg.enabled) {
 			// Broadcast global message
-			globalMsg.lines.forEach { broadcastMessage(format(it, status.format)) }
-			// Cancel console send since console will see broadcast
-			return
+			if (privateMsg.enabled) {
+				// Broadcast global messages excluding sender
+				globalMsg.lines.forEach { broadcastMessageExclude(format(it, status.format), sender) }
+			}
+			else {
+				// Broadcast global messages including player
+				globalMsg.lines.forEach { broadcastMessage(format(it, status.format)) }
+			}
 		}
-		// Sends to console if global and private is disabled
-		globalMsg.lines.forEach { consoleSendMessage(format(it, status.format)) }
 	}
 	
 }

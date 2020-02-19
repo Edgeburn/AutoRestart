@@ -7,7 +7,6 @@ import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.interfaces.*
 import org.serversmc.utils.ChatColor.GRAY
 import org.serversmc.utils.ChatColor.RED
-import org.serversmc.utils.Console.consoleSendMessage
 import java.io.*
 
 object CHelp : ICommand {
@@ -31,7 +30,6 @@ object CHelp : ICommand {
 			// Checks if player has permission for this command
 			if (!it.hasPermission(sender)) {
 				sender.sendMessage("${RED}You do not have permission to view this sub command dictionary!")
-				if (sender is Player) consoleSendMessage(" Not enough permissions to view that sub commands dictionary!")
 				// Prevent dictionary print
 				return@execute
 			}
@@ -44,14 +42,11 @@ object CHelp : ICommand {
 			// Close Stream
 			reader.close()
 			stream.close()
-			// Console Notify
-			if (sender is Player) consoleSendMessage(" Player reading \"${it.getLabel().toLowerCase()}\" dictionary!")
 			// Prevent not found prompt
 			return@execute
 		}
 		// Sub command not found
 		sender.sendMessage("${RED}That sub command was not found! Type \"/autore help\" to view that list of commands!")
-		if (sender is Player) consoleSendMessage(" Entered an invalid sub command!")
 	}
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? {

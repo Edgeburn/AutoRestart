@@ -7,7 +7,6 @@ import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 import org.serversmc.utils.ChatColor.RED
-import org.serversmc.utils.Console.consoleSendMessage
 
 object CResume : ICommand {
 	
@@ -16,10 +15,7 @@ object CResume : ICommand {
 			PAUSED = false
 			broadcastStatus(sender, Messenger.Status.RESUME)
 		}
-		else {
-			sender.sendMessage("${RED}Timer is already running")
-			if (sender is ConsoleCommandSender) consoleSendMessage(" Tried to use command, but timer is already counting down.")
-		}
+		else sender.sendMessage("${RED}Timer is already running")
 	}
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()
