@@ -12,6 +12,7 @@
 - Fixed Broadcast messages not showing if global broadcast is disabled (Pause, Resume, Change)
 - Added sounds on notifications, with enable/disable
 - Added support for interval for days and hours.
+TODO - Added support to change restart execution
 TODO - Added senderror sub command! Send your last error caused by AutoRestart.
 TODO - Added weekday restart support
 
