@@ -57,14 +57,15 @@ object Config : ConfigAPI {
 	}
 	
 	override fun setupConfigs() {
-		addFile("Main")
-		addFile("Reminder")
-		addFile("GlobalBroadcast")
-		addFile("PrivateMessages")
-		addFile("GlobalPopups")
-		addFile("PrivatePopups")
 		addFile("Commands")
+		addFile("GlobalBroadcast")
+		addFile("GlobalPopups")
+		addFile("Main")
 		addFile("MaxPlayers")
+		addFile("PrivateMessages")
+		addFile("PrivatePopups")
+		addFile("Reminder")
+		addFile("Sounds")
 	}
 	
 	private fun getTimeStampList(path: String): MutableList<TimeStamp> = TimeStampManager.parseStringList(globalConfig.getStringList(path))
@@ -106,5 +107,10 @@ object Config : ConfigAPI {
 	val MaxPlayers_Enabled get() = getBoolean("max_players.enabled")
 	val MaxPlayers_Amount get() = getInt("max_players.amount")
 	val MaxPlayers_Delay get() = getInt("max_players.delay")
+	
+	val Sounds_Broadcast_Enabled get() = getBoolean("sounds.broadcast.enabled")
+	val Sounds_Private_Enabled get() = getBoolean("sounds.private.enabled")
+	val Sounds_Shutdown_Enabled get() = getBoolean("sounds.shutdown.enabled")
+	val Sounds_Shutdown_Seconds get() = getInt("sounds.shutdown.seconds")
 	
 }
