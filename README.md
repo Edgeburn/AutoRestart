@@ -32,7 +32,7 @@ If you did not receive any errors, then your done! Change the config and make th
 
 ---
 ### Features
-* Restarts on hour interval, able to use decimals on config!
+* Restarts on hour or day intervals, able to use decimals on config!
 * Restarts at a specific timestamp!
 * Broadcasts reminders, customizable in minutes on config!
 * Broadcasts final reminders on last 5 seconds!
