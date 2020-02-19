@@ -74,7 +74,8 @@ object Config : ConfigAPI {
 	
 	val Main_RecalculateOnreload get() = getBoolean("main.recalculate_onreload")
 	val Main_RestartMode get() = getString("main.restart_mode")
-	val Main_Modes_Interval get() = getDouble("main.modes.interval")
+	val Main_Modes_Interval_Factor get() = getString("main.modes.interval.factor")
+	val Main_Modes_Interval_Value get() = getDouble("main.modes.interval.value")
 	val Main_Modes_Timestamp get() = getTimeStampList("main.modes.timestamp")
 	val Main_Prefix get() = getString("main.prefix")
 	val Main_KickMessage get() = getString("main.kick_message")
