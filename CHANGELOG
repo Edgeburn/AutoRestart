@@ -5,7 +5,7 @@
 - Merged enabled and messages into one, as well as merged config files for less clutter
 - Minimised TitleAPI timings in config
 - Fixed pause reminder spamming reminder
-- Removed force broadcast if broadcast and popup is enabled (for people who need a cleaner chat)
+- Removed force broadcast if broadcast and popup is disabled (for people who need a cleaner chat)
 - Fixed bug where you get kicked for "Using Illegal Characters" on tab complete in `/autore help <command>`
 - Added [PlaceHolderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) support
 - Fixed Broadcast messages not formatting (Pause, Resume, Change)
