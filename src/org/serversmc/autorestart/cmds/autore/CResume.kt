@@ -20,7 +20,7 @@ object CResume : ICommand {
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()
 	override fun getLabel(): String = "RESUME"
-	override fun getPermission(): String? = "autorestart.resume"
+	override fun getPermission(): String = "autorestart.resume"
 	override fun getUsage(): String = "/autore resume"
 	override fun getDescription(): String = "Resumes AutoRestart timer"
 	

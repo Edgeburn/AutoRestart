@@ -17,7 +17,7 @@ object CHelp : ICommand {
 			// List Sub Commands usages and descriptions
 			subCommands.forEach {
 				// Checks if player has permission for this command
-				if (!it.hasPermission(sender)) return@forEach
+				if (!sender.hasPermission(it.getPermission())) return@forEach
 				sender.sendMessage("${GRAY}${it.getUsage()}${RED} - ${GRAY}${it.getDescription()}")
 			}
 			// Prevent dictionary search
@@ -28,7 +28,7 @@ object CHelp : ICommand {
 			// Checks if label matches argument
 			if (!it.getLabel().equals(args[0], true)) return@forEach
 			// Checks if player has permission for this command
-			if (!it.hasPermission(sender)) {
+			if (!sender.hasPermission(it.getPermission())) {
 				sender.sendMessage("${RED}You do not have permission to view this sub command dictionary!")
 				// Prevent dictionary print
 				return@execute
@@ -53,7 +53,7 @@ object CHelp : ICommand {
 		return ArrayList<String>().apply {
 			if (args.size > 1) add(tabIgnored)
 			else subCommands.forEach {
-				if (!it.hasPermission(player)) return@forEach
+				if (!player.hasPermission(it.getPermission())) return@forEach
 				if (it.getLabel().toLowerCase().startsWith(args[0].toLowerCase())) {
 					add(it.getLabel().toLowerCase().substring(args.last().length))
 				}
@@ -63,7 +63,7 @@ object CHelp : ICommand {
 	}
 	
 	override fun getLabel(): String = "HELP"
-	override fun getPermission(): String? = null
+	override fun getPermission(): String = "autorestart.help"
 	override fun getUsage(): String = "/autore help <command>"
 	override fun getDescription(): String = "Shows this help screen."
 	

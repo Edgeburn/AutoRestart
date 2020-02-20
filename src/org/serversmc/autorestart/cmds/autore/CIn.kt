@@ -126,7 +126,7 @@ object CIn : ICommand {
 	}
 	
 	override fun getLabel(): String = "IN"
-	override fun getPermission(): String? = "autorestart.in"
+	override fun getPermission(): String = "autorestart.in"
 	override fun getUsage(): String = "/autore in [hours]:h [minutes]:m [seconds]:s"
 	override fun getDescription(): String = "Changes restart time in minutes."
 	

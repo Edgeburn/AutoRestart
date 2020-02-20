@@ -12,7 +12,7 @@ interface ICommand : CommandExecutor, TabCompleter, Listener {
 	val tabIgnored: String get() = "ignored"
 	
 	override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
-		if (hasPermission(sender)) {
+		if (sender.hasPermission(getPermission())) {
 			try {
 				execute(sender, args.toMutableList())
 			} catch (e: Exception) {
@@ -35,18 +35,10 @@ interface ICommand : CommandExecutor, TabCompleter, Listener {
 		return null
 	}
 	
-	fun hasPermission(sender: CommandSender): Boolean {
-		if (sender.isOp) return true
-		if (getPermission() == null) return true
-		if (sender.hasPermission("*")) return true
-		else if (sender.hasPermission(getPermission()!!)) return true
-		return false
-	}
-	
 	fun execute(sender: CommandSender, args: MutableList<out String>)
 	fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>?
 	fun getLabel(): String
-	fun getPermission(): String?
+	fun getPermission(): String
 	fun getUsage(): String
 	fun getDescription(): String
 	

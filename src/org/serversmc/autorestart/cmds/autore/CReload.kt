@@ -16,7 +16,7 @@ object CReload : ICommand {
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()
 	override fun getLabel(): String = "RELOAD"
-	override fun getPermission(): String? = "autorestart.reload"
+	override fun getPermission(): String = "autorestart.reload"
 	override fun getUsage(): String = "/autore reload"
 	override fun getDescription(): String = "Reloads all of AutoRestart config files"
 	

@@ -1,19 +1,75 @@
-name: AutoRestart
-description: "Automatically restarts your server with customizable messages, and seamless integrations"
+## https://fsymbols.com/generators/tarty/
 
+#███╗░░░███╗░█████╗░██╗███╗░░██╗
+#████╗░████║██╔══██╗██║████╗░██║
+#██╔████╔██║███████║██║██╔██╗██║
+#██║╚██╔╝██║██╔══██║██║██║╚████║
+#██║░╚═╝░██║██║░░██║██║██║░╚███║
+#╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚══╝
+
+name: AutoRestart
 version: 4.1.0
 build: 69
 main: org.serversmc.autorestart.core.Main
 softdepend:
     - PlaceholderAPI
-
 authors:
     - ServersMC
     - DennisLysenko
-website: http://spigotmc.org/
+website: https://www.spigotmc.org/resources/autorestart.2538/
 email: info@serversmc.org
+description: "Automatically restarts your server with customizable messages, and seamless integrations"
+
+#░█████╗░███╗░░░███╗██████╗░░██████╗
+#██╔══██╗████╗░████║██╔══██╗██╔════╝
+#██║░░╚═╝██╔████╔██║██║░░██║╚█████╗░
+#██║░░██╗██║╚██╔╝██║██║░░██║░╚═══██╗
+#╚█████╔╝██║░╚═╝░██║██████╔╝██████╔╝
+#░╚════╝░╚═╝░░░░░╚═╝╚═════╝░╚═════╝░
 
 commands:
     autore:
         description: "AutoRestart Command"
         usage: "/autore <help>"
+    
+#██████╗░███████╗██████╗░███╗░░░███╗░██████╗
+#██╔══██╗██╔════╝██╔══██╗████╗░████║██╔════╝
+#██████╔╝█████╗░░██████╔╝██╔████╔██║╚█████╗░
+#██╔═══╝░██╔══╝░░██╔══██╗██║╚██╔╝██║░╚═══██╗
+#██║░░░░░███████╗██║░░██║██║░╚═╝░██║██████╔╝
+#╚═╝░░░░░╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═════╝░
+
+permissions:
+    #▒█▀▀▄ ▒█▀▀▀ ▒█▀▀▀ ░█▀▀█ ▒█░▒█ ▒█░░░ ▀▀█▀▀
+    #▒█░▒█ ▒█▀▀▀ ▒█▀▀▀ ▒█▄▄█ ▒█░▒█ ▒█░░░ ░▒█░░
+    #▒█▄▄▀ ▒█▄▄▄ ▒█░░░ ▒█░▒█ ░▀▄▄▀ ▒█▄▄█ ░▒█░░
+    autorestart: {}
+    autorestart.help: {}
+    autorestart.time: {}
+    
+    #░█▀▀█ ▒█▀▀▄ ▒█▀▄▀█ ▀█▀ ▒█▄░▒█
+    #▒█▄▄█ ▒█░▒█ ▒█▒█▒█ ▒█░ ▒█▒█▒█
+    #▒█░▒█ ▒█▄▄▀ ▒█░░▒█ ▄█▄ ▒█░░▀█
+    autorestart.admin:
+        children:
+            - autorestart.in
+            - autorestart.now
+            - autorestart.pause
+            - autorestart.resume
+    autorestart.in: {}
+    autorestart.now: {}
+    autorestart.pause: {}
+    autorestart.resume: {}
+    
+    #░█▀▀█ ▒█░░░ ▒█░░░
+    #▒█▄▄█ ▒█░░░ ▒█░░░
+    #▒█░▒█ ▒█▄▄█ ▒█▄▄█
+    autorestart.*:
+        children:
+            - autorestart.help
+            - autorestart.time
+            - autorestart.resume
+            - autorestart.pause
+            - autorestart.in
+            - autorestart.reload
+            - autorestart.now
