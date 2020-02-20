@@ -1,5 +1,10 @@
 ## Main configuration values
 main:
+    ## Sets the restart command on shutdown
+    ## This is different then commands before restart
+    ## This execution is done after the players are kicked with the restart message
+    ## You can set this to '' and nothing will happen after the server restarts
+    execution: 'restart'
     ## Recalculate timer on config reload
     ## This will recalculate the restart countdown when using '/autore reload'
     recalculate_onreload: false
@@ -32,4 +37,4 @@ main:
     ## Client restart message in game chat
     kick_message: '&cServer Restarting! We will be back up any minute!'
 ## DO NOT TOUCH!!
-version: 5
+version: 4

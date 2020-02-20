@@ -86,7 +86,7 @@ object TimerThread {
 		shutdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, {
 			if ((TIME == 0) or !Bukkit.getOnlinePlayers().isEmpty()) {
 				Bukkit.getScheduler().cancelTask(shutdownId)
-				Bukkit.dispatchCommand(consoleSender, "restart")
+				Bukkit.dispatchCommand(consoleSender, Config.Main_Execution)
 			}
 			TIME--
 		}, 0L, 1L)

@@ -13,9 +13,9 @@
 - Added sounds on notifications, with enable/disable
 - Added support for interval for days and hours.
 - Fixed bukkit color support
+- Added support to change restart execution
 TODO - Track server restart time
 TODO - Added link to plugin resource in update message
-TODO - Added support to change restart execution
 TODO - Added senderror sub command! Send your last error caused by AutoRestart.
 TODO - Added weekday restart support
 

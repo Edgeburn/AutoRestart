@@ -106,6 +106,7 @@ object Config : ConfigAPI {
 	private fun getGlobal(name: String): ConfigSection = ConfigSection(Message("global_broadcast.$name"), Popup("global_popups.$name"))
 	private fun getPrivate(name: String): ConfigSection = ConfigSection(Message("private_messages.$name"), Popup("private_popups.$name"))
 	
+	val Main_Execution get() = getString("main.execution")
 	val Main_RecalculateOnreload get() = getBoolean("main.recalculate_onreload")
 	val Main_RestartMode get() = RestartMode.parse(Main_RestartMode_Raw)
 	val Main_RestartMode_Raw get() = getString("main.restart_mode")
