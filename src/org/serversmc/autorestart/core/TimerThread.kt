@@ -67,9 +67,14 @@ object TimerThread {
 					// Broadcast pre shutdown message
 					Messenger.broadcast(Messenger.Global.MAXPLAYERS_PRESHUTDOWN)
 					Bukkit.getScheduler().cancelTask(maxplayersId)
+					// Call shutdown task
+					Bukkit.getScheduler().callSyncMethod(AutoRestart, shutdown)
 				}, 0L, 1L)
 			}
+			// Cancel shutdown task call
+			return
 		}
+		// Call shutdown task
 		Bukkit.getScheduler().callSyncMethod(AutoRestart, shutdown)
 	}
 	
