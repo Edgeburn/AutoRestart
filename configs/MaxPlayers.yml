@@ -23,9 +23,10 @@ max_players:
     ## This is in seconds
     delay: 10
     ## The timeout is the amount of time AutoRestart will give to the players to log out.
-    ## This is in 15 minutes. If the amount is never reached within 15 minutes, then the server
+    ## If the amount is never reached within X minutes, then the server
     ## Will force restart. This prevents the server from never restarting due to high player traffic,
     ## but will give players time to wrap up their tasks.
+    ## This is in minutes.
     timeout: 15
 ## DO NOT TOUCH!!
 version: 4

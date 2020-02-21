@@ -18,13 +18,13 @@
 - Added support for interval for days and hours
 - Added support to change restart execution
 - Added link to plugin resource in update message
+- Added a timeout for max players. A force restart if it is taking too long for players to log out
 TODO - Added a permission node file
 TODO - Added support to change format tags, as well as all messages can be formatted
 TODO - Track server restart time
 TODO - Added senderror sub command! Send your last error caused by AutoRestart
 TODO - Added weekday restart support
 TODO - Added personal player settings
-TODO - Added a timeout for max players. A force restart if it is taking too long for players to log out
 
 4.0.1 - Added Backwards Compatibility
 - Added Backwards compatibility

@@ -80,11 +80,9 @@ object Config : ConfigAPI {
 	override fun setupConfigs() {
 		addFile("Commands")
 		addFile("GlobalBroadcast")
-		addFile("GlobalPopups")
 		addFile("Main")
 		addFile("MaxPlayers")
 		addFile("PrivateMessages")
-		addFile("PrivatePopups")
 		addFile("Reminder")
 		addFile("Sounds")
 	}
@@ -130,6 +128,7 @@ object Config : ConfigAPI {
 	val Global_Change get() = getGlobal("change")
 	val Global_MaxPlayers_Alert get() = getGlobal("max_players.alert")
 	val Global_MaxPlayers_PreShutdown get() = getGlobal("max_players.pre_shutdown")
+	val Global_MaxPlayers_Timeout get() = getGlobal("max_players.timeout")
 	val Global_Shutdown get() = getGlobal("shutdown")
 	
 	val Private_Time get() = getPrivate("time")
@@ -145,6 +144,7 @@ object Config : ConfigAPI {
 	val MaxPlayers_Enabled get() = getBoolean("max_players.enabled")
 	val MaxPlayers_Amount get() = getInt("max_players.amount")
 	val MaxPlayers_Delay get() = getInt("max_players.delay")
+	val MaxPlayers_Timeout get() = getInt("max_players.timeout")
 	
 	val Sounds_Broadcast_Enabled get() = getBoolean("sounds.broadcast.enabled")
 	val Sounds_Private_Enabled get() = getBoolean("sounds.private.enabled")

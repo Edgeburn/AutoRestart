@@ -129,7 +129,7 @@ global_broadcasts:
             message:
                 enabled: true
                 text:
-                    - '&bToo many players online for restart. Max &f%a&b amount of players allowed for a restart. Waiting for people to leave!'
+                    - '&bToo many players online for restart. Max &f%a&b amount of players allowed for a restart. Waiting for players to leave!'
             popup:
                 enabled: true
                 title:
@@ -151,6 +151,20 @@ global_broadcasts:
                     timing: '20:40:20'
                 subtitle:
                     text: ''
+                    timing: '20:40:20'
+        ## This message appears when the timeout has been reached
+        timeout:
+            message:
+                enabled: true
+                text:
+                    - '&aPlayers took too long to leave!'
+            popup:
+                enabled: true
+                title:
+                    text: '&aPlayers took too long to leave!'
+                    timing: '20:40:20'
+                subtitle:
+                    text: '&aServer now restarting in &f%d&a seconds!'
                     timing: '20:40:20'
     ##▒█▀▀▀█ ▒█░▒█ ▒█░▒█ ▀▀█▀▀ ▒█▀▀▄ ▒█▀▀▀█ ▒█░░▒█ ▒█▄░▒█
     ##░▀▀▀▄▄ ▒█▀▀█ ▒█░▒█ ░▒█░░ ▒█░▒█ ▒█░░▒█ ▒█▒█▒█ ▒█▒█▒█
