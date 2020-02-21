@@ -109,7 +109,11 @@ object Config : ConfigAPI {
 	val Commands_Seconds get() = getInt("commands.seconds")
 	val Commands_List get() = getStringList("commands.list")
 	
-	// TODO FORMAT
+	val Format_Hours get() = getString("format.hours")
+	val Format_Minutes get() = getString("format.minutes")
+	val Format_Seconds get() = getString("format.seconds")
+	val Format_Maxplayers_Amount get() = getString("format.maxplayers_amount")
+	val Format_Maxplayers_Delay get() = getString("format.maxplayers.delay")
 	
 	val Global_Minutes get() = getGlobal("minutes")
 	val Global_Seconds get() = getGlobal("seconds")
