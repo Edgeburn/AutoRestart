@@ -1,5 +1,14 @@
+#░██████╗░█████╗░██╗░░░██╗███╗░░██╗██████╗░░██████╗
+#██╔════╝██╔══██╗██║░░░██║████╗░██║██╔══██╗██╔════╝
+#╚█████╗░██║░░██║██║░░░██║██╔██╗██║██║░░██║╚█████╗░
+#░╚═══██╗██║░░██║██║░░░██║██║╚████║██║░░██║░╚═══██╗
+#██████╔╝╚█████╔╝╚██████╔╝██║░╚███║██████╔╝██████╔╝
+#╚═════╝░░╚════╝░░╚═════╝░╚═╝░░╚══╝╚═════╝░╚═════╝░
+
 ## This file will allow you to enable/disable sound effects in AutoRestart
-## If the broadcast message or popup is disabled the sound will not play!
+## If the message AND the popup is disabled the sound will not play!
+
+## Main Branch
 sounds:
     ## This is the sound that is played when everyone receives a message.
     ## For example, an automated (Server restarting in 15 minutes) is a global broadcast

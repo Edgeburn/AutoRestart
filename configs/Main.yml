@@ -1,28 +1,26 @@
-## Main configuration values
+#███╗░░░███╗░█████╗░██╗███╗░░██╗
+#████╗░████║██╔══██╗██║████╗░██║
+#██╔████╔██║███████║██║██╔██╗██║
+#██║╚██╔╝██║██╔══██║██║██║╚████║
+#██║░╚═╝░██║██║░░██║██║██║░╚███║
+#╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚══╝
+
+## Main branch
 main:
-    ## Sets the restart command on shutdown
-    ## This is different then commands before restart
-    ## This execution is done after the players are kicked with the restart message
-    ## You can set this to '' and nothing will happen after the server restarts
+    ## Sets the restart command after players have been kicked
     execution: 'restart'
-    ## Recalculate timer on config reload
     ## This will recalculate the restart countdown when using '/autore reload'
     recalculate_onreload: false
-    ## restart modes available 'interval', and 'timestamp'
+    ## Restart modes available 'interval', and 'timestamp'
     restart_mode: 'interval'
-    ## restart mode specific settings
+    ## Restart mode specific settings
     modes:
         ## Restart server in intervals
-        ## In hours or daily
         interval:
             ## Set the multiplication factor
             ## Options are 'hours' or 'days'
             factor: 'hours'
-            ## Set the actual value of the interval
-            ## If you set factor to 'hours' and value is 4
-            ##   Server will restart in 4 hours
-            ## If factor is set to days
-            ##   Server will restart in 4 days
+            ## Set the value of the interval
             ## Decimals are allowed
             value: 3.0
         ## Set the timestamp in 24 hour time format HH:MM

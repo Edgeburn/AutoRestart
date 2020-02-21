@@ -71,7 +71,7 @@ object Config : ConfigAPI {
 	data class Message(val section: String) {
 		val enabled = Config.getBoolean("$section.enabled")
 		val lines: MutableList<String> = ArrayList<String>().apply {
-			Config.getStringList("$section.message").forEach {
+			Config.getStringList("$section.text").forEach {
 				add(ChatColor.translate('&', it))
 			}
 		}
@@ -103,8 +103,8 @@ object Config : ConfigAPI {
 		}
 	}
 	
-	private fun getGlobal(name: String): ConfigSection = ConfigSection(Message("global_broadcast.$name"), Popup("global_popups.$name"))
-	private fun getPrivate(name: String): ConfigSection = ConfigSection(Message("private_messages.$name"), Popup("private_popups.$name"))
+	private fun getGlobal(name: String): ConfigSection = ConfigSection(Message("global_broadcasts.$name.message"), Popup("global_broadcasts.$name.popup"))
+	private fun getPrivate(name: String): ConfigSection = ConfigSection(Message("private_messages.$name.message"), Popup("private_messages.$name.popup"))
 	
 	val Main_Execution get() = getString("main.execution")
 	val Main_RecalculateOnreload get() = getBoolean("main.recalculate_onreload")
