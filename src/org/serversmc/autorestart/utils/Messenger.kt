@@ -10,20 +10,14 @@ import org.serversmc.utils.Console.consoleSendMessage
 
 object Messenger {
 	
-	data class Format(val regex: String, val replace: String)
-	
-	private val formatList = ArrayList<Format>().apply {
-		add(Format(Config.Format_Hours, HMS.H.toString()))
-		add(Format(Config.Format_Minutes, HMS.M.toString()))
-		add(Format(Config.Format_Seconds, HMS.S.toString()))
-		add(Format(Config.Format_Maxplayers_Amount, Config.MaxPlayers_Amount.toString()))
-		add(Format(Config.Format_Maxplayers_Delay, Config.MaxPlayers_Delay.toString()))
-	}
-	
 	private fun format(s: String): String {
-		var output = s
-		formatList.forEach { output = output.replace(it.regex, it.replace) }
-		return output
+		var out = s
+		out = out.replace(Config.Format_Hours, HMS.H.toString())
+		out = out.replace(Config.Format_Minutes, HMS.M.toString())
+		out = out.replace(Config.Format_Seconds, HMS.S.toString())
+		out = out.replace(Config.Format_Maxplayers_Amount, Config.MaxPlayers_Amount.toString())
+		out = out.replace(Config.Format_Maxplayers_Delay, Config.MaxPlayers_Delay.toString())
+		return out
 	}
 	
 	private fun getPrefix(): String = Config.Main_Prefix
