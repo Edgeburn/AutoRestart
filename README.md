@@ -32,38 +32,20 @@ If you did not receive any errors, then your done! Change the config and make th
 
 ---
 ### Features
-* Restarts on hour or day intervals, able to use decimals on config!
-* Restarts at a specific timestamp!
-* Broadcasts reminders, customizable in minutes on config!
-* Broadcasts final reminders on last 5 seconds!
-* Editable reminder messages!
-* Editable shut down messages!
-* Editable seconds messages!
-* Option to enable/disable on screen pop ups, on different events!
+* Restarts on hour or day intervals, or at a specific time
+* Broadcasts reminders, customizable in minutes on config
+* Option to enable/disable on screen pop ups, on different events
 * Change restart time in-game.
 * Integrated update check.
 * MultiCraft support!
-* Force saves world when restarts!
-* Able to Start, or Pause the server timer in-game!
-* Reminds you every ten minute that timer is paused! (Customizable)
+* Able to Start, or Pause the server timer in-game, with a reminder that its paused
 * Automatically updates your old configuration file!
-* Customizable popup messages!
-* Customizable popup timings!
+* Customizable popup and broadcast messages/timings
 * Add color codes to shutdown messages!
 * Execute commands before the server restarts on an X amount of seconds.
-* Configurable to enable, and disable commands on last seconds, and
-  change the amount of seconds before done so.
-* Added Max Players Exception.
+* Added Max Players Exception
   * If the server restarts and you have 10 players online and you set the max players to 10 your server wont restart until someone leaves and the player amount is less than or equal to 10.
-* Configurable Max Players Exception!
-  * Change restart delay.
-  * Change amount of max players.
-  * Enable/Disable feature.
-  * Set exception message when too many players online.
-  * Set message before delayed restart when the amount of players have been met.
-  * Shutdown message for Max Players Exception!
 * Plays sounds when a notification is displayed (Announcement/Popup)
-* Enable or Disable sounds
 
 ---
 ### Placeholder Support
