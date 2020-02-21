@@ -21,7 +21,7 @@
 
 ## Global broadcasts include the prefix in "main.prefix" config.
 ## Messages have multi line support!
-## All messages can use the format tags specified in the Format.yml config
+## All messages can use the format tags specified in the format.yml config
 
 ## To understand ticks. 1 second is relevant to 20 ticks! So a second and a half (1.5s) is 30 ticks!
 ## timing is displayed as fadein:stay:fadeout

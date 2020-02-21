@@ -78,13 +78,14 @@ object Config : ConfigAPI {
 	}
 	
 	override fun setupConfigs() {
-		addFile("Commands")
-		addFile("GlobalBroadcast")
-		addFile("Main")
-		addFile("MaxPlayers")
-		addFile("PrivateMessages")
-		addFile("Reminder")
-		addFile("Sounds")
+		addFile("commands")
+		addFile("format")
+		addFile("global_broadcast")
+		addFile("main")
+		addFile("max_players")
+		addFile("private_messages")
+		addFile("reminder")
+		addFile("sounds")
 	}
 	
 	private fun getTimeStampList(path: String): MutableList<TimeStamp> {
@@ -95,7 +96,7 @@ object Config : ConfigAPI {
 					val m = parseInt(it.split(":")[1])
 					add(TimeStamp(h, m))
 				} catch (e: Exception) {
-					err("Could not read \"$it\" please check Main.yml:main.modes.interval")
+					err("Could not read \"$it\" please check main.yml:main.modes.interval")
 				}
 			}
 		}
@@ -103,6 +104,22 @@ object Config : ConfigAPI {
 	
 	private fun getGlobal(name: String): ConfigSection = ConfigSection(Message("global_broadcasts.$name.message"), Popup("global_broadcasts.$name.popup"))
 	private fun getPrivate(name: String): ConfigSection = ConfigSection(Message("private_messages.$name.message"), Popup("private_messages.$name.popup"))
+	
+	val Commands_Enabled get() = getBoolean("commands.enabled")
+	val Commands_Seconds get() = getInt("commands.seconds")
+	val Commands_List get() = getStringList("commands.list")
+	
+	// TODO FORMAT
+	
+	val Global_Minutes get() = getGlobal("minutes")
+	val Global_Seconds get() = getGlobal("seconds")
+	val Global_Status_Resume get() = getGlobal("status.resume")
+	val Global_Status_Pause get() = getGlobal("status.pause")
+	val Global_Change get() = getGlobal("change")
+	val Global_MaxPlayers_Alert get() = getGlobal("max_players.alert")
+	val Global_MaxPlayers_PreShutdown get() = getGlobal("max_players.pre_shutdown")
+	val Global_MaxPlayers_Timeout get() = getGlobal("max_players.timeout")
+	val Global_Shutdown get() = getGlobal("shutdown")
 	
 	val Main_Execution get() = getString("main.execution")
 	val Main_RecalculateOnreload get() = getBoolean("main.recalculate_onreload")
@@ -115,21 +132,10 @@ object Config : ConfigAPI {
 	val Main_Prefix get() = getString("main.prefix")
 	val Main_KickMessage get() = getString("main.kick_message")
 	
-	val Reminder_Enabled_Minutes get() = getBoolean("reminder.enabled.minutes")
-	val Reminder_Enabled_Seconds get() = getBoolean("reminder.enabled.seconds")
-	val Reminder_Minutes get() = getIntegerList("reminder.minutes")
-	val Reminder_Seconds get() = getInt("reminder.seconds")
-	val Reminder_PauseReminder get() = getInt("reminder.pause_reminder")
-	
-	val Global_Minutes get() = getGlobal("minutes")
-	val Global_Seconds get() = getGlobal("seconds")
-	val Global_Status_Resume get() = getGlobal("status.resume")
-	val Global_Status_Pause get() = getGlobal("status.pause")
-	val Global_Change get() = getGlobal("change")
-	val Global_MaxPlayers_Alert get() = getGlobal("max_players.alert")
-	val Global_MaxPlayers_PreShutdown get() = getGlobal("max_players.pre_shutdown")
-	val Global_MaxPlayers_Timeout get() = getGlobal("max_players.timeout")
-	val Global_Shutdown get() = getGlobal("shutdown")
+	val MaxPlayers_Enabled get() = getBoolean("max_players.enabled")
+	val MaxPlayers_Amount get() = getInt("max_players.amount")
+	val MaxPlayers_Delay get() = getInt("max_players.delay")
+	val MaxPlayers_Timeout get() = getInt("max_players.timeout")
 	
 	val Private_Time get() = getPrivate("time")
 	val Private_Status_Resume get() = getPrivate("status.resume")
@@ -137,14 +143,11 @@ object Config : ConfigAPI {
 	val Private_Change get() = getPrivate("change")
 	val Private_PauseReminder get() = getPrivate("pause_reminder")
 	
-	val Commands_Enabled get() = getBoolean("commands.enabled")
-	val Commands_Seconds get() = getInt("commands.seconds")
-	val Commands_List get() = getStringList("commands.list")
-	
-	val MaxPlayers_Enabled get() = getBoolean("max_players.enabled")
-	val MaxPlayers_Amount get() = getInt("max_players.amount")
-	val MaxPlayers_Delay get() = getInt("max_players.delay")
-	val MaxPlayers_Timeout get() = getInt("max_players.timeout")
+	val Reminder_Enabled_Minutes get() = getBoolean("reminder.enabled.minutes")
+	val Reminder_Enabled_Seconds get() = getBoolean("reminder.enabled.seconds")
+	val Reminder_Minutes get() = getIntegerList("reminder.minutes")
+	val Reminder_Seconds get() = getInt("reminder.seconds")
+	val Reminder_PauseReminder get() = getInt("reminder.pause_reminder")
 	
 	val Sounds_Broadcast_Enabled get() = getBoolean("sounds.broadcast.enabled")
 	val Sounds_Private_Enabled get() = getBoolean("sounds.private.enabled")
