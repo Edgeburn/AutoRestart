@@ -77,7 +77,7 @@ object Messenger {
 		SECONDS(Config.Global_Seconds, arrayOf(fS)),
 		MAXPLAYERS_ALERT(Config.Global_MaxPlayers_Alert, arrayOf(fA)),
 		MAXPLAYERS_PRESHUTDOWN(Config.Global_MaxPlayers_PreShutdown, arrayOf(fD)),
-		MAXPLAYERS_TIMEOUT(Config.Global_MaxPlayers_PreShutdown, arrayOf(fD)),
+		MAXPLAYERS_TIMEOUT(Config.Global_MaxPlayers_Timeout, arrayOf(fD)),
 		SHUTDOWN(Config.Global_Shutdown, arrayOf()), ;
 	}
 	
