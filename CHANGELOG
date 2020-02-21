@@ -1,4 +1,10 @@
-4.1.0
+4.1.1
+TODO - Track server restart time
+TODO - Added senderror sub command! Send your last error caused by AutoRestart
+TODO - Added weekday restart support
+TODO - Added personal player settings
+
+4.1.0 - Config Update, PlaceholderAPI, Sounds, and other changes
 - HUGE CONFIG CHANGES, BE AWARE OF CONFIG UPDATE
 - Redesigned ConfigAPI to help for update changes
 - Redesigned configs for Broadcasts and Popups for a more compact and easier version
@@ -21,10 +27,6 @@
 - Added a timeout for max players. A force restart if it is taking too long for players to log out
 - Added support to change format tags, as well as all messages can be formatted
 - Added a permission node file
-TODO - Track server restart time
-TODO - Added senderror sub command! Send your last error caused by AutoRestart
-TODO - Added weekday restart support
-TODO - Added personal player settings
 
 4.0.1 - Added Backwards Compatibility
 - Added Backwards compatibility
