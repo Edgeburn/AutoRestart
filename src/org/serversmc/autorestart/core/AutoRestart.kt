@@ -4,16 +4,18 @@ import org.bstats.bukkit.*
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.bukkit.plugin.java.*
+import org.serversmc.*
 import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.core.TimerThread.loopId
 import org.serversmc.autorestart.core.TimerThread.maxplayersId
 import org.serversmc.autorestart.core.TimerThread.shutdownId
 import org.serversmc.autorestart.core.UpdateChecker.UPDATE_FOUND
 import org.serversmc.autorestart.events.*
+import org.serversmc.autorestart.support.*
 import org.serversmc.autorestart.utils.*
-import org.serversmc.autorestart.utils.Console.catchError
-import org.serversmc.autorestart.utils.Console.info
-import org.serversmc.autorestart.utils.Console.warn
+import org.serversmc.utils.Console.catchError
+import org.serversmc.utils.Console.info
+import org.serversmc.utils.Console.warn
 import java.io.*
 import java.net.*
 
@@ -23,17 +25,19 @@ class Main : JavaPlugin() {
 		lateinit var AutoRestart: Main
 	}
 	
-	val version = description.version
-	
 	override fun onEnable() {
+		// Initialize libraries
+		Metrics(this, 2345)
+		ServersMC.init(this)
 		AutoRestart = this
+		// Check if PlaceholderAPI is installed
+		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) PAPI.register()
+		// Try to enable plugin
 		try {
-			// Start metrics
-			Metrics(this, 2345)
 			// Setup plugin folder is does not exist
 			dataFolder.mkdirs()
 			// Configuration Files
-			Config.initializeConfig()
+			Config.init()
 			// Event Register
 			Bukkit.getPluginManager().apply {
 				registerEvents(EventPlayerJoin, AutoRestart)
@@ -66,6 +70,7 @@ class Main : JavaPlugin() {
 		arrayOf(loopId, shutdownId, maxplayersId).forEach { if (it != 0) Bukkit.getScheduler().cancelTask(it) }
 		info("Done")
 	}
+	
 }
 
 object UpdateChecker {

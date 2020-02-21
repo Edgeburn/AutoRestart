@@ -3,110 +3,89 @@ package org.serversmc.autorestart.utils
 import org.bukkit.*
 import org.bukkit.command.*
 import org.bukkit.entity.*
-import org.serversmc.autorestart.core.*
-import org.serversmc.autorestart.utils.Console.catchError
-import org.serversmc.autorestart.utils.Console.consoleSendMessage
-
-object HMS {
-	val H get() = TimerThread.TIME / 3600
-	val M get() = TimerThread.TIME / 60 - H * 60
-	val S get() = TimerThread.TIME - H * 3600 - M * 60
-}
+import org.serversmc.autorestart.objects.*
+import org.serversmc.protocol.*
+import org.serversmc.utils.Console.catchError
+import org.serversmc.utils.Console.consoleSendMessage
 
 object Messenger {
 	
-	interface Format {
-		fun regex(): String
-		fun replace(): String
-	}
-
-	private val fH = object : Format {
-		override fun regex(): String = "%h"
-		override fun replace(): String = HMS.H.toString()
-	}
-
-	private val fM = object : Format {
-		override fun regex(): String = "%m"
-		override fun replace(): String = HMS.M.toString()
-	}
-
-	private val fS = object : Format {
-		override fun regex(): String = "%s"
-		override fun replace(): String = HMS.S.toString()
-	}
-
-	private val fA = object : Format {
-		override fun regex(): String = "%a"
-		override fun replace(): String = Config.MaxPlayers_Amount.toString()
-	}
-
-	private val fD = object : Format {
-		override fun regex(): String = "%d"
-		override fun replace(): String = Config.MaxPlayers_Delay.toString()
-	}
-	
-	private fun format(s: String, vars: Array<Format>): String {
-		var output = s
-		vars.forEach { output = output.replace(it.regex(), it.replace()) }
-		return output
+	private fun format(s: String): String {
+		var out = s
+		out = out.replace(Config.Format_Hours, HMS.H.toString())
+		out = out.replace(Config.Format_Minutes, HMS.M.toString())
+		out = out.replace(Config.Format_Seconds, HMS.S.toString())
+		out = out.replace(Config.Format_Maxplayers_Amount, Config.MaxPlayers_Amount.toString())
+		out = out.replace(Config.Format_Maxplayers_Delay, Config.MaxPlayers_Delay.toString())
+		return out
 	}
 	
 	private fun getPrefix(): String = Config.Main_Prefix
 	private fun broadcastMessage(msg: String) = Bukkit.broadcastMessage(getPrefix() + msg)
-	private fun broadcastMessageExclude(msg: String, player: Player) = Bukkit.getOnlinePlayers().forEach { if (it != player) it.sendMessage(msg) }
+	private fun broadcastMessageExclude(msg: String, sender: CommandSender) {
+		Bukkit.getOnlinePlayers().forEach {
+			if (it != sender) it.sendMessage(getPrefix() + msg)
+		}
+		if (sender is Player) consoleSendMessage(getPrefix() + msg)
+	}
 	
-	private fun sendTitle(player: Player, popup: Popup, format: Array<Format>) {
+	private fun sendTitle(player: Player, popup: Config.Popup) {
 		TitleAPI.sendTitle(player, 0, 0, 0, "", "")
 		val title = popup.title
 		val subtitle = popup.subtitle
 		try {
-			TitleAPI.sendTitle(player, title.fadeIn, title.stay, title.fadeOut, format(title.text, format), null)
-			TitleAPI.sendTitle(player, subtitle.fadeIn, subtitle.stay, subtitle.fadeOut, null, format(subtitle.text, format))
+			TitleAPI.sendTitle(player, title.fadeIn, title.stay, title.fadeOut, format(title.text), format(subtitle.text))
 		} catch (e: Exception) {
-			catchError(e, "Messenger.sendTitle():formatter")
+			catchError(e, "Messenger.sendTitle(Player, Config.Popup, Array<Format>:TitleAPI.sendTitle(Player, Int, Int, Int, String?, String?))")
 		}
 	}
 	
-	enum class Status(val globalSection: ConfigSection, val privateSection: ConfigSection, val format: Array<Format>) {
-		RESUME(Config.Global_Status_Resume, Config.Private_Status_Resume, arrayOf()),
-		PAUSE(Config.Global_Status_Pause, Config.Private_Status_Pause, arrayOf()),
-		CHANGE(Config.Global_Change, Config.Private_Change, arrayOf(fH, fM, fS))
+	enum class Status(val globalSection: Config.ConfigSection, val privateSection: Config.ConfigSection) {
+		RESUME(Config.Global_Status_Resume, Config.Private_Status_Resume),
+		PAUSE(Config.Global_Status_Pause, Config.Private_Status_Pause),
+		CHANGE(Config.Global_Change, Config.Private_Change)
 	}
 	
-	enum class Global(val section: ConfigSection, val format: Array<Format>) {
-		MINUTES(Config.Global_Minutes, arrayOf(fM)),
-		SECONDS(Config.Global_Seconds, arrayOf(fS)),
-		MAXPLAYERS_ALERT(Config.Global_MaxPlayers_Alert, arrayOf(fA)),
-		MAXPLAYERS_PRESHUTDOWN(Config.Global_MaxPlayers_PreShutdown, arrayOf(fD)),
-		SHUTDOWN(Config.Global_Shutdown, arrayOf()),;
+	enum class Global(val section: Config.ConfigSection) {
+		MINUTES(Config.Global_Minutes),
+		SECONDS(Config.Global_Seconds),
+		MAXPLAYERS_ALERT(Config.Global_MaxPlayers_Alert),
+		MAXPLAYERS_PRESHUTDOWN(Config.Global_MaxPlayers_PreShutdown),
+		MAXPLAYERS_TIMEOUT(Config.Global_MaxPlayers_Timeout),
+		SHUTDOWN(Config.Global_Shutdown), ;
 	}
 	
-	enum class Private(val section: ConfigSection, val format: Array<Format>) {
-		PAUSE_REMINDER(Config.Private_PauseReminder, arrayOf()),
-		TIME(Config.Private_Time, arrayOf(fH, fM, fS))
+	enum class Private(val section: Config.ConfigSection) {
+		PAUSE_REMINDER(Config.Private_PauseReminder),
+		TIME(Config.Private_Time)
 	}
 	
 	fun broadcast(broadcast: Global) {
+		// Initialize ConfigSection
 		val (msg, popup) = broadcast.section
+		// Call SoundManager
+		SoundManager.playBroadcast(broadcast.section)
 		// Check if pop ups are enabled
 		if (popup.enabled) {
 			// send pop ups
 			Bukkit.getOnlinePlayers().forEach {
 				try {
-					sendTitle(it, popup, broadcast.format)
+					// Send Title
+					sendTitle(it, popup)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcast(Broadcast):sendTitle(Player, Popup, Array<Format>)")
+					catchError(e, "Messenger.broadcast(Global):sendTitle(Player, Config.Popup, Array<Format>)")
 				}
 			}
-			if (!msg.enabled) {
-				// Send to console only
-				msg.lines.forEach { consoleSendMessage(format(it, broadcast.format)) }
-				// Disable for players
-				return
-			}
 		}
-		// Send to everyone
-		msg.lines.forEach { broadcastMessage(format(it, broadcast.format)) }
+		// Check if messages are enabled
+		if (msg.enabled) {
+			// Send to everyone
+			msg.lines.forEach { broadcastMessage(format(it)) }
+			// Disable for players
+			return
+		}
+		// Send to console only
+		msg.lines.forEach { consoleSendMessage(format(it)) }
 	}
 	
 	fun message(sender: CommandSender, private: Private) {
@@ -116,50 +95,77 @@ object Messenger {
 		if (sender is Player) {
 			// Cast sender as player
 			val player: Player = sender
+			// Call SoundManager
+			SoundManager.playPrivate(private.section, player)
 			// Check if pop ups are enabled
 			if (popup.enabled) {
 				// send pop ups
 				try {
-					sendTitle(player, popup, private.format)
+					sendTitle(player, popup)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.messageSenderTime():SendPopUps")
+					catchError(e, "Messenger.message(CommandSender, Private):sendTitle(Player, Config.Popup, Array<Format>)")
 				}
-				// Disables message
-				if (!msg.enabled) return
 			}
+			// Disables message
+			if (!msg.enabled) return
 		}
 		// Private message lines
-		msg.lines.forEach { sender.sendMessage(format(it, private.format)) }
+		msg.lines.forEach { sender.sendMessage(format(it)) }
 	}
 	
 	fun broadcastStatus(sender: CommandSender, status: Status) {
-		// Placeholder setups and message fetch
-		val (globalMsg, globalPopup) =  status.globalSection
+		// Initialize ConfigSection
+		val (globalMsg, globalPopup) = status.globalSection
 		val (privateMsg, privatePopup) = status.privateSection
-		// Check if global popups are enabled
-		if (globalPopup.enabled) {
+		// Check if sender is a Player
+		if (sender is Player) {
+			// Cast Player type
+			val player: Player = sender
 			// Check if private popups are enabled
-			if (privatePopup.enabled && sender is Player) {
+			if (privatePopup.enabled) {
+				// Try to send title to player
 				try {
-					sendTitle(sender, privatePopup, arrayOf())
+					// Send title to player
+					sendTitle(player, privatePopup)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>)")
+					catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>) // Private")
 				}
-				Bukkit.getOnlinePlayers().forEach { if (it != sender) sendTitle(it, globalPopup, arrayOf()) }
 			}
-			else {
-				Bukkit.getOnlinePlayers().forEach { sendTitle(it, globalPopup, status.format) }
+			// Check if global popups are enabled
+			if (globalPopup.enabled) {
+				// Check if private popups are enabled
+				for (onlinePlayer in Bukkit.getOnlinePlayers()) {
+					// Cancel global pop to sender if private popups are enabled
+					if ((onlinePlayer == player) && privatePopup.enabled) continue
+					// Try to send popup to every player
+					try {
+						// Send title to every player
+						sendTitle(player, privatePopup)
+					} catch (e: Exception) {
+						catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>) // Global")
+					}
+				}
 			}
+			// Call SoundManager
+			SoundManager.playPrivate(status.privateSection, player)
 		}
-		// Check if global messages are enabled
+		// Call SoundManager
+		SoundManager.playBroadcast(status.globalSection)
+		// Check if private messages are enabled
+		if (privateMsg.enabled) {
+			// Send private messages if sender is not console
+			privateMsg.lines.forEach { sender.sendMessage(format(it)) }
+		}
+		// Is called if private message is disabled
 		if (globalMsg.enabled) {
-			// Check if private messages are enabled
+			// Broadcast global message
 			if (privateMsg.enabled) {
-				privateMsg.lines.forEach { sender.sendMessage(it) }
-				globalMsg.lines.forEach { broadcastMessageExclude(it, sender as Player) }
+				// Broadcast global messages excluding sender
+				globalMsg.lines.forEach { broadcastMessageExclude(format(it), sender) }
 			}
 			else {
-				globalMsg.lines.forEach { broadcastMessage(it) }
+				// Broadcast global messages including player
+				globalMsg.lines.forEach { broadcastMessage(format(it)) }
 			}
 		}
 	}

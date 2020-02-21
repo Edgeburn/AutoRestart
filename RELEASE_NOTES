@@ -1,0 +1,5 @@
+build: 68
+spigot: 1.15.2
+java: 1.8.0_201
+kotlin: 1.3.61
+placeholder-api: 2.10.4

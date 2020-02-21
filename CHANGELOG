@@ -1,16 +1,35 @@
 4.1.0
+- HUGE CONFIG CHANGES, BE AWARE OF CONFIG UPDATE
 - Redesigned ConfigAPI to help for update changes
 - Redesigned configs for Broadcasts and Popups for a more compact and easier version
+- Updated config comments, and instructions
 - Merged enabled and messages into one, as well as merged config files for less clutter
+- Minimised TitleAPI timings in config
+- Removed force broadcast if broadcast and popup is disabled (for people who need a cleaner chat)
 - Fixed pause reminder spamming reminder
-- Cleaned up code
-- Removed force broadcast if broadcast and popup is enabled (for people who need a cleaner chat)
 - Fixed bug where you get kicked for "Using Illegal Characters" on tab complete in `/autore help <command>`
+- Fixed Broadcast messages not formatting (Pause, Resume, Change)
+- Fixed Broadcast messages not showing if global broadcast is disabled (Pause, Resume, Change)
+- Fixed bukkit color support
+- Fixed permissions
+- Fixed max players not working
+- Added [PlaceHolderAPI](https://www.spigotmc.org/resources/placeholderapi.6245/) support
+- Added sounds on notifications, with enable/disable
+- Added support for interval for days and hours
+- Added support to change restart execution
+- Added link to plugin resource in update message
+- Added a timeout for max players. A force restart if it is taking too long for players to log out
+- Added support to change format tags, as well as all messages can be formatted
+- Added a permission node file
+TODO - Track server restart time
+TODO - Added senderror sub command! Send your last error caused by AutoRestart
+TODO - Added weekday restart support
+TODO - Added personal player settings
 
-4.0.1
+4.0.1 - Added Backwards Compatibility
 - Added Backwards compatibility
 
-4.0.0
+4.0.0 - Complete Rebirth!
 - Redesigned plugin to Kotlin instead of Java
 - Simplified config accessing
 - Changed update checker to look for build number, not version number
@@ -26,25 +45,282 @@
 - Renamed "/autore start" to "/autore resume"
 - Added tab complete feature
 
-3.3.3
+3.3.3 - Updated to SpigotAPI 1.13.2
 - Updated api-version to 1.13
 
-3.3.2
+3.3.2 - Finally...
 - Removed AutoRestart-BootLoader.jar method
 - Using Spigots default restart method (Broader support)
 - Changed restart message function (fixes where everyone gets the restart message)
 - Fixed asynchronous errors
 - Disabled max_players (could not recreate problem)
 
-3.3.1
+3.3.1 - Added MultiCraft Support
 - Added MultiCraft support
 
-3.3.0
+3.3.0 - Fixed BootLoader
 - Fixed BootLoader (Memory Leak)
 - Updated to latest Spigot version
 
-3.2.1
+3.2.1 - Separated config files (no more one long config), and minor changes
 - Show latest update version when update is found.
 - Added update messenger in chat
 - Added plugin metrics
 - Separated configuration files
+
+3.2.0 - Added TimeStamps, and fixed minor bugs
+- Added TimeStamps feature, you can now restart on specific time(s). Yes plural, you can set more than one time.
+- Fixed popup not showing more than 59 seconds remaining in seconds reminder.
+
+3.1.0 - Added Stand-Alone BootLoader! (No TimeStamps are not in yet :( )
+- Added bootloader to control the flow of your server restarts, and stops.
+- This bootloader will allow you to stop the server at will, and it will actually stop!
+- When AutoRestart restarts the server, it'll communicate with the bootloader to start the server once stopped.
+- With this new bootloader, I can actually implement a restart on crash feature (I need a server crash to test on sooo if your server crashes PM ASAP)
+- This will also allow this plugin to work on MultiCraft or other special hosting platforms without the need of modifications.
+
+3.0.5 - Fixed config mistakes, preparing for multi config file system
+- Fixed minor bugs in the config loader
+- Prepared code for Multi Config File, this will make changing configs A LOT easier. (Less scrolling, more editing)
+
+3.0.4 - Minor bug fixes and code redesign
+- Minor bug fixes
+- Redesigned the config file structure (Making it more fault free, and easier when I need to register new config nodes)
+
+3.0.3 - Minor bug fixes
+- Fixed "/autore reload" not reloading completely
+- Removed timestamp mode temporarily
+- Fixed seconds countdown, now shows more than 59 seconds remaining
+
+3.0.2 - Code clean up, and added error handler for commands
+- Cleaned up some code
+- Added error handler for every command (Makes errors easier to send, and read, also prevents plugin failing)
+
+3.0.1 - Fixed SubCommands "Help" and "In"
+- Fixed a couple minor bugs
+
+3.0.0 - Brand new code, re-written from scratch!
+- Enjoy the new remastered version of AutoRestart V3! PM me bugs, I have created a bug handler, so it'll be prettier. TimeStamps will be coming soon, I got tired coding all day
+
+2.11.1 - I'm back! Updated to Minecraft 1.12.2 (I don't want to hear the hate)
+- Updated to Minecraft 1.12.2
+- Updated integrated UpdateChecker, now looks up raw file from GitLab, instead of tags.
+
+2.11.0 - Added Update Notification
+- The server will now notify your players when you update a plugin.
+
+2.10.3 - Config fix
+- Added Multicraft node into config.yml
+
+2.10.2 - Strange Numbers
+- Fixed "Strange Numbers" bug
+
+2.10.1 - Updated to Spigot 1.11.2, and bug fixes
+- Now compatible with Minecraft 1.11.2
+- Finally fixed TimeStamp feature.
+
+2.10.0 - Added Restart Script support
+- With this feature enabled, it will allow you to restart the server using the spigot startup file. (If you have it enabled!)
+- And with this feature enabled, you can restart the server within multicraft.
+- If you have this enabled, there is no need to update the run.bat file.
+
+2.9.1 - This should fix all your config problems!
+- Fixed Config.yml updater
+- Fixed Config.yml loader
+
+2.9.0 - Added TimeStamps!
+- You are now able to restart at a specific time!
+
+2.8.5 - Minor Bug Fixes
+- "config.yml already exists" would show on startup
+- '/autore start' wouldn't continue server timer
+
+2.8.4 - Fixed Interval Customization
+- No matter what value you put in "interval", it will always restart in 6 hours.
+
+2.8.3 - Fixed Major Bugs
+- Shutdown wouldn't show "shutdown message"
+- '/autore now' freezes server, then crashes. Until restart.
+- De-opping all op-ed players on shutdown.
+- '/autore in <minutes>' show incorrect time update.
+- '/autore reload' correctly reloads config file
+- Last minute command executor didn't work at all
+
+2.8.2 - Fixed Compatibility with Bukkit
+- Color codes were not working for Bukkit servers!
+
+2.8.1 - Fixed Title Popups to show!
+- Bug fixed where title messages wont display!
+- Code Redesign, for anyone who is looking at the source ;)
+- Changed config.yml "Change log inside config"
+
+2.8.0 - Updated to Spigot 1.10.2
+- Created my OWN TitleManager, so delete them dependencies! There are three!
+- I got tired of waiting for other developers to fix their plugins.
+- In the next update, will just be some code design updates, no new features will be added yet. My code just looks like a mess!
+
+2.7.1 - Updated to Spigot 1.9.4
+- Updated to Spigot 1.9.4
+- Tested with 1.9.2, and is compatible.
+
+2.7.0 - Convenient Installation
+- Added AutoInstaller, for dependencies.
+- AutoUpdater for dependencies are still in progress.
+- Will release 1.9.4 release soon.
+
+2.6.0 - Updated to Spigot 1.9.2
+- Added Missing Dependency
+- Automatic check if dependencies are installed
+- Message on server load to restart for finishing AutoRestart installation.
+
+2.5.0 - Updated to 1.9, fixed Invalid Update Message!
+- I have updated to 1.9! Yay! Only took me 3 hours xD
+- Added color scheme to /autore help
+- Added color to updating message on console
+- Added instructions!
+
+2.4.1 - Fixed Error on Restart #2
+- Fixed error on restart (Again)
+- Should be stable
+
+2.4.0 - Fixed Error on Restart
+- Fixed message "Plugin injected world save..."
+- Fixed error on restart for oped players (unstable)
+
+2.3.0 - Updated to work with 1.8+
+- Fixed a bug from last seasons update!
+- Changed configuration in popup timings. Now configurable in ticks, instead of seconds.
+- UPDATED TO THE LATEST VERSION OF MINECRAFT FINALLY
+
+2.2.0 - Latest Spigot Version
+- Updated to the latest Spigot Dependency
+
+2.1.0 - Fixed Updater
+- Fixed the built in updater which was causing lag on server startup.
+
+2.0.0 - Recreated the plugin completely!
+- I have completely remade this plugin for my sake, and for it to be easier to update, and change things, because before,
+it was a huge mess, and I couldn't understand anything, even though it is my plugin. Please note that this plugin has a lot
+of features, and a lot of things that is configurable, so I couldn't test any thing, since I'm on vacation.
+
+1.8.0 - Updated to Latest Spigot Version
+- Updated to latest Spigot version.
+
+1.7.1 - Huge Bug Fixes, and New Features!
+- Added Semi-MultiCraft support.
+- Block commands that alter timer when MultiCraft mode enabled.
+- Fixed shutdown messages.
+- Fixed /autore reload command.
+- POPUPS NOW COMPATIBLE WITH 1.7.10+ (Have not tested, please give feedback!)
+- Updated config.yml
+- Added force shutdown, when MaxPlayer features enabled!
+- Minor bug fixes, and typos in config.yml
+
+1.7.0 - Huge Update!
+- Updated config.yml
+- Remove config.yml spam.
+- Fixed console spam on restart.
+- Fixed prefixes.
+- Added Max Player support*
+- Restructured files.
+- FIXED POPUPS! Popups should work for ALL versions from 1.8+.
+
+1.6.0 - Added Last Seconds Command Executor
+- Added support to allow the plugin to run command(s) before the server restart
+- Amount of commands are infinite.
+- Configurable time of when to execute commands.
+- Fixed the way the server saves config files. (This is for the new people)
+- Fixed backup config system.
+
+1.5.5 - Added ServersMC version of TitleManager.
+- Removed the hassle of downloading third party plugins.
+- Created and implements custom TitleManager designed by ServersMC.
+
+1.5.4 - Updated Popups.
+- I have fixed the issue of the pop ups crash.
+- Thanks for TitleManager plugin!
+
+1.5.3 - Updated to 1.8.3
+- Updated to 1.8.3
+
+1.5.2 - Updated default config
+- An apostrophe was causing the configs not to load
+
+1.5.1 - Added Chat Color compatibility to shutdown-message!
+- Shutdown message now accepts color codes!
+
+1.5.0 - Added more customization!
+- More broadcast customization's!
+- Now can change pop up messages!
+
+1.4.5 - Fixed Update Check Crashes
+- Fixed when there is no internet connection, the plugin gives an error.
+
+1.4.4 - Added Configuration Updater
+- Now updates your configuration if it is not the latest version.
+
+1.4.3 - Forgotten Lines of Code
+- Added messages where you don't have permission for a certain sub command. (Can't believe I forgot that)
+
+1.4.2 - Bug fixes, and more features
+- Added more config lines, for pop up enabling customization.
+- Added the ability to pause, and start the server.
+- Added more permissions for commands.
+
+1.4.1 - Instant Server Time Restart Change Command
+- Now able to re-set when the server will restart with a command. This is set in minutes.
+- The permission for this new command is "autorestart.in", and the command is "/autore in <minutes>"
+
+1.4.0 - More Features and Fixes!
+- Fixed world save on restart.
+- Added update checker, with a pop up to notify, and link in console!
+
+1.3.2 - Bug Fixes
+- Fixed Bug where, when server is restarting, "Server Restarting" message is spammed.
+
+1.3.1 - Removed the text message for players who are allowed to see the Pop ups!
+- If the player is allowed to see the popup on a certain event, the text version wont popup, if not then the text version will pop up.
+
+1.3.0 - Added more customization
+- Now able to edit which events the popup will be enabled.
+- Now able to change when the seconds countdown starts.
+- Changed the way the config is setup!
+
+1.2.5 - Updated Plugin to Spigot version BuildTools #19
+- Fixed Error on restart, on certain Spigot versions!
+- Fixed Error on popups!
+- Updated compiled version for Spigot!
+- Updated Java compiled version to Java 8!
+
+1.2.4 - Fixed Config Setup
+- Fixed config file setup!
+
+1.2.3 - Fixed Metric's System
+- Fixed Metrics!
+
+1.2.2 - Added more customization
+- Added countdown on last 5 seconds
+- Able to enable and disable countdown on seconds!
+- Able to edit the countdown message!
+- Fixed when server restarts on /autore reload
+
+1.2.1 - Now able to disable Pop-ups!
+- Added ability to disable pop-ups!
+
+1.2.0 - Added Pop ups!
+- Added pop ups to command /autore time
+- Added pop ups when plugin is reminding players that the server is restarting in X amount of minutes!
+
+1.0.4 - Fixed small bug
+- Fixed small bug
+
+1.0.3 - Added PluginMetrics capability
+- Allowed plugin to send Metrics data!
+
+1.0.2 - Re-Fixed Second Crash Error
+- Re-Fixed the error statement on restart!
+
+1.0.1 - Fixed Error on Restart
+- Fixed the error on when the server is going to restart!
+
+1.0.0 - First Release

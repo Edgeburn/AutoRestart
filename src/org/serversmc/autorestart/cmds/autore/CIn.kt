@@ -3,10 +3,10 @@ package org.serversmc.autorestart.cmds.autore
 import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.TIME
-import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
+import org.serversmc.utils.ChatColor.RED
 import java.lang.Integer.*
 
 object CIn : ICommand {
@@ -126,7 +126,7 @@ object CIn : ICommand {
 	}
 	
 	override fun getLabel(): String = "IN"
-	override fun getPermission(): String? = "autorestart.in"
+	override fun getPermission(): String = "autorestart.in"
 	override fun getUsage(): String = "/autore in [hours]:h [minutes]:m [seconds]:s"
 	override fun getDescription(): String = "Changes restart time in minutes."
 	
