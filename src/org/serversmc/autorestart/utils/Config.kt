@@ -83,6 +83,7 @@ object Config : ConfigAPI {
 		addFile("global_broadcast")
 		addFile("main")
 		addFile("max_players")
+		addFile("permissions")
 		addFile("private_messages")
 		addFile("reminder")
 		addFile("sounds")

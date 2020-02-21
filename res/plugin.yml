@@ -30,7 +30,8 @@ description: "Automatically restarts your server with customizable messages, and
 commands:
     autore:
         description: "AutoRestart Command"
-        usage: "/autore <help>"
+        permission: "autorestart"
+        permission-message: "Surprisingly they don't want you using this command?"
     
 #██████╗░███████╗██████╗░███╗░░░███╗░██████╗
 #██╔══██╗██╔════╝██╔══██╗████╗░████║██╔════╝
