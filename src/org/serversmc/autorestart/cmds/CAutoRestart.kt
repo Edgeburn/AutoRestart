@@ -4,7 +4,7 @@ import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.cmds.autore.*
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.autorestart.interfaces.*
+import org.serversmc.interfaces.*
 import org.serversmc.utils.ChatColor.GRAY
 import org.serversmc.utils.ChatColor.RED
 import org.serversmc.utils.Console.catchError

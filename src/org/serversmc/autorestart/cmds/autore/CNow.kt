@@ -3,7 +3,7 @@ package org.serversmc.autorestart.cmds.autore
 import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.TIME
-import org.serversmc.autorestart.interfaces.*
+import org.serversmc.interfaces.*
 import org.serversmc.utils.ChatColor.GRAY
 
 object CNow : ICommand {

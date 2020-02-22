@@ -2,8 +2,8 @@ package org.serversmc.autorestart.cmds.autore
 
 import org.bukkit.command.*
 import org.bukkit.entity.*
-import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
+import org.serversmc.interfaces.*
 
 object CTime : ICommand {
 	

@@ -3,9 +3,9 @@ package org.serversmc.autorestart.cmds.autore
 import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.core.TimerThread.PAUSED
-import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
+import org.serversmc.interfaces.*
 import org.serversmc.utils.ChatColor.RED
 
 object CResume : ICommand {

@@ -4,7 +4,7 @@ import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.cmds.CAutoRestart.subCommands
 import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.autorestart.interfaces.*
+import org.serversmc.interfaces.*
 import org.serversmc.utils.ChatColor.GRAY
 import org.serversmc.utils.ChatColor.RED
 import java.io.*
