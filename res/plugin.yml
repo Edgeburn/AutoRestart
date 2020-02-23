@@ -44,19 +44,22 @@ permissions:
     #▒█▀▀▄ ▒█▀▀▀ ▒█▀▀▀ ░█▀▀█ ▒█░▒█ ▒█░░░ ▀▀█▀▀
     #▒█░▒█ ▒█▀▀▀ ▒█▀▀▀ ▒█▄▄█ ▒█░▒█ ▒█░░░ ░▒█░░
     #▒█▄▄▀ ▒█▄▄▄ ▒█░░░ ▒█░▒█ ░▀▄▄▀ ▒█▄▄█ ░▒█░░
-    autorestart: {}
-    autorestart.help: {}
-    autorestart.time: {}
+    autorestart: 
+        default: true
+    autorestart.help:
+        default: true
+    autorestart.time:
+        default: true
     
     #░█▀▀█ ▒█▀▀▄ ▒█▀▄▀█ ▀█▀ ▒█▄░▒█
     #▒█▄▄█ ▒█░▒█ ▒█▒█▒█ ▒█░ ▒█▒█▒█
     #▒█░▒█ ▒█▄▄▀ ▒█░░▒█ ▄█▄ ▒█░░▀█
     autorestart.admin:
         children:
-            - autorestart.in
-            - autorestart.now
-            - autorestart.pause
-            - autorestart.resume
+            autorestart.in: true
+            autorestart.now: true
+            autorestart.pause: true
+            autorestart.resume: true
     autorestart.in: {}
     autorestart.now: {}
     autorestart.pause: {}
@@ -67,10 +70,10 @@ permissions:
     #▒█░▒█ ▒█▄▄█ ▒█▄▄█
     autorestart.*:
         children:
-            - autorestart.help
-            - autorestart.time
-            - autorestart.resume
-            - autorestart.pause
-            - autorestart.in
-            - autorestart.reload
-            - autorestart.now
+            autorestart.help: true
+            autorestart.time: true
+            autorestart.resume: true
+            autorestart.pause: true
+            autorestart.in: true
+            autorestart.reload: true
+            autorestart.now: true
