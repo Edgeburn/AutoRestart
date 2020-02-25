@@ -2,9 +2,11 @@ package org.serversmc.autorestart.cmds.autore
 
 import org.bukkit.command.*
 import org.bukkit.entity.*
+import org.bukkit.permissions.*
+import org.serversmc.autorestart.cmds.*
+import org.serversmc.autorestart.enums.*
+import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
-import org.serversmc.interfaces.*
-import org.serversmc.utils.ChatColor.GRAY
 
 object CReload : ICommand {
 	
@@ -16,8 +18,11 @@ object CReload : ICommand {
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()
 	override fun getLabel(): String = "RELOAD"
-	override fun getPermission(): String = "autorestart.reload"
+	override fun getPermString(): String = "autorestart.reload"
+	override fun getPermDefault(): PermissionDefault = CPause.OP
 	override fun getUsage(): String = "/autore reload"
 	override fun getDescription(): String = "Reloads all of AutoRestart config files"
+	override fun hasListener(): Boolean = false
+	override fun getSubCmd(): ICommand? = CAutoRestart
 	
 }

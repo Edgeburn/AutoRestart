@@ -2,11 +2,13 @@ package org.serversmc.autorestart.cmds.autore
 
 import org.bukkit.command.*
 import org.bukkit.entity.*
+import org.bukkit.permissions.*
+import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.core.TimerThread.TIME
+import org.serversmc.autorestart.enums.*
+import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
-import org.serversmc.interfaces.*
-import org.serversmc.utils.ChatColor.RED
 import java.lang.Integer.*
 
 object CIn : ICommand {
@@ -85,13 +87,13 @@ object CIn : ICommand {
 			if (it.contains(":")) {
 				val suffix = it.split(":")[1].toLowerCase()
 				if (params.contains(suffix)) params.remove(suffix)
-				else if (suffix.isNotEmpty()) return arrayOf(tabNotValid).toMutableList()
+				else if (suffix.isNotEmpty()) return arrayOf("not valid").toMutableList()
 				val nSuffix = if (suffix.isNotEmpty()) suffix else null
 				if (!usedParams.contains(nSuffix)) usedParams.add(nSuffix)
-				else return arrayOf(tabNotValid).toMutableList()
+				else return arrayOf("not valid").toMutableList()
 			}
 		}
-		if (usedParams.contains(null)) if (args.size > usedParams.size || usedParams.last() != null) return arrayOf(tabNotValid).toMutableList()
+		if (usedParams.contains(null)) if (args.size > usedParams.size || usedParams.last() != null) return arrayOf("not valid").toMutableList()
 		if (usedParams.isNotEmpty()) usedParams.removeAt(usedParams.size - 1)
 		if (last.isNotEmpty()) {
 			val num = try {
@@ -104,17 +106,17 @@ object CIn : ICommand {
 				if (last.split(":").size == 2) {
 					if (suffix.isEmpty()) tabReturn(params, last)
 					else when {
-						usedParams.contains(suffix) and usedParams.isNotEmpty() -> arrayOf(tabNotValid).toMutableList()
+						usedParams.contains(suffix) and usedParams.isNotEmpty() -> arrayOf("not valid").toMutableList()
 						arrayOf("h", "m", "s").contains(suffix) -> arrayOf(last).toMutableList()
-						else -> arrayOf(tabNotValid).toMutableList()
+						else -> arrayOf("not valid").toMutableList()
 					}
 				}
-				else arrayOf(tabNotValid).toMutableList()
+				else arrayOf("not valid").toMutableList()
 			}
-			else if (num == null) arrayOf(tabNotValid).toMutableList()
+			else if (num == null) arrayOf("not valid").toMutableList()
 			else tabReturn(params, "$last:")
 		}
-		return if (params.isEmpty()) arrayOf(tabNotValid).toMutableList()
+		return if (params.isEmpty()) arrayOf("not valid").toMutableList()
 		else tabReturn(params, "#:")
 	}
 	
@@ -126,8 +128,12 @@ object CIn : ICommand {
 	}
 	
 	override fun getLabel(): String = "IN"
-	override fun getPermission(): String = "autorestart.in"
+	override fun getPermString(): String = "autorestart.in"
+	override fun getPermDefault(): PermissionDefault = OP
 	override fun getUsage(): String = "/autore in [hours]:h [minutes]:m [seconds]:s"
 	override fun getDescription(): String = "Changes restart time in minutes."
+	override fun hasListener(): Boolean = false
+	override fun getSubCmd(): ICommand? = CAutoRestart
+	
 	
 }

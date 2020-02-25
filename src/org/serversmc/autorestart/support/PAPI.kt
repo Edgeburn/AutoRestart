@@ -2,13 +2,13 @@ package org.serversmc.autorestart.support
 
 import me.clip.placeholderapi.expansion.*
 import org.bukkit.entity.*
-import org.serversmc.autorestart.core.Main.Companion.AutoRestart
+import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.objects.*
 
 object PAPI : PlaceholderExpansion() {
 	
-	override fun getVersion(): String = AutoRestart.description.version
-	override fun getAuthor(): String = AutoRestart.description.authors.joinToString(", ")
+	override fun getVersion(): String = PLUGIN.description.version
+	override fun getAuthor(): String = PLUGIN.description.authors.joinToString(", ")
 	override fun getIdentifier(): String = "autorestart"
 	override fun persist(): Boolean = true
 	override fun canRegister(): Boolean = true

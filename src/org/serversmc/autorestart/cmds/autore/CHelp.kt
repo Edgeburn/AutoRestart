@@ -2,11 +2,11 @@ package org.serversmc.autorestart.cmds.autore
 
 import org.bukkit.command.*
 import org.bukkit.entity.*
-import org.serversmc.autorestart.cmds.CAutoRestart.subCommands
-import org.serversmc.autorestart.core.Main.Companion.AutoRestart
-import org.serversmc.interfaces.*
-import org.serversmc.utils.ChatColor.GRAY
-import org.serversmc.utils.ChatColor.RED
+import org.bukkit.permissions.*
+import org.serversmc.autorestart.cmds.*
+import org.serversmc.autorestart.core.*
+import org.serversmc.autorestart.enums.*
+import org.serversmc.autorestart.interfaces.*
 import java.io.*
 
 object CHelp : ICommand {
@@ -35,7 +35,7 @@ object CHelp : ICommand {
 			}
 			// Fetch and display dictionary
 			// Setup buffered Reader
-			val stream = InputStreamReader(AutoRestart.getResource("help_dictionary/${it.getLabel().toLowerCase()}.dict")!!)
+			val stream = InputStreamReader(PLUGIN.getResource("help_dictionary/${it.getLabel().toLowerCase()}.dict")!!)
 			val reader = BufferedReader(stream)
 			// Output dictionary
 			sender.sendMessage("${GRAY}${reader.readLine()}")
@@ -51,20 +51,23 @@ object CHelp : ICommand {
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? {
 		return ArrayList<String>().apply {
-			if (args.size > 1) add(tabIgnored)
+			if (args.size > 1) add("ignored")
 			else subCommands.forEach {
 				if (!player.hasPermission(it.getPermission())) return@forEach
 				if (it.getLabel().toLowerCase().startsWith(args[0].toLowerCase())) {
 					add(it.getLabel().toLowerCase().substring(args.last().length))
 				}
 			}
-			if (isEmpty()) add(tabNotValid)
+			if (isEmpty()) add("not valid")
 		}
 	}
 	
 	override fun getLabel(): String = "HELP"
-	override fun getPermission(): String = "autorestart.help"
+	override fun getPermString(): String = "autorestart.help"
+	override fun getPermDefault(): PermissionDefault = TRUE
 	override fun getUsage(): String = "/autore help <command>"
 	override fun getDescription(): String = "Shows this help screen."
+	override fun hasListener(): Boolean = false
+	override fun getSubCmd(): ICommand? = CAutoRestart
 	
 }
