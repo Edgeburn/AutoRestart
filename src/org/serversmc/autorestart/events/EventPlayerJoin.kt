@@ -6,7 +6,7 @@ import org.bukkit.event.*
 import org.bukkit.event.player.*
 import org.serversmc.autorestart.core.UpdateChecker.LATEST_VERSION
 import org.serversmc.autorestart.core.UpdateChecker.UPDATE_FOUND
-import org.serversmc.utils.ChatColor.RED
+import org.serversmc.autorestart.enums.*
 
 object EventPlayerJoin : Listener {
 	

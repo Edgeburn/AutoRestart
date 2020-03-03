@@ -1,10 +1,8 @@
 package org.serversmc.autorestart.utils
 
 import org.serversmc.autorestart.enums.*
-import org.serversmc.utils.*
-import org.serversmc.utils.ConfigAPI.Companion.globalConfig
-import org.serversmc.utils.Console.err
-import org.serversmc.utils.Console.warn
+import org.serversmc.autorestart.interfaces.*
+import org.serversmc.autorestart.interfaces.ConfigAPI.Companion.globalConfig
 import java.lang.Integer.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -45,7 +43,7 @@ object Config : ConfigAPI {
 			init {
 				if (timing.split(":").size != 3) {
 					timing = globalConfig.defaults!!.getString("$section.timing")!!
-					warn("Invalid timing format at $section.timing. Please review: $timing")
+					Console.warn("Invalid timing format at $section.timing. Please review: $timing")
 				}
 				else {
 					timing.split(":").forEach {
@@ -53,13 +51,13 @@ object Config : ConfigAPI {
 							parseInt(it)
 						} catch (e: Exception) {
 							timing = globalConfig.defaults!!.getString("$section.timing")!!
-							err("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
+							Console.err("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
 						}
 					}
 				}
 			}
 			
-			val text = ChatColor.translate('&', Config.getString("$section.text"))
+			val text = translateChatColor('&', Config.getString("$section.text"))
 			val fadeIn = parseInt(timing.split(":")[0])
 			val stay = parseInt(timing.split(":")[1])
 			val fadeOut = parseInt(timing.split(":")[2])
@@ -72,7 +70,7 @@ object Config : ConfigAPI {
 		val enabled = Config.getBoolean("$section.enabled")
 		val lines: MutableList<String> = ArrayList<String>().apply {
 			Config.getStringList("$section.text").forEach {
-				add(ChatColor.translate('&', it))
+				add(translateChatColor('&', it))
 			}
 		}
 	}
@@ -97,7 +95,7 @@ object Config : ConfigAPI {
 					val m = parseInt(it.split(":")[1])
 					add(TimeStamp(h, m))
 				} catch (e: Exception) {
-					err("Could not read \"$it\" please check main.yml:main.modes.interval")
+					Console.err("Could not read \"$it\" please check main.yml:main.modes.interval")
 				}
 			}
 		}

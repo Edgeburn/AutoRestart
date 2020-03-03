@@ -8,8 +8,8 @@
 #╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚══╝
 
 name: AutoRestart
-version: 4.1.1
-build: 70
+version: 4.1.2
+build: 71
 main: org.serversmc.autorestart.core.Main
 softdepend:
     - PlaceholderAPI
@@ -30,7 +30,6 @@ description: "Automatically restarts your server with customizable messages, and
 commands:
     autore:
         description: "AutoRestart Command"
-        permission: "autorestart"
         permission-message: "Surprisingly they don't want you using this command?"
     
 #██████╗░███████╗██████╗░███╗░░░███╗░██████╗
@@ -41,36 +40,18 @@ commands:
 #╚═╝░░░░░╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═════╝░
 
 permissions:
-    #▒█▀▀▄ ▒█▀▀▀ ▒█▀▀▀ ░█▀▀█ ▒█░▒█ ▒█░░░ ▀▀█▀▀
-    #▒█░▒█ ▒█▀▀▀ ▒█▀▀▀ ▒█▄▄█ ▒█░▒█ ▒█░░░ ░▒█░░
-    #▒█▄▄▀ ▒█▄▄▄ ▒█░░░ ▒█░▒█ ░▀▄▄▀ ▒█▄▄█ ░▒█░░
-    autorestart: {}
-    autorestart.help: {}
-    autorestart.time: {}
-    
-    #░█▀▀█ ▒█▀▀▄ ▒█▀▄▀█ ▀█▀ ▒█▄░▒█
-    #▒█▄▄█ ▒█░▒█ ▒█▒█▒█ ▒█░ ▒█▒█▒█
-    #▒█░▒█ ▒█▄▄▀ ▒█░░▒█ ▄█▄ ▒█░░▀█
     autorestart.admin:
         children:
-            - autorestart.in
-            - autorestart.now
-            - autorestart.pause
-            - autorestart.resume
-    autorestart.in: {}
-    autorestart.now: {}
-    autorestart.pause: {}
-    autorestart.resume: {}
-    
-    #░█▀▀█ ▒█░░░ ▒█░░░
-    #▒█▄▄█ ▒█░░░ ▒█░░░
-    #▒█░▒█ ▒█▄▄█ ▒█▄▄█
+            autorestart.in: true
+            autorestart.now: true
+            autorestart.pause: true
+            autorestart.resume: true
     autorestart.*:
         children:
-            - autorestart.help
-            - autorestart.time
-            - autorestart.resume
-            - autorestart.pause
-            - autorestart.in
-            - autorestart.reload
-            - autorestart.now
+            autorestart.help: true
+            autorestart.time: true
+            autorestart.resume: true
+            autorestart.pause: true
+            autorestart.in: true
+            autorestart.reload: true
+            autorestart.now: true

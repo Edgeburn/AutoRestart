@@ -4,9 +4,6 @@ import org.bukkit.*
 import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.serversmc.autorestart.objects.*
-import org.serversmc.protocol.*
-import org.serversmc.utils.Console.catchError
-import org.serversmc.utils.Console.consoleSendMessage
 
 object Messenger {
 	
@@ -26,7 +23,7 @@ object Messenger {
 		Bukkit.getOnlinePlayers().forEach {
 			if (it != sender) it.sendMessage(getPrefix() + msg)
 		}
-		if (sender is Player) consoleSendMessage(getPrefix() + msg)
+		if (sender is Player) Console.sendMessage(getPrefix() + msg)
 	}
 	
 	private fun sendTitle(player: Player, popup: Config.Popup) {
@@ -36,7 +33,7 @@ object Messenger {
 		try {
 			TitleAPI.sendTitle(player, title.fadeIn, title.stay, title.fadeOut, format(title.text), format(subtitle.text))
 		} catch (e: Exception) {
-			catchError(e, "Messenger.sendTitle(Player, Config.Popup, Array<Format>:TitleAPI.sendTitle(Player, Int, Int, Int, String?, String?))")
+			Console.catchError(e, "Messenger.sendTitle(Player, Config.Popup, Array<Format>:TitleAPI.sendTitle(Player, Int, Int, Int, String?, String?))")
 		}
 	}
 	
@@ -73,7 +70,7 @@ object Messenger {
 					// Send Title
 					sendTitle(it, popup)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcast(Global):sendTitle(Player, Config.Popup, Array<Format>)")
+					Console.catchError(e, "Messenger.broadcast(Global):sendTitle(Player, Config.Popup, Array<Format>)")
 				}
 			}
 		}
@@ -85,7 +82,7 @@ object Messenger {
 			return
 		}
 		// Send to console only
-		msg.lines.forEach { consoleSendMessage(format(it)) }
+		msg.lines.forEach { Console.sendMessage(format(it)) }
 	}
 	
 	fun message(sender: CommandSender, private: Private) {
@@ -103,7 +100,7 @@ object Messenger {
 				try {
 					sendTitle(player, popup)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.message(CommandSender, Private):sendTitle(Player, Config.Popup, Array<Format>)")
+					Console.catchError(e, "Messenger.message(CommandSender, Private):sendTitle(Player, Config.Popup, Array<Format>)")
 				}
 			}
 			// Disables message
@@ -128,7 +125,7 @@ object Messenger {
 					// Send title to player
 					sendTitle(player, privatePopup)
 				} catch (e: Exception) {
-					catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>) // Private")
+					Console.catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>) // Private")
 				}
 			}
 			// Check if global popups are enabled
@@ -142,7 +139,7 @@ object Messenger {
 						// Send title to every player
 						sendTitle(player, privatePopup)
 					} catch (e: Exception) {
-						catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>) // Global")
+						Console.catchError(e, "Messenger.broadcastStatus(CommandSender, Status):sendTitle(Player, Popup, Array<Format>) // Global")
 					}
 				}
 			}

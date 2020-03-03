@@ -1,9 +1,8 @@
 package org.serversmc.autorestart.core
 
 import org.bukkit.*
-import org.serversmc.autorestart.core.Main.Companion.AutoRestart
 import org.serversmc.autorestart.utils.*
-import org.serversmc.utils.Console.consoleSender
+import org.serversmc.autorestart.utils.Console.consoleSender
 
 object TimerThread {
 	
@@ -18,11 +17,11 @@ object TimerThread {
 	fun run() {
 		Config.Main_RestartMode.calculate()
 		// Start and store loopId
-		loopId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, Runnable {
+		loopId = Bukkit.getScheduler().scheduleSyncRepeatingTask(PLUGIN, Runnable {
 			// Timer end break
 			if (TIME == 0) {
 				Bukkit.getScheduler().cancelTask(loopId)
-				Bukkit.getScheduler().callSyncMethod(AutoRestart, maxplayers)
+				Bukkit.getScheduler().callSyncMethod(PLUGIN, maxplayers)
 				return@Runnable
 			}
 			// Check if timer is paused
@@ -61,7 +60,7 @@ object TimerThread {
 				val timeout = System.currentTimeMillis() + (Config.MaxPlayers_Timeout * 60000)
 				// Broadcast alert
 				Messenger.broadcast(Messenger.Global.MAXPLAYERS_ALERT)
-				maxplayersId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, {
+				maxplayersId = Bukkit.getScheduler().scheduleSyncRepeatingTask(PLUGIN, {
 					// Start Shutdown wait
 					if ((Bukkit.getOnlinePlayers().size <= Config.MaxPlayers_Amount)) {
 						if (System.currentTimeMillis() <= timeout) {
@@ -73,27 +72,27 @@ object TimerThread {
 					else Messenger.broadcast(Messenger.Global.MAXPLAYERS_TIMEOUT)
 					Bukkit.getScheduler().cancelTask(maxplayersId)
 					// Call shutdown task
-					Bukkit.getScheduler().callSyncMethod(AutoRestart, shutdown)
+					Bukkit.getScheduler().callSyncMethod(PLUGIN, shutdown)
 				}, 0L, 1L)
 			}
 			// Cancel shutdown task call
 			return
 		}
 		// Call shutdown task
-		Bukkit.getScheduler().callSyncMethod(AutoRestart, shutdown)
+		Bukkit.getScheduler().callSyncMethod(PLUGIN, shutdown)
 	}
 	
 	private var shutdown = fun() {
 		Messenger.broadcast(Messenger.Global.SHUTDOWN)
 		// Player kick / restart message
-		Bukkit.getScheduler().callSyncMethod(AutoRestart) {
+		Bukkit.getScheduler().callSyncMethod(PLUGIN) {
 			Bukkit.getOnlinePlayers().forEach { player ->
 				player.kickPlayer(Config.Main_KickMessage)
 			}
 		}
 		TIME = 5
 		// Wait until players are successfully kicked, unless timeout is called
-		shutdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask(AutoRestart, {
+		shutdownId = Bukkit.getScheduler().scheduleSyncRepeatingTask(PLUGIN, {
 			if ((TIME == 0) or !Bukkit.getOnlinePlayers().isEmpty()) {
 				Bukkit.getScheduler().cancelTask(shutdownId)
 				Bukkit.dispatchCommand(consoleSender, Config.Main_Execution)
