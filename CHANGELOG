@@ -1,8 +1,11 @@
-4.1.2
+4.1.3
 TODO - Added support to track server restart time
 TODO - Added senderror sub command! Send your last error caused by AutoRestart
 TODO - Added weekday restart support
 TODO - Added personal player settings
+
+4.1.2
+- Fixed permissions not working properly
 
 4.1.1 - PlaceholderAPI update
 - Fixed PlaceholderAPI tags, time_minute, time_second
