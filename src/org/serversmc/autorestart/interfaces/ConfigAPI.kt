@@ -20,12 +20,22 @@ interface ConfigAPI {
 		val file = File(PLUGIN.dataFolder, "$fileName.yml")
 		var yamlConfiguration = YamlConfiguration()
 		var version: Int = 0
+		
+		init {
+			// Save configs if needed
+			if (!file.exists()) {
+				PLUGIN.saveResource(file.name, false)
+				Console.info("Created ${file.name} config file!")
+			}
+			// Load Yaml Configuration
+			yamlConfiguration.load(file)
+		}
 	}
 	
-	fun getString(path: String): String = ChatColor.translateAlternateColorCodes('&', globalConfig.getString(path).toString())
-	fun getInt(path: String): Int = globalConfig.getInt(path)
-	fun getDouble(path: String): Double = globalConfig.getDouble(path)
-	fun getBoolean(path: String): Boolean = globalConfig.getBoolean(path)
+	fun getString(path: String) = ChatColor.translateAlternateColorCodes('&', globalConfig.getString(path).toString())
+	fun getInt(path: String) = globalConfig.getInt(path)
+	fun getDouble(path: String) = globalConfig.getDouble(path)
+	fun getBoolean(path: String) = globalConfig.getBoolean(path)
 	fun getIntegerList(path: String): MutableList<Int> = globalConfig.getIntegerList(path)
 	fun getStringList(path: String): MutableList<String> = globalConfig.getStringList(path)
 	
@@ -39,13 +49,17 @@ interface ConfigAPI {
 		// Combine config to one Main config
 		configList.forEach { config ->
 			val yaml = config.yamlConfiguration
-			for (key in yaml.getKeys(true)) globalConfig.set(key, yaml.get(key))
+			for (key in yaml.getKeys(true)) {
+				globalConfig.set(key, yaml.get(key))
+				Console.sendMessage(key + ": " + globalConfig.get(key))
+			}
 		}
 		// Remove version node
 		globalConfig.addDefault("version", null)
 	}
 	
 	fun reloadConfig() {
+		configList.clear()
 		setupConfigs()
 		combineSubConfigs()
 	}
@@ -53,16 +67,10 @@ interface ConfigAPI {
 	fun init() {
 		setupConfigs()
 		configList.forEach { subConfig ->
-			// Initialize attributes
+			// Initialize variables
 			val file = subConfig.file
 			val yaml = subConfig.yamlConfiguration
-			// Save configs if needed
-			if (!file.exists()) {
-				PLUGIN.saveResource(file.name, false)
-				Console.info("Created ${file.name} config file!")
-			}
 			// Get config defaults
-			yaml.load(file)
 			val inputStream = PLUGIN.getResource(file.name) as InputStream
 			val defaultConfig = YamlConfiguration.loadConfiguration(InputStreamReader(inputStream))
 			globalConfig.addDefaults(defaultConfig)
