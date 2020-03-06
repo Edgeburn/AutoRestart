@@ -32,43 +32,43 @@ object Config : ConfigAPI {
 	
 	data class Popup(val section: String) {
 		
-		val enabled = Config.getBoolean("$section.enabled")
-		val title = Timings("$section.title")
-		val subtitle = Timings("$section.subtitle")
+		val enabled get() = Config.getBoolean("$section.enabled")
+		val title get() = Timings("$section.title")
+		val subtitle get() = Timings("$section.subtitle")
 		
 		data class Timings(val section: String) {
 			
-			private var timing = Config.getString("$section.timing")
-			
-			init {
+			private fun getTiming(): String {
+				val timing = Config.getString("$section.timing")
 				if (timing.split(":").size != 3) {
-					timing = globalConfig.defaults!!.getString("$section.timing")!!
 					Console.warn("Invalid timing format at $section.timing. Please review: $timing")
+					return globalConfig.defaults!!.getString("$section.timing")!!
 				}
 				else {
 					timing.split(":").forEach {
 						try {
 							parseInt(it)
 						} catch (e: Exception) {
-							timing = globalConfig.defaults!!.getString("$section.timing")!!
 							Console.err("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
+							return globalConfig.defaults!!.getString("$section.timing")!!
 						}
 					}
 				}
+				return timing
 			}
 			
-			val text = translateChatColor('&', Config.getString("$section.text"))
-			val fadeIn = parseInt(timing.split(":")[0])
-			val stay = parseInt(timing.split(":")[1])
-			val fadeOut = parseInt(timing.split(":")[2])
+			val text get() = translateChatColor('&', Config.getString("$section.text"))
+			val fadeIn get() = parseInt(getTiming().split(":")[0])
+			val stay get() = parseInt(getTiming().split(":")[1])
+			val fadeOut get() = parseInt(getTiming().split(":")[2])
 			
 		}
 		
 	}
 	
 	data class Message(val section: String) {
-		val enabled = Config.getBoolean("$section.enabled")
-		val lines: MutableList<String> = ArrayList<String>().apply {
+		val enabled get() = Config.getBoolean("$section.enabled")
+		val lines: MutableList<String> get() = ArrayList<String>().apply {
 			Config.getStringList("$section.text").forEach {
 				add(translateChatColor('&', it))
 			}

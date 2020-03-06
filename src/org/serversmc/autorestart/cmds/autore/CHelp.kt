@@ -15,16 +15,17 @@ object CHelp : ICommand {
 		// Check if argument number requirement meet
 		if (args.isEmpty()) {
 			// List Sub Commands usages and descriptions
-			subCommands.forEach {
+			CAutoRestart.subCommands.forEach {
 				// Checks if player has permission for this command
-				if (!sender.hasPermission(it.getPermission())) return@forEach
-				sender.sendMessage("${GRAY}${it.getUsage()}${RED} - ${GRAY}${it.getDescription()}")
+				if (sender.hasPermission(it.getPermission())) {
+					sender.sendMessage("${AQUA}${it.getUsage()} ${GRAY}: ${WHITE}${it.getDescription()}")
+				}
 			}
 			// Prevent dictionary search
 			return
 		}
 		// Finding sub commands dictionary
-		subCommands.forEach {
+		CAutoRestart.subCommands.forEach {
 			// Checks if label matches argument
 			if (!it.getLabel().equals(args[0], true)) return@forEach
 			// Checks if player has permission for this command
@@ -52,10 +53,11 @@ object CHelp : ICommand {
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? {
 		return ArrayList<String>().apply {
 			if (args.size > 1) add("ignored")
-			else subCommands.forEach {
-				if (!player.hasPermission(it.getPermission())) return@forEach
-				if (it.getLabel().toLowerCase().startsWith(args[0].toLowerCase())) {
-					add(it.getLabel().toLowerCase().substring(args.last().length))
+			else CAutoRestart.subCommands.forEach {
+				if (player.hasPermission(it.getPermission())) {
+					if (it.getLabel().toLowerCase().startsWith(args[0].toLowerCase())) {
+						add(it.getLabel().toLowerCase())
+					}
 				}
 			}
 			if (isEmpty()) add("not valid")
