@@ -50,7 +50,6 @@ interface ConfigAPI {
 			val yaml = config.yamlConfiguration
 			for (key in yaml.getKeys(true)) {
 				globalConfig.set(key, yaml.get(key))
-				Console.sendMessage(key + ": " + globalConfig.get(key))
 			}
 		}
 		// Remove version node
