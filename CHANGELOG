@@ -1,8 +1,11 @@
-4.1.4
+4.1.5
 TODO - Added support to track server restart time
 TODO - Added senderror sub command! Send your last error caused by AutoRestart
 TODO - Added weekday restart support
 TODO - Added personal player settings
+
+4.1.4 - Player Join Event hotfix
+- Fixed error when players join the server
 
 4.1.3 - Fixed help, and reload command
 - Changed AutoRestart color scheme

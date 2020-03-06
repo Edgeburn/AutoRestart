@@ -15,7 +15,8 @@ object EventPlayerJoin : Listener {
 		// Get Player Entity
 		val player = event.player
 		// Check if there is an update
-		if (!(UPDATE_FOUND as Boolean)) return
+		if (UPDATE_FOUND == null) return
+		if (UPDATE_FOUND == false) return
 		// Check if player has permissions
 		if (!player.hasPermission("autorestart.admin")) return
 		// Prompt update message
