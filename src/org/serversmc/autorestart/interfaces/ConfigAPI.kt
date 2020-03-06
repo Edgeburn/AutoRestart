@@ -8,7 +8,6 @@ import java.io.*
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 interface ConfigAPI {
 	
 	companion object {

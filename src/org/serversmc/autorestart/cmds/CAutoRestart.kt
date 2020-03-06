@@ -10,9 +10,6 @@ import org.serversmc.autorestart.interfaces.*
 object CAutoRestart : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
-		// Global command header
-		sender.sendMessage("${RED}AutoRestart ${GRAY}- v${PLUGIN.description.version}")
-		
 		// Run Main command
 		sender.sendMessage("${RED}Not enough arguments. Try: /autore help")
 	}
