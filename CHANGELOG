@@ -5,6 +5,8 @@ TODO - Added weekday restart support
 TODO - Added personal player settings
 TODO - Prevent players from joining server while restarting
 TODO - Show MOTD that server is starting up / restarting
+TODO - Timer runs independently from server (Allowing timer to countdown even during lag)
+TODO - Fix timestamp mode not restarting on the timestamp accurately
 
 4.1.4 - Player Join Event hotfix
 - Fixed error when players join the server
