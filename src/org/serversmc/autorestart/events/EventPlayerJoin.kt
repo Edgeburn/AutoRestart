@@ -4,8 +4,7 @@ import net.md_5.bungee.api.*
 import net.md_5.bungee.api.chat.*
 import org.bukkit.event.*
 import org.bukkit.event.player.*
-import org.serversmc.autorestart.core.UpdateChecker.LATEST_VERSION
-import org.serversmc.autorestart.core.UpdateChecker.UPDATE_FOUND
+import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.enums.*
 
 object EventPlayerJoin : Listener {
@@ -15,12 +14,12 @@ object EventPlayerJoin : Listener {
 		// Get Player Entity
 		val player = event.player
 		// Check if there is an update
-		if (UPDATE_FOUND == null) return
-		if (UPDATE_FOUND == false) return
+		// TODO - Unstable Line
+		if (UpdateChecker.hasUpdate() != true) return
 		// Check if player has permissions
 		if (!player.hasPermission("autorestart.admin")) return
 		// Prompt update message
-		player.sendMessage("${RED}AutoRestart has an update! Please update to version v$LATEST_VERSION")
+		player.sendMessage("${RED}AutoRestart has an update! Please update to version v${UpdateChecker.getLatestVersion()}")
 		player.spigot().sendMessage(TextComponent().apply {
 			text = "    "
 			addExtra(TextComponent().apply {
