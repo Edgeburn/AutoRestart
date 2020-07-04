@@ -59,7 +59,7 @@ autorestart_time_hour | `H` | 5
 autorestart_time_minute | `M` | 23
 autorestart_time_seconds | `S` | 41
 autorestart_time_raw_minute | `M` | 323
-autorestart_time_seconds | `S` | 19421
+autorestart_time_raw_seconds | `S` | 19421
 
 ---
 ### Photos
