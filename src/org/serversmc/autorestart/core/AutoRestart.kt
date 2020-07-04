@@ -1,6 +1,5 @@
 package org.serversmc.autorestart.core
 
-import org.bstats.bukkit.*
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.bukkit.plugin.java.*
@@ -9,7 +8,6 @@ import org.serversmc.autorestart.cmds.autore.*
 import org.serversmc.autorestart.core.TimerThread.loopId
 import org.serversmc.autorestart.core.TimerThread.maxplayersId
 import org.serversmc.autorestart.core.TimerThread.shutdownId
-import org.serversmc.autorestart.core.UpdateChecker.UPDATE_FOUND
 import org.serversmc.autorestart.events.*
 import org.serversmc.autorestart.support.*
 import org.serversmc.autorestart.utils.*
@@ -44,8 +42,8 @@ class Main : JavaPlugin() {
 			// Display update message after server Done
 			Bukkit.getScheduler().scheduleSyncDelayedTask(this) {
 				when {
-					UPDATE_FOUND == null -> Console.warn("No Internet to check for updates")
-					UPDATE_FOUND!! -> Console.warn("There is a new version of AutoRestart! Go get it now! Latest version: v${UpdateChecker.LATEST_VERSION}")
+					UpdateChecker.hasUpdate() == null -> Console.warn("No Internet to check for updates")
+					UpdateChecker.hasUpdate()!! -> Console.warn("There is a new version of AutoRestart! Go get it now! Latest version: v${UpdateChecker.getLatestVersion()}")
 					else -> Console.info("Up to date!")
 				}
 			}
@@ -81,8 +79,8 @@ class Main : JavaPlugin() {
 object UpdateChecker {
 	
 	private var LATEST_BUILD: Int? = null
-	var LATEST_VERSION: String? = null
-	var UPDATE_FOUND: Boolean? = null
+	private var LATEST_VERSION: String? = null
+	private var UPDATE_FOUND: Boolean? = null
 	
 	private val url = URL("https://gitlab.com/dennislysenko/autorestart-v4/-/raw/master/res/plugin.yml")
 	private val pluginYml = InputStreamReader(PLUGIN.getResource("plugin.yml") as InputStream)
@@ -102,8 +100,11 @@ object UpdateChecker {
 			val currentBuild = yaml.getInt("build", -1)
 			if (currentBuild == -1) return
 			UPDATE_FOUND = LATEST_BUILD!! > currentBuild
-		} catch (e: Exception) {
-		}
+		} catch (e: Exception) {}
 	}
+	
+	fun hasUpdate() = UPDATE_FOUND
+	
+	fun getLatestVersion() = LATEST_VERSION ?: "N/A"
 	
 }
