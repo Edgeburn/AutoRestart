@@ -3,7 +3,7 @@ package org.serversmc.autorestart.threads
 import org.bukkit.*
 import org.serversmc.autorestart.utils.*
 
-object MainThread : Runnable {
+object MainThread : Thread() {
 	
 	private var TIME = 0
 	private var PAUSED = false
@@ -16,7 +16,7 @@ object MainThread : Runnable {
 		while (true) {
 			// Timer end break
 			if (TIME == 0) {
-				MaxPlayerThread.run()
+				MaxPlayerThread.start()
 				break
 			}
 			// Check if timer is paused
@@ -44,17 +44,17 @@ object MainThread : Runnable {
 			// Timer decrement
 			TIME--
 			// Delay Runnable
-			Thread.sleep(1000)
+			sleep(1000L)
 		}
 	}
 	
 	fun isPaused() = PAUSED
 	
-	fun pause() {
+	fun pauseTimer() {
 		PAUSED = true
 	}
 	
-	fun resume() {
+	fun resumeTimer() {
 		PAUSED = false
 	}
 	

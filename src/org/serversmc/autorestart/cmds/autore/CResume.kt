@@ -7,7 +7,7 @@ import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.threads.MainThread.isPaused
-import org.serversmc.autorestart.threads.MainThread.resume
+import org.serversmc.autorestart.threads.MainThread.resumeTimer
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 
@@ -15,7 +15,7 @@ object CResume : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		if (isPaused()) {
-			resume()
+			resumeTimer()
 			broadcastStatus(sender, Messenger.Status.RESUME)
 		}
 		else sender.sendMessage(RED + Lang.getNode("commands.resume.already-running"))

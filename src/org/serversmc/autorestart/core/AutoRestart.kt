@@ -48,7 +48,8 @@ class Main : JavaPlugin() {
 				}
 			}
 			// Timer Thread
-			MainThread.run()
+			MainThread.start()
+			
 			// Done
 			Console.info(Lang.getNode("plugin.loaded"))
 		} catch (e: Exception) {

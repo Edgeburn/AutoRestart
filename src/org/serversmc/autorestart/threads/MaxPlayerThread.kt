@@ -3,7 +3,7 @@ package org.serversmc.autorestart.threads
 import org.bukkit.*
 import org.serversmc.autorestart.utils.*
 
-object MaxPlayerThread : Runnable {
+object MaxPlayerThread : Thread() {
 	
 	override fun run() {
 		// Check if max_players is enabled
@@ -19,7 +19,7 @@ object MaxPlayerThread : Runnable {
 					if ((Bukkit.getOnlinePlayers().size <= Config.MaxPlayers_Amount)) {
 						if (System.currentTimeMillis() <= timeout) {
 							// Delay Runnable
-							Thread.sleep(1000)
+							sleep(1000)
 							continue
 						}
 					}
@@ -35,7 +35,7 @@ object MaxPlayerThread : Runnable {
 			return
 		}
 		// Call shutdown task
-		ShutdownThread.run()
+		ShutdownThread.start()
 	}
 	
 }
