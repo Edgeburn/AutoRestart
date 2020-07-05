@@ -6,6 +6,7 @@ import org.bukkit.event.*
 import org.bukkit.event.player.*
 import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.enums.*
+import org.serversmc.autorestart.utils.*
 
 object EventPlayerJoin : Listener {
 	
@@ -19,11 +20,11 @@ object EventPlayerJoin : Listener {
 		// Check if player has permissions
 		if (!player.hasPermission("autorestart.admin")) return
 		// Prompt update message
-		player.sendMessage("${RED}AutoRestart has an update! Please update to version v${UpdateChecker.getLatestVersion()}")
+		player.sendMessage("${RED}${Lang.getNode("update-checker.player-join")}${UpdateChecker.getLatestVersion()}")
 		player.spigot().sendMessage(TextComponent().apply {
 			text = "    "
 			addExtra(TextComponent().apply {
-				text = "[ Link to Resource ]"
+				text = "[ ${Lang.getNode("update-checker.hover-effect")} ]"
 				isUnderlined = true
 				color = ChatColor.BLUE
 				clickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/resources/autorestart.2538/")

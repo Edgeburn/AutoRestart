@@ -18,7 +18,7 @@ object CResume : ICommand {
 			resume()
 			broadcastStatus(sender, Messenger.Status.RESUME)
 		}
-		else sender.sendMessage("${RED}Timer is already running")
+		else sender.sendMessage(RED + Lang.getNode("commands.resume.already-running"))
 	}
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()
@@ -26,7 +26,7 @@ object CResume : ICommand {
 	override fun getPermString(): String = "autorestart.resume"
 	override fun getPermDefault(): PermissionDefault = OP
 	override fun getUsage(): String = "/autore resume"
-	override fun getDescription(): String = "Resumes AutoRestart timer"
+	override fun getDescription(): String = Lang.getNode("commands.resume.description")
 	override fun hasListener(): Boolean = false
 	override fun getSubCmd(): ICommand? = CAutoRestart
 	

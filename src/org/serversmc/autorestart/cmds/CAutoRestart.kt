@@ -5,12 +5,13 @@ import org.bukkit.entity.*
 import org.bukkit.permissions.*
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
+import org.serversmc.autorestart.utils.*
 
 object CAutoRestart : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		// Run Main command
-		sender.sendMessage("${RED}Not enough arguments. Try: /autore help")
+		sender.sendMessage(RED + Lang.getNode("commands.main.not-enough-args"))
 	}
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? {
@@ -32,7 +33,7 @@ object CAutoRestart : ICommand {
 	override fun getPermString(): String = "autorestart"
 	override fun getPermDefault(): PermissionDefault = TRUE
 	override fun getUsage(): String = "/autore <sub_command>"
-	override fun getDescription(): String = "Main Autorestart command"
+	override fun getDescription(): String = Lang.getNode("commands.main.description")
 	override fun hasListener(): Boolean = false
 	override fun getSubCmd(): ICommand? = null
 	

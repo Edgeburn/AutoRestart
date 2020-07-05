@@ -7,11 +7,12 @@ import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
 import org.serversmc.autorestart.threads.*
+import org.serversmc.autorestart.utils.*
 
 object CNow : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
-		sender.sendMessage("${GRAY}Restarting server!")
+		sender.sendMessage(GRAY + Lang.getNode("commands.now.restarting"))
 		MainThread.updateTime(0)
 	}
 	
@@ -20,7 +21,7 @@ object CNow : ICommand {
 	override fun getPermString(): String = "autorestart.now"
 	override fun getPermDefault(): PermissionDefault = OP
 	override fun getUsage(): String = "/autore now"
-	override fun getDescription(): String = "Force restart server."
+	override fun getDescription(): String = Lang.getNode("commands.now.description")
 	override fun hasListener(): Boolean = false
 	override fun getSubCmd(): ICommand? = CAutoRestart
 	

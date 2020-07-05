@@ -18,7 +18,7 @@ object CPause : ICommand {
 			pause()
 			broadcastStatus(sender, Messenger.Status.PAUSE)
 		}
-		else sender.sendMessage("${RED}Timer is already paused.")
+		else sender.sendMessage(RED + Lang.getNode("commands.pause.already-paused"))
 	}
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? = ArrayList()
@@ -26,7 +26,7 @@ object CPause : ICommand {
 	override fun getPermString(): String = "autorestart.pause"
 	override fun getPermDefault(): PermissionDefault = OP
 	override fun getUsage(): String = "/autore pause"
-	override fun getDescription(): String = "Pauses the AutoRestart timer"
+	override fun getDescription(): String = Lang.getNode("commands.pause.description")
 	override fun hasListener(): Boolean = false
 	override fun getSubCmd(): ICommand? = CAutoRestart
 	

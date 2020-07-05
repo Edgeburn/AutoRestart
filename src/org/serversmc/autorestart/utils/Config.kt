@@ -41,7 +41,7 @@ object Config : ConfigAPI {
 			private fun getTiming(): String {
 				val timing = Config.getString("$section.timing")
 				if (timing.split(":").size != 3) {
-					Console.warn("Invalid timing format at $section.timing. Please review: $timing")
+					Console.warn(Lang.getNode("config-api.timing-error").replace("%s", "$section.timing").replace("%t", timing))
 					return globalConfig.defaults!!.getString("$section.timing")!!
 				}
 				else {
@@ -49,7 +49,7 @@ object Config : ConfigAPI {
 						try {
 							parseInt(it)
 						} catch (e: Exception) {
-							Console.err("Invalid timing format at $section.timing. Using default timing. Please review: $timing")
+							Console.err(Lang.getNode("config-api.timing-format").replace("%s", "$section.timing").replace("%t", timing))
 							return globalConfig.defaults!!.getString("$section.timing")!!
 						}
 					}
@@ -95,7 +95,7 @@ object Config : ConfigAPI {
 					val m = parseInt(it.split(":")[1])
 					add(TimeStamp(h, m))
 				} catch (e: Exception) {
-					Console.err("Could not read \"$it\" please check main.yml:main.modes.interval")
+					Console.err(Lang.getNode("config-api.timestamp-error").replace("%t", it))
 				}
 			}
 		}

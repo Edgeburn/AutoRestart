@@ -15,7 +15,7 @@ object CTime : ICommand {
 	override fun getPermString(): String = "autorestart.time"
 	override fun getPermDefault(): PermissionDefault = TRUE
 	override fun getUsage(): String = "/autore time"
-	override fun getDescription(): String = "Shows when the next restart will occur."
+	override fun getDescription(): String = Lang.getNode("commands.time.description")
 	override fun hasListener(): Boolean = false
 	override fun getSubCmd(): ICommand? = CAutoRestart
 	

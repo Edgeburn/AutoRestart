@@ -22,7 +22,7 @@ enum class IntervalFactor {
 	NONE {
 		
 		override fun calculate() {
-			Console.err("Interval factor '${Config.Main_Modes_Interval_Factor_Raw}' in 'Main.yml:main.interval.factor' was not found! Switching to 'hours' factor!")
+			Console.err(Lang.getNode("interval-factor.error").replace("%f", Config.Main_Modes_Interval_Factor_Raw))
 			HOURS.calculate()
 		}
 		

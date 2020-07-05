@@ -23,14 +23,14 @@ enum class RestartMode {
 			// Convert timestamps to differences in milliseconds
 			timestamps.forEach {
 				// Check if timestamp is valid
-				if (it.h < 0 || it.h > 23) Console.err("$it hour mark is out of range: 0 - 23")
-				if (it.m < 0 || it.m > 59) Console.err("$it minute mark is out of range: 0 - 59")
+				if (it.h < 0 || it.h > 23) Console.err("$it " + Lang.getNode("restart-mode.hour-out-of-range"))
+				if (it.m < 0 || it.m > 59) Console.err("$it " + Lang.getNode("restart-mode.min-out-of-range"))
 				// Add converted time to differences list
 				differences.add(it.getTimeInMillis() - Calendar.getInstance().timeInMillis)
 			}
 			// Check if list is empty
 			if (differences.isEmpty()) {
-				Console.warn("There are no accepted timestamps available! Please check config to ensure that you have followed the correct format.")
+				Console.warn(Lang.getNode("restart-mode.no-timestamp"))
 				return
 			}
 			// Get smallest difference
@@ -43,7 +43,7 @@ enum class RestartMode {
 	NONE {
 		
 		override fun calculate() {
-			Console.err("Restart mode '${Config.Main_RestartMode_Raw}' in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!")
+			Console.err(Lang.getNode("restart-mode.mode-not-found").replace("%m", Config.Main_RestartMode_Raw))
 			INTERVAL.calculate()
 		}
 		

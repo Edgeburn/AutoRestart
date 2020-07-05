@@ -7,6 +7,7 @@ import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
+import org.serversmc.autorestart.utils.*
 import java.io.*
 
 object CHelp : ICommand {
@@ -30,7 +31,7 @@ object CHelp : ICommand {
 			if (!it.getLabel().equals(args[0], true)) return@forEach
 			// Checks if player has permission for this command
 			if (!sender.hasPermission(it.getPermission())) {
-				sender.sendMessage("${RED}You do not have permission to view this sub command dictionary!")
+				sender.sendMessage(RED + Lang.getNode("commands.help.sub-no-permission"))
 				// Prevent dictionary print
 				return@execute
 			}
@@ -47,7 +48,7 @@ object CHelp : ICommand {
 			return@execute
 		}
 		// Sub command not found
-		sender.sendMessage("${RED}That sub command was not found! Type \"/autore help\" to view that list of commands!")
+		sender.sendMessage(RED + Lang.getNode("commands.help.sub-not-found"))
 	}
 	
 	override fun tabComplete(player: Player, args: MutableList<out String>): MutableList<String>? {
@@ -68,7 +69,7 @@ object CHelp : ICommand {
 	override fun getPermString(): String = "autorestart.help"
 	override fun getPermDefault(): PermissionDefault = TRUE
 	override fun getUsage(): String = "/autore help <command>"
-	override fun getDescription(): String = "Shows this help screen."
+	override fun getDescription(): String = Lang.getNode("commands.help.description")
 	override fun hasListener(): Boolean = false
 	override fun getSubCmd(): ICommand? = CAutoRestart
 	

@@ -21,6 +21,8 @@ class Main : JavaPlugin() {
 		// Initialize libraries
 		Metrics(this, 2345)
 		PLUGIN = this
+		// Initialize language files
+		Lang.init()
 		// Check if PlaceholderAPI is installed
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) PAPI.register()
 		// Try to enable plugin
@@ -40,22 +42,22 @@ class Main : JavaPlugin() {
 			// Display update message after server Done
 			Bukkit.getScheduler().scheduleSyncDelayedTask(this) {
 				when {
-					UpdateChecker.hasUpdate() == null -> Console.warn("No Internet to check for updates")
-					UpdateChecker.hasUpdate()!! -> Console.warn("There is a new version of AutoRestart! Go get it now! Latest version: v${UpdateChecker.getLatestVersion()}")
-					else -> Console.info("Up to date!")
+					UpdateChecker.hasUpdate() == null -> Console.warn(Lang.getNode("update-checker.no-internet"))
+					UpdateChecker.hasUpdate()!! -> Console.warn(Lang.getNode("update-checker.new-version") + UpdateChecker.getLatestVersion())
+					else -> Console.info(Lang.getNode("update-checker.up-to-date"))
 				}
 			}
 			// Timer Thread
 			MainThread.run()
 			// Done
-			Console.info("Loaded")
+			Console.info(Lang.getNode("plugin.loaded"))
 		} catch (e: Exception) {
-			Console.catchError(e, "UNFILTERED ERROR")
+			Console.catchError(e, Lang.getNode("plugin.unfiltered-error"))
 		}
 	}
 	
 	override fun onDisable() {
-		Console.info("Done")
+		Console.info(Lang.getNode("plugin.done"))
 	}
 	
 	private fun registerCommands() {
