@@ -6,6 +6,7 @@ TODO - Prevent players from joining server while restarting
 TODO - Show MOTD that server is starting up / restarting
 
 4.2.0 - Hotfix / Updated to 1.16.1
+- Updated to 1.16.1
 - Fixed UpdateChecker 403 Error
 - Fixed timestamp mode not restarting on the timestamp accurately
 - Timer runs independently from server (Allowing timer to countdown even during lag)
