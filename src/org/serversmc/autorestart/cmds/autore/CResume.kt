@@ -4,17 +4,18 @@ import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.bukkit.permissions.*
 import org.serversmc.autorestart.cmds.*
-import org.serversmc.autorestart.core.TimerThread.PAUSED
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
+import org.serversmc.autorestart.threads.MainThread.isPaused
+import org.serversmc.autorestart.threads.MainThread.resume
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 
 object CResume : ICommand {
 	
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
-		if (PAUSED) {
-			PAUSED = false
+		if (isPaused()) {
+			resume()
 			broadcastStatus(sender, Messenger.Status.RESUME)
 		}
 		else sender.sendMessage("${RED}Timer is already running")

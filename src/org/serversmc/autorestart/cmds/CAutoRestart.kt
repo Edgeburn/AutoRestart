@@ -3,7 +3,6 @@ package org.serversmc.autorestart.cmds
 import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.bukkit.permissions.*
-import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
 

@@ -1,5 +1,5 @@
 build: 74
-spigot: 1.15.2
+spigot: 1.16.1
 java: 1.8.0_241
-kotlin: 1.3.70
-placeholder-api: 2.10.4
+kotlin: 1.3.72
+placeholder-api: 2.10.6
