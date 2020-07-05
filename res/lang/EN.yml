@@ -1,0 +1,59 @@
+plugin:
+    loaded: "Loaded"
+    done: "Done"
+    unfiltered-error: "UNFILTERED ERROR"
+update-checker:
+    no-internet: "No Internet to check for updates"
+    new-version: "There is a new version of AutoRestart! Go get it now! Latest version: v"
+    up-to-date: "Up to date!"
+    player-join: "AutoRestart has an update! Please update to version v"
+    hover-effect: "Link to Resource"
+commands:
+    main:
+        description: "Main Autorestart command"
+        not-enough-args: "Not enough arguments. Try: /autore help"
+        no-permission: "You don't have permission to use this command!"
+        no-sub-permission: "You do not have permission to use this sub command!"
+        sub-not-found: "Subcommand not found! Try %u"
+        player-only: "This is a player only command"
+    help:
+        description: "Shows this help screen."
+        sub-no-permission: "You do not have permission to view this sub command dictionary!"
+        sub-not-found: "That sub command was not found! Type \"/autore help\" to view that list of commands!"
+    in:
+        description: "Changes restart time in minutes."
+        not-enough-args: "Not enough arguments! Try: /autore help in"
+        follow-format: "Please follow format! Try: /autore help in"
+        enter-number: "Please enter a number! Try: /autore help in"
+        invalid-number: "Negative numbers, and zeros are not allowed! Try: /autore help in"
+        type-in-use: "Argument %t has already been used! Try: /autore help in"
+        enter-arg-name: "Please enter argument name! Try: /autore help in"
+        unknown-suffix: "Unknown suffix \"%t\"! Try: /autore help in"
+    now:
+        description: "Force restart server."
+        restarting: "Restarting server!"
+    pause:
+        description: "Pauses the AutoRestart timer"
+        already-paused: "Timer is already paused."
+    reload:
+        description: "Reloads all of AutoRestart config files"
+        reloaded: "Config files have been reloaded!"
+    resume:
+        description: "Resumes AutoRestart timer"
+        already-running: "Timer is already running"
+    time:
+        description: "Shows when the next restart will occur."
+interval-factor:
+    error: "Interval factor '%f' in 'Main.yml:main.interval.factor' was not found! Switching to 'hours' factor!"
+restart-mode:
+    hour-out-of-range: "hour mark is out of range: 0 - 23"
+    min-out-of-range: "minute mark is out of range: 0 - 59"
+    no-timestamp: "There are no accepted timestamps available! Please check config to ensure that you have followed the correct format."
+    mode-not-found: "Restart mode '%m' in 'Main.yml:main.restart_mode' was not found! Switching to 'interval' mode!"
+config-api:
+    created: "Created %f config file!"
+    update: "The config file %f has changed since the last update!"
+    backup: "Config file has been backed up to %f!"
+    timing-error: "Invalid timing format at %s. Please review: %t"
+    timing-format: "Invalid timing format at %s. Using default timing. Please review: %t"
+    timestamp-error: "Could not read \"%t\" please check main.yml:main.modes.interval"

@@ -1,21 +1,19 @@
 package org.serversmc.autorestart.core
 
-import org.bstats.bukkit.*
+import com.google.common.net.HttpHeaders.*
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.bukkit.plugin.java.*
 import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.cmds.autore.*
-import org.serversmc.autorestart.core.TimerThread.loopId
-import org.serversmc.autorestart.core.TimerThread.maxplayersId
-import org.serversmc.autorestart.core.TimerThread.shutdownId
-import org.serversmc.autorestart.core.UpdateChecker.UPDATE_FOUND
 import org.serversmc.autorestart.events.*
 import org.serversmc.autorestart.support.*
+import org.serversmc.autorestart.threads.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console
 import java.io.*
 import java.net.*
+
 
 lateinit var PLUGIN: Main
 
@@ -25,6 +23,8 @@ class Main : JavaPlugin() {
 		// Initialize libraries
 		Metrics(this, 2345)
 		PLUGIN = this
+		// Initialize language files
+		Lang.init()
 		// Check if PlaceholderAPI is installed
 		if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) PAPI.register()
 		// Try to enable plugin
@@ -44,23 +44,22 @@ class Main : JavaPlugin() {
 			// Display update message after server Done
 			Bukkit.getScheduler().scheduleSyncDelayedTask(this) {
 				when {
-					UPDATE_FOUND == null -> Console.warn("No Internet to check for updates")
-					UPDATE_FOUND!! -> Console.warn("There is a new version of AutoRestart! Go get it now! Latest version: v${UpdateChecker.LATEST_VERSION}")
-					else -> Console.info("Up to date!")
+					UpdateChecker.hasUpdate() == null -> Console.warn(Lang.getNode("update-checker.no-internet"))
+					UpdateChecker.hasUpdate()!! -> Console.warn(Lang.getNode("update-checker.new-version") + UpdateChecker.getLatestVersion())
+					else -> Console.info(Lang.getNode("update-checker.up-to-date"))
 				}
 			}
 			// Timer Thread
-			TimerThread.run()
+			MainThread.start()
 			// Done
-			Console.info("Loaded")
+			Console.info(Lang.getNode("plugin.loaded"))
 		} catch (e: Exception) {
-			Console.catchError(e, "UNFILTERED ERROR")
+			Console.catchError(e, Lang.getNode("plugin.unfiltered-error"))
 		}
 	}
 	
 	override fun onDisable() {
-		arrayOf(loopId, shutdownId, maxplayersId).forEach { if (it != 0) Bukkit.getScheduler().cancelTask(it) }
-		Console.info("Done")
+		Console.info(Lang.getNode("plugin.done"))
 	}
 	
 	private fun registerCommands() {
@@ -81,8 +80,8 @@ class Main : JavaPlugin() {
 object UpdateChecker {
 	
 	private var LATEST_BUILD: Int? = null
-	var LATEST_VERSION: String? = null
-	var UPDATE_FOUND: Boolean? = null
+	private var LATEST_VERSION: String? = null
+	private var UPDATE_FOUND: Boolean? = null
 	
 	private val url = URL("https://gitlab.com/dennislysenko/autorestart-v4/-/raw/master/res/plugin.yml")
 	private val pluginYml = InputStreamReader(PLUGIN.getResource("plugin.yml") as InputStream)
@@ -90,9 +89,14 @@ object UpdateChecker {
 	
 	fun checkUpdate() {
 		try {
+			// Connect to GitLab
+			CookieHandler.setDefault(CookieManager(null, CookiePolicy.ACCEPT_ALL))
+			val con = url.openConnection() as HttpURLConnection
+			con.requestMethod = "GET"
+			con.setRequestProperty("User-Agent", USER_AGENT)
 			// Fetch latest version string
 			YamlConfiguration().apply {
-				load(InputStreamReader(url.openStream()))
+				load(InputStreamReader(con.inputStream))
 				LATEST_BUILD = getInt("build")
 				LATEST_VERSION = getString("version")?.trim() ?: "null"
 			}
@@ -102,8 +106,11 @@ object UpdateChecker {
 			val currentBuild = yaml.getInt("build", -1)
 			if (currentBuild == -1) return
 			UPDATE_FOUND = LATEST_BUILD!! > currentBuild
-		} catch (e: Exception) {
-		}
+		} catch (e: Exception) {}
 	}
+	
+	fun hasUpdate() = UPDATE_FOUND
+	
+	fun getLatestVersion() = LATEST_VERSION ?: "N/A"
 	
 }

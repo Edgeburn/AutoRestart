@@ -1,4 +1,4 @@
-package org.bstats.bukkit;
+package org.serversmc.autorestart.core;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;

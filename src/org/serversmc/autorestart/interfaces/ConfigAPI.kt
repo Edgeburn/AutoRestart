@@ -3,6 +3,7 @@ package org.serversmc.autorestart.interfaces
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.serversmc.autorestart.core.*
+import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console
 import java.io.*
 import java.util.*
@@ -24,7 +25,7 @@ interface ConfigAPI {
 			// Save configs if needed
 			if (!file.exists()) {
 				PLUGIN.saveResource(file.name, false)
-				Console.info("Created ${file.name} config file!")
+				Console.info(Lang.getNode("config-api.created").replace("%f", file.name))
 			}
 			// Load Yaml Configuration
 			yamlConfiguration.load(file)
@@ -80,7 +81,7 @@ interface ConfigAPI {
 			// Update configs if needed
 			if (yaml.getInt("version") != globalConfig.getInt("version")) {
 				// Prompt console about update
-				Console.info("The config file ${file.name} has changed since the last update!")
+				Console.info(Lang.getNode("config-api.update").replace("%f", file.name))
 				// Create rename file
 				val cal = Calendar.getInstance()
 				val time = cal.time.toString().replace(":", "_")
@@ -94,7 +95,7 @@ interface ConfigAPI {
 				yaml.load(file)
 				subConfig.version = yaml.getInt("version")
 				// Prompt update message
-				Console.warn("Config file has been backed up to ${rename.name}!")
+				Console.warn(Lang.getNode("config-api.backup").replace("%f", rename.name))
 			}
 		}
 		combineSubConfigs()

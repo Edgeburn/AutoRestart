@@ -69,8 +69,9 @@ interface ICommand : CommandExecutor, TabCompleter, Listener {
 		// Display header
 		sender.sendMessage("${WHITE}-{ ${AQUA}${PLUGIN.description.name}$GRAY v${PLUGIN.description.version} ${WHITE}}-")
 		// Check if sender has permission
-		if (!sender.hasPermission(getPermission()))
-			sender.sendMessage("${RED}You don't have permission to use this command!")
+		if (!sender.hasPermission(getPermission())) {
+			sender.sendMessage(RED + Lang.getNode("commands.main.no-permission"))
+		}
 		// Try to execute command
 		try {
 			// Check if command has subcommands or args are empty
@@ -85,7 +86,7 @@ interface ICommand : CommandExecutor, TabCompleter, Listener {
 				if (!it.getLabel().equals(args[0], true)) return@forEach
 				// Check if sender has permission to subcommand
 				if (!sender.hasPermission(it.getPermission())) {
-					sender.sendMessage("${RED}You do not have permission to use this sub command!")
+					sender.sendMessage(RED + Lang.getNode("commands.main.no-sub-permission"))
 					return true
 				}
 				// Execute subcommand
@@ -93,10 +94,10 @@ interface ICommand : CommandExecutor, TabCompleter, Listener {
 				return true
 			}
 			// Prompt subcommand not found
-			sender.sendMessage("${RED}Subcommand not found! Try ${getUsage()}")
+			sender.sendMessage(RED + Lang.getNode("commands.main.sub-not-found").replace("%u", getUsage()))
 			// Catch any exceptions
 		} catch (e: PlayerOnlyCommand) {
-			sender.sendMessage("${RED} This is a player only command")
+			sender.sendMessage(RED + Lang.getNode("commands.main.player-only"))
 			if (e.message != null) {
 				sender.sendMessage("$RED${e.message}")
 			}

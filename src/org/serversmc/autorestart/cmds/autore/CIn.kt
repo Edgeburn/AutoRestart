@@ -4,9 +4,9 @@ import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.bukkit.permissions.*
 import org.serversmc.autorestart.cmds.*
-import org.serversmc.autorestart.core.TimerThread.TIME
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
+import org.serversmc.autorestart.threads.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 import java.lang.Integer.*
@@ -16,7 +16,7 @@ object CIn : ICommand {
 	override fun execute(sender: CommandSender, args: MutableList<out String>) {
 		// Check if arguments are empty
 		if (args.isEmpty()) {
-			sender.sendMessage("${RED}Not enough arguments! Try: /autore help in")
+			sender.sendMessage(RED + Lang.getNode("commands.in.not-enough-args"))
 			return
 		}
 		// Variable initialization
@@ -26,14 +26,14 @@ object CIn : ICommand {
 		args.forEach {
 			// Check if format is valid ( ":" )
 			if (!it.contains(":")) {
-				sender.sendMessage("${RED}Please follow format! Try: /autore help in")
+				sender.sendMessage(RED + Lang.getNode("commands.in.follow-format"))
 				return@execute
 			}
 			// Split Argument
 			val vars = it.split(":")
 			// Check if format is valid ( ":" count == 1 )
 			if (vars.size != 2) {
-				sender.sendMessage("${RED}Please follow format! Try: /autore help in")
+				sender.sendMessage(RED + Lang.getNode("commands.in.follow-format"))
 				return@execute
 			}
 			// Parse variables
@@ -45,18 +45,17 @@ object CIn : ICommand {
 			val type = vars[1].toUpperCase()
 			// Check if number is valid
 			if (num == null) {
-				sender.sendMessage("${RED}Please enter a number! Try: /autore help in")
+				sender.sendMessage(RED + Lang.getNode("commands.in.enter-number"))
 				return@execute
 			}
 			// Check if number is a negative or zero
 			if (num < 1) {
-				sender.sendMessage("${RED}Negative numbers, and zeros are not allowed! Try: /autore help in")
+				sender.sendMessage(RED + Lang.getNode("commands.in.invalid-number"))
 				return@execute
 			}
 			// Check if parameter has already been used
 			if (usedVars.contains(type)) {
-				sender.sendMessage("${RED}Argument $type has already been used! Try: /autore help in")
-				sender.spigot()
+				sender.sendMessage(RED + Lang.getNode("commands.in.type-in-use").replace("%t", type))
 				return@execute
 			}
 			// Add up parsed time
@@ -65,8 +64,8 @@ object CIn : ICommand {
 				"M" -> num * 60
 				"S" -> num
 				else -> {
-					if (type.isBlank()) sender.sendMessage("${RED}Please enter argument name! Try: /autore help in")
-					else sender.sendMessage("${RED}Unknown suffix \"$type\"! Try: /autore help in")
+					if (type.isBlank()) sender.sendMessage(RED + Lang.getNode("commands.in.enter-arg-name"))
+					else sender.sendMessage(RED + Lang.getNode("commands.in.unknown-suffix").replace("%t", type))
 					return@execute
 				}
 			}
@@ -74,7 +73,7 @@ object CIn : ICommand {
 			usedVars.add(type)
 		}
 		// Update timer thread with new time view
-		TIME = time
+		MainThread.updateTime(time)
 		// Send updated time to appropriate players (Method automatically sorts who gets what message, and pop ups)
 		broadcastStatus(sender, Messenger.Status.CHANGE)
 	}
@@ -131,7 +130,7 @@ object CIn : ICommand {
 	override fun getPermString(): String = "autorestart.in"
 	override fun getPermDefault(): PermissionDefault = OP
 	override fun getUsage(): String = "/autore in [hours]:h [minutes]:m [seconds]:s"
-	override fun getDescription(): String = "Changes restart time in minutes."
+	override fun getDescription(): String = Lang.getNode("commands.in.description")
 	override fun hasListener(): Boolean = false
 	override fun getSubCmd(): ICommand? = CAutoRestart
 	
