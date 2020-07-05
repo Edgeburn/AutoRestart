@@ -106,9 +106,7 @@ object UpdateChecker {
 			val currentBuild = yaml.getInt("build", -1)
 			if (currentBuild == -1) return
 			UPDATE_FOUND = LATEST_BUILD!! > currentBuild
-		} catch (e: Exception) {
-			e.printStackTrace()
-		}
+		} catch (e: Exception) {}
 	}
 	
 	fun hasUpdate() = UPDATE_FOUND
