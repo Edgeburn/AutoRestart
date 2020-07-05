@@ -4,12 +4,13 @@ TODO - Added weekday restart support
 TODO - Added personal player settings
 TODO - Prevent players from joining server while restarting
 TODO - Show MOTD that server is starting up / restarting
-TODO - Add lang.yml for translation support
 
 4.2.0 - Hotfix / Updated to 1.16.1
-- Fixed UpdateChecker
+- Fixed UpdateChecker 403 Error
 - Fixed timestamp mode not restarting on the timestamp accurately
 - Timer runs independently from server (Allowing timer to countdown even during lag)
+- Add lang.yml for translation support (inside of jar. Edit then send me lang.yml)
+- Fixed bStats conflict error, resulting in plugin not loading at all
 
 4.1.4 - Player Join Event hotfix
 - Fixed error when players join the server
