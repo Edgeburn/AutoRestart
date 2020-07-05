@@ -1,5 +1,6 @@
 package org.serversmc.autorestart.core
 
+import com.google.common.net.HttpHeaders.*
 import org.bukkit.*
 import org.bukkit.configuration.file.*
 import org.bukkit.plugin.java.*
@@ -12,6 +13,7 @@ import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console
 import java.io.*
 import java.net.*
+
 
 lateinit var PLUGIN: Main
 
@@ -49,7 +51,6 @@ class Main : JavaPlugin() {
 			}
 			// Timer Thread
 			MainThread.start()
-			
 			// Done
 			Console.info(Lang.getNode("plugin.loaded"))
 		} catch (e: Exception) {
@@ -88,9 +89,14 @@ object UpdateChecker {
 	
 	fun checkUpdate() {
 		try {
+			// Connect to GitLab
+			CookieHandler.setDefault(CookieManager(null, CookiePolicy.ACCEPT_ALL))
+			val con = url.openConnection() as HttpURLConnection
+			con.requestMethod = "GET"
+			con.setRequestProperty("User-Agent", USER_AGENT)
 			// Fetch latest version string
 			YamlConfiguration().apply {
-				load(InputStreamReader(url.openStream()))
+				load(InputStreamReader(con.inputStream))
 				LATEST_BUILD = getInt("build")
 				LATEST_VERSION = getString("version")?.trim() ?: "null"
 			}
@@ -100,7 +106,9 @@ object UpdateChecker {
 			val currentBuild = yaml.getInt("build", -1)
 			if (currentBuild == -1) return
 			UPDATE_FOUND = LATEST_BUILD!! > currentBuild
-		} catch (e: Exception) {}
+		} catch (e: Exception) {
+			e.printStackTrace()
+		}
 	}
 	
 	fun hasUpdate() = UPDATE_FOUND
