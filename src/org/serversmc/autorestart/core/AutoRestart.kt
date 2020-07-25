@@ -8,7 +8,6 @@ import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.cmds.autore.*
 import org.serversmc.autorestart.events.*
 import org.serversmc.autorestart.support.*
-import org.serversmc.autorestart.threads.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console
 import java.io.*
@@ -50,7 +49,7 @@ class Main : JavaPlugin() {
 				}
 			}
 			// Timer Thread
-			MainThread.start()
+			TimerThread.run()
 			// Done
 			Console.info(Lang.getNode("plugin.loaded"))
 		} catch (e: Exception) {
