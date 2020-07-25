@@ -6,9 +6,11 @@ import org.bukkit.configuration.file.*
 import org.bukkit.plugin.java.*
 import org.serversmc.autorestart.cmds.*
 import org.serversmc.autorestart.cmds.autore.*
+import org.serversmc.autorestart.core.TimerThread.loopId
+import org.serversmc.autorestart.core.TimerThread.maxplayersId
+import org.serversmc.autorestart.core.TimerThread.shutdownId
 import org.serversmc.autorestart.events.*
 import org.serversmc.autorestart.support.*
-import org.serversmc.autorestart.threads.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Console
 import java.io.*
@@ -50,7 +52,7 @@ class Main : JavaPlugin() {
 				}
 			}
 			// Timer Thread
-			MainThread.start()
+			TimerThread.run()
 			// Done
 			Console.info(Lang.getNode("plugin.loaded"))
 		} catch (e: Exception) {
@@ -59,6 +61,7 @@ class Main : JavaPlugin() {
 	}
 	
 	override fun onDisable() {
+		arrayOf(loopId, shutdownId, maxplayersId).forEach { if (it != 0) Bukkit.getScheduler().cancelTask(it) }
 		Console.info(Lang.getNode("plugin.done"))
 	}
 	

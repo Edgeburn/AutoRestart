@@ -8,8 +8,8 @@
 #╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚══╝
 
 name: AutoRestart
-version: 4.1.5
-build: 74
+version: 4.2.1
+build: 75
 main: org.serversmc.autorestart.core.Main
 softdepend:
     - PlaceholderAPI

@@ -1,3 +1,4 @@
+@file:Suppress("unused")
 package org.serversmc.autorestart.enums
 
 import org.bukkit.*

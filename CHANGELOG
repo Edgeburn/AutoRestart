@@ -5,6 +5,10 @@ TODO - Added personal player settings
 TODO - Prevent players from joining server while restarting
 TODO - Show MOTD that server is starting up / restarting
 
+4.2.1 - Hotfix
+- Switched to millisecond accurate timings, instead of relying on server TPS.
+- Added French translation to plugin files (Soon to be released after all major translations received)
+
 4.2.0 - Hotfix / Updated to 1.16.1
 - Updated to 1.16.1
 - Fixed UpdateChecker 403 Error
@@ -101,7 +105,7 @@ TODO - Show MOTD that server is starting up / restarting
 - Added bootloader to control the flow of your server restarts, and stops.
 - This bootloader will allow you to stop the server at will, and it will actually stop!
 - When AutoRestart restarts the server, it'll communicate with the bootloader to start the server once stopped.
-- With this new bootloader, I can actually implement a restart on crash feature (I need a server crash to test on sooo if your server crashes PM ASAP)
+- With this new bootloader, I can actually implement a restart on crash feature (I need a server crash to test on so if your server crashes PM ASAP)
 - This will also allow this plugin to work on MultiCraft or other special hosting platforms without the need of modifications.
 
 3.0.5 - Fixed config mistakes, preparing for multi config file system

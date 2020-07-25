@@ -1,6 +1,6 @@
 package org.serversmc.autorestart.enums
 
-import org.serversmc.autorestart.threads.*
+import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.utils.*
 
 @Suppress("unused")
@@ -8,14 +8,14 @@ enum class IntervalFactor {
 	HOURS {
 		
 		override fun calculate() {
-			MainThread.updateTime((Config.Main_Modes_Interval_Value * 3600.0).toInt())
+			TimerThread.TIME = (Config.Main_Modes_Interval_Value * 3600.0).toInt()
 		}
 		
 	},
 	DAYS {
 		
 		override fun calculate() {
-			MainThread.updateTime((Config.Main_Modes_Interval_Value * 86400.0).toInt())
+			TimerThread.TIME = (Config.Main_Modes_Interval_Value * 86400.0).toInt()
 		}
 		
 	},

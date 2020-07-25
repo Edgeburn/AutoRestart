@@ -1,6 +1,6 @@
 package org.serversmc.autorestart.enums
 
-import org.serversmc.autorestart.threads.*
+import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.utils.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -36,7 +36,7 @@ enum class RestartMode {
 			// Get smallest difference
 			val time = differences.min()!!
 			// Convert milliseconds to time
-			MainThread.updateTime(time.toInt() / 1000)
+			TimerThread.TIME = time.toInt() / 1000
 		}
 		
 	},

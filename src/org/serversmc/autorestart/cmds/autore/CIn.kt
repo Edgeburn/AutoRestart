@@ -4,9 +4,9 @@ import org.bukkit.command.*
 import org.bukkit.entity.*
 import org.bukkit.permissions.*
 import org.serversmc.autorestart.cmds.*
+import org.serversmc.autorestart.core.*
 import org.serversmc.autorestart.enums.*
 import org.serversmc.autorestart.interfaces.*
-import org.serversmc.autorestart.threads.*
 import org.serversmc.autorestart.utils.*
 import org.serversmc.autorestart.utils.Messenger.broadcastStatus
 import java.lang.Integer.*
@@ -73,7 +73,7 @@ object CIn : ICommand {
 			usedVars.add(type)
 		}
 		// Update timer thread with new time view
-		MainThread.updateTime(time)
+		TimerThread.TIME = time
 		// Send updated time to appropriate players (Method automatically sorts who gets what message, and pop ups)
 		broadcastStatus(sender, Messenger.Status.CHANGE)
 	}
