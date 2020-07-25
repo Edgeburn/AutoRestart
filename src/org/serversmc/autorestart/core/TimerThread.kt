@@ -9,9 +9,9 @@ object TimerThread {
 	var TIME = 0
 	var PAUSED = false
 	
-	private var loopId = 0
-	private var maxplayersId = 0
-	private var shutdownId = 0
+	var loopId = 0
+	var maxplayersId = 0
+	var shutdownId = 0
 	
 	private var LAST_UPDATE = 0L
 	private var PAUSED_TIMER = 0
