@@ -1,0 +1,59 @@
+plugin:
+    loaded: "Chargé"
+    done: "Fini"
+    unfiltered-error: "ERREUR NON FILTRÉE"
+update-checker:
+    no-internet: "Pas d'Internet pour vérifier les mises à jour"
+    new-version: "Il existe une nouvelle version d'AutoRestart! Allez le chercher maintenant! Dernière version : v"
+    up-to-date: "À jour !"
+    player-join: "AutoRestart a une mise à jour ! Veuillez mettre à jour vers la version v"
+    hover-effect: "Link to Resource"
+commands:
+    main:
+        description: "Commande principale de redémarrage automatique"
+        not-enough-args: "Pas assez d'arguments. Essayer : /autore help"
+        no-permission: "Vous n'êtes pas autorisé à utiliser cette commande !"
+        no-sub-permission: "Vous n'êtes pas autorisé à utiliser cette sous-commande !"
+        sub-not-found: "Sous-commande introuvable! Essayer %u"
+        player-only: "Ceci est une commande pour joueur uniquement"
+    help:
+        description: "Affiche cet écran d'aide."
+        sub-no-permission: "Vous n'êtes pas autorisé à afficher ce dictionnaire de sous-commandes !"
+        sub-not-found: "Cette sous-commande est introuvable! Type \"/autore help\" pour afficher cette liste de commandes !"
+    in:
+        description: "Modifie le temps de redémarrage en minutes."
+        not-enough-args: "Pas assez d'arguments! Essayer : /autore help in"
+        follow-format: "Veuillez suivre le format ! Essayer : /autore help in"
+        enter-number: "Veuillez saisir un nombre ! Essayer : /autore help in"
+        invalid-number: "Les nombres négatifs et les zéros ne sont pas autorisés ! Essayer : /autore help in"
+        type-in-use: "L'argument %t a déjà été utilisé ! Essayer : /autore help in"
+        enter-arg-name: "Veuillez saisir le nom de l'argument ! Essayer : /autore help in"
+        unknown-suffix: "Suffixe inconnu \"%t\"! Essayer : /autore help in"
+    now:
+        description: "Forcer le redémarrage du serveur."
+        restarting: "Redémarrage du serveur !"
+    pause:
+        description: "Met en pause la minuterie de redémarrage automatique"
+        already-paused: "La minuterie est déjà en pause."
+    reload:
+        description: "Recharge tous les fichiers de configuration d'AutoRestart"
+        reloaded: "Les fichiers de configuration ont été rechargés !"
+    resume:
+        description: "Reprend la minuterie de redémarrage automatique"
+        already-running: "La minuterie fonctionne déjà"
+    time:
+        description: "Indique quand le prochain redémarrage aura lieu."
+interval-factor:
+    error: "Facteur d'intervalle '%f' dans 'Main.yml:main.interval.factor' n'a pas été trouvé! Passer dans le facteur 'hours' !"
+restart-mode:
+    hour-out-of-range: "la marque horaire est hors limites : 0 - 23"
+    min-out-of-range: "la marque des minutes est hors de portée : 0 - 59"
+    no-timestamp: "Aucun horodatage accepté n'est disponible! Veuillez vérifier la configuration pour vous assurer que vous avez suivi le bon format."
+    mode-not-found: "Mode de redémarrage '%m' in 'Main.yml:main.restart_mode'n'a pas été trouvé! Passer dans le mode 'interval' !"
+config-api:
+    created: "Création du fichier configuration %f !"
+    update: "Le fichier de configuration %f a changé depuis la dernière mise à jour !"
+    backup: "Le fichier de configuration a été sauvegardé sur %f!"
+    timing-error: "Format de synchronisation non valide à %s. Merci de revoire : %t"
+    timing-format: "Format de synchronisation non valide à %s. Utilisation du temps par défaut. Merci de revoire : %t"
+    timestamp-error: "Impossible de lire \"%t\" Vérifiez s'il vous plaît main.yml:main.modes.interval"
