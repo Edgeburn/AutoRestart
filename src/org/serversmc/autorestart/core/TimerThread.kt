@@ -16,23 +16,25 @@ object TimerThread {
 	private var LAST_UPDATE = 0L
 	private var PAUSED_TIMER = 0
 	
+	private fun roundMilliseconds() = (System.currentTimeMillis()/1000)*1000
+	
 	fun run() {
 		Config.Main_RestartMode.calculate()
 		// Start millisecond update log
 		LAST_UPDATE = System.currentTimeMillis()
 		// Start and store loopId
-		loopId = Bukkit.getScheduler().scheduleSyncRepeatingTask(PLUGIN, Runnable {
+		loopId = Bukkit.getScheduler().scheduleSyncRepeatingTask(PLUGIN, {
 			// Check millisecond update gap
 			if (LAST_UPDATE + 1000 > System.currentTimeMillis()) {
-				return@Runnable
+				return@scheduleSyncRepeatingTask
 			}
 			// Update millisecond log
-			LAST_UPDATE = System.currentTimeMillis()
+			LAST_UPDATE = roundMilliseconds()
 			// Timer end break
 			if (TIME == 0) {
 				Bukkit.getScheduler().cancelTask(loopId)
 				Bukkit.getScheduler().callSyncMethod(PLUGIN, maxplayers)
-				return@Runnable
+				return@scheduleSyncRepeatingTask
 			}
 			// Check if timer is paused
 			if (PAUSED) {
@@ -45,7 +47,7 @@ object TimerThread {
 					}
 					PAUSED_TIMER = Config.Reminder_PauseReminder
 				}
-				return@Runnable
+				return@scheduleSyncRepeatingTask
 			}
 			PAUSED_TIMER = 0
 			// Minutes Reminder
