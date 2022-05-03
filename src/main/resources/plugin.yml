@@ -9,7 +9,7 @@
 
 name: AutoRestart
 version: ${project.version}
-build: 75
+build: 76
 main: org.serversmc.autorestart.core.Main
 softdepend:
   - PlaceholderAPI
