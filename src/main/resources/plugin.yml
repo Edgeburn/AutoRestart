@@ -8,16 +8,17 @@
 #╚═╝░░░░░╚═╝╚═╝░░╚═╝╚═╝╚═╝░░╚══╝
 
 name: AutoRestart
-version: 4.2.1
+version: ${project.version}
 build: 75
 main: org.serversmc.autorestart.core.Main
 softdepend:
-    - PlaceholderAPI
+  - PlaceholderAPI
 authors:
-    - ServersMC
-    - DennisLysenko
+  - ServersMC
+  - DennisLysenko
+  - Edgeburn Media
 website: https://www.spigotmc.org/resources/autorestart.2538/
-email: info@serversmc.org
+email: support@mailredirect.edgeburnmedia.com
 description: "Automatically restarts your server with customizable messages, and seamless integrations"
 
 #░█████╗░███╗░░░███╗██████╗░░██████╗
@@ -28,10 +29,10 @@ description: "Automatically restarts your server with customizable messages, and
 #░╚════╝░╚═╝░░░░░╚═╝╚═════╝░╚═════╝░
 
 commands:
-    autore:
-        description: "AutoRestart Command"
-        permission-message: "Surprisingly they don't want you using this command?"
-    
+  autore:
+    description: "AutoRestart Command"
+    permission-message: "Surprisingly they don't want you using this command?"
+
 #██████╗░███████╗██████╗░███╗░░░███╗░██████╗
 #██╔══██╗██╔════╝██╔══██╗████╗░████║██╔════╝
 #██████╔╝█████╗░░██████╔╝██╔████╔██║╚█████╗░
@@ -40,18 +41,18 @@ commands:
 #╚═╝░░░░░╚══════╝╚═╝░░╚═╝╚═╝░░░░░╚═╝╚═════╝░
 
 permissions:
-    autorestart.admin:
-        children:
-            autorestart.in: true
-            autorestart.now: true
-            autorestart.pause: true
-            autorestart.resume: true
-    autorestart.*:
-        children:
-            autorestart.help: true
-            autorestart.time: true
-            autorestart.resume: true
-            autorestart.pause: true
-            autorestart.in: true
-            autorestart.reload: true
-            autorestart.now: true
+  autorestart.admin:
+    children:
+      autorestart.in: true
+      autorestart.now: true
+      autorestart.pause: true
+      autorestart.resume: true
+  autorestart.*:
+    children:
+      autorestart.help: true
+      autorestart.time: true
+      autorestart.resume: true
+      autorestart.pause: true
+      autorestart.in: true
+      autorestart.reload: true
+      autorestart.now: true
